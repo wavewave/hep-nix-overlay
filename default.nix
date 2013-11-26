@@ -20,15 +20,10 @@ let lib = import /afs/cern.ch/user/i/ikim/repo/ext/nixpkgs/lib;
     callPackage = newScope {};
     newScope = extra: lib.callPackageWith (defaultScope // extra);
 
-    hello = callPackage ./packages/hello/hello.nix { } ;
+    root5 = callPackage ./packages/root5 { } ;
     
-in [ hello ]  
+in [ root5 ]    
 
-# pkgs
-
-# { packagesByName = name:
-#            pkgs.lib.maybeAttr name {} ( (import ./packages/default.nix) {inherit (pkgs) fetchurl;});
-#   }   
 
 
 
