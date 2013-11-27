@@ -1,0 +1,104 @@
+--- root/configure	2013-11-19 16:49:10.000000000 +0100
++++ root2/configure	2013-11-26 11:45:33.565701495 +0100
+@@ -227,6 +227,8 @@
+ TABLE            \
+ XMLDIR           \
+ ROOTDICTTYPE     \
++X11              \
++XPM
+ "
+ configenvvars=
+ for c in $envvars ; do
+@@ -2518,11 +2520,7 @@
+ # Check for X11 and Xpm library (for X11 use always shared lib)
+ #
+ if test ! "x$enable_x11" = "xno" ; then
+-    check_library "libX11" "yes" "$x11libdir" \
+-        ${finkdir:+$finkdir/lib} \
+-        /usr/lib /usr/X11R6/lib /usr/lib/X11 /usr/openwin/lib \
+-        /usr/local/lib /usr/local/lib/X11 /usr/local/X11R6/lib \
+-        /usr/X11/lib /usr/lib/X11R5
++    check_library "libX11" "no" "$x11libdir" "$x11dir/lib"
+     x11libdir=$found_dir
+ 
+     if test "x$found_lib" = "x" ; then
+@@ -2531,11 +2529,7 @@
+         exit 1
+     fi
+ 
+-    check_header "X11/Xlib.h" "" \
+-        ${finkdir:+$finkdir/include} \
+-        /usr/include /usr/X11R6/include /usr/include/X11 /usr/openwin/include \
+-        /usr/local/include /usr/local/include/X11 /usr/local/X11R6/include \
+-        /usr/X11/include /usr/include/X11R5
++    check_header "X11/Xlib.h" "" "$x11dir/include"
+     x11incdir=$found_dir
+ 
+     if test "x$found_dir" = "x" ; then
+@@ -2544,12 +2538,7 @@
+         exit 1
+     fi
+ 
+-    check_header "X11/xpm.h" "" \
+-        $XPM ${XPM:+$XPM/include} \
+-        ${finkdir:+$finkdir/include} \
+-        /usr/include /usr/X11R6/include /usr/include/X11 /usr/openwin/include \
+-        /usr/local/include /usr/local/include/X11 /usr/local/X11R6/include \
+-        /usr/X11/include /usr/include/X11R5
++    check_header "X11/xpm.h" "" "$XPM/include"
+ 
+     if test "x$found_dir" = "x" ; then
+         result "`basename $0`: xpm headers MUST be installed"
+@@ -2557,11 +2546,7 @@
+         exit 1
+     fi
+ 
+-    check_header "X11/Xft/Xft.h" "" \
+-        ${finkdir:+$finkdir/include} \
+-        /usr/include /usr/X11R6/include /usr/include/X11 /usr/openwin/include \
+-        /usr/local/include /usr/local/include/X11 /usr/local/X11R6/include \
+-        /usr/X11/include /usr/include/X11R5
++    check_header "X11/Xft/Xft.h" "" "$Xftdir/include"
+ 
+     if test "x$found_dir" = "x" ; then
+         result "`basename $0`: Xft headers MUST be installed"
+@@ -2583,12 +2568,7 @@
+         fi
+     fi
+ 
+-    check_library "libXpm" "$enable_shared" "$xpmlibdir" \
+-        $XPM ${XPM:+$XPM/lib} \
+-        ${finkdir:+$finkdir/lib} \
+-        /usr/local/lib /usr/lib /usr/lib/X11 \
+-        /usr/local/lib/X11 /usr/X11R6/lib /usr/local/X11R6/lib \
+-        /usr/X11/lib
++    check_library "libXpm" "$enable_shared" "$xpmlibdir" $XPM ${XPM:+$XPM/lib} 
+     xpmlib=$found_lib
+     xpmlibdir=$found_dir
+ 
+@@ -2598,11 +2578,7 @@
+         exit 1
+     fi
+ 
+-    check_library "libXft" "$enable_shared" "$xftlibdir" \
+-        ${finkdir:+$finkdir/lib} \
+-        /usr/local/lib /usr/lib /usr/lib/X11 \
+-        /usr/local/lib/X11 /usr/X11R6/lib /usr/local/X11R6/lib \
+-        /usr/X11/lib
++    check_library "libXft" "$enable_shared" "$xftlibdir" "$Xftdir/lib"
+ 
+     if test "x$found_lib" = "x" ; then
+         result "`basename $0`: libXft MUST be installed"
+@@ -2616,11 +2592,7 @@
+         exit 1
+     fi
+ 
+-    check_library "libXext" "$enable_shared" "$xextlibdir" \
+-        ${finkdir:+$finkdir/lib} \
+-        /usr/local/lib /usr/lib /usr/lib/X11 \
+-        /usr/local/lib/X11 /usr/X11R6/lib /usr/local/X11R6/lib \
+-        /usr/X11/lib
++    check_library "libXext" "$enable_shared" "$xextlibdir" "$Xextdir/lib"
+ 
+     if test "x$found_lib" = "x" ; then
+         result "`basename $0`: libXext MUST be installed"
