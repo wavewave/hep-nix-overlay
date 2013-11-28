@@ -17,12 +17,22 @@ let lib = import /afs/cern.ch/user/i/ikim/repo/ext/nixpkgs/lib;
     defaultScope = pkgs // pkgs.xorg;
     mainConfig = { inherit system stdenvType bootStdenv noSysDirs gccWithCC gccWithProfiling config; };
     pkgs = import nixpkgs mainConfig;
+    haskellPackages = pkgs.haskellPackages_ghc763;
     callPackage = newScope {};
-    newScope = extra: lib.callPackageWith (defaultScope // extra);
-
+    newScope = extra: lib.callPackageWith (defaultScope // extra); 
+    # haskellPackages : lib.callPackageWith (defaultScope // haskellPackages ); 
+    # cabal = haskellPackages.cabal; 
     root5 = callPackage ./packages/root5 { } ;
-    
-in [ root5 ]    
+    fficxx = callPackage ./packages/fficxx { 
+               cabal = haskellPackages.cabal; 
+               HStringTemplate = haskellPackages.HStringTemplate;
+               either = haskellPackages.either; 
+               errors = haskellPackages.errors;
+               lens = haskellPackages.lens;
+               pureMD5 = haskellPackages.pureMD5;
+               split = haskellPackages.split;
+             } ;     
+in [ root5 fficxx ]    
 
 
 
