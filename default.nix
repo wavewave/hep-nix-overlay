@@ -32,7 +32,11 @@ let lib = import /afs/cern.ch/user/i/ikim/repo/ext/nixpkgs/lib;
                pureMD5 = haskellPackages.pureMD5;
                split = haskellPackages.split;
              } ;     
-in [ root5 fficxx ]    
+    fficxx-runtime = callPackage ./packages/fficxx-runtime { 
+                       cabal = haskellPackages.cabal; 
+                     } ;     
+
+in [ root5 fficxx fficxx-runtime ]    
 
 
 
