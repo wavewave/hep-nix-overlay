@@ -35,8 +35,15 @@ let lib = import /afs/cern.ch/user/i/ikim/repo/ext/nixpkgs/lib;
     fficxx-runtime = callPackage ./packages/fficxx-runtime { 
                        cabal = haskellPackages.cabal; 
                      } ;     
+    HROOT-generate = callPackage ./packages/HROOT-generate {
+                       cabal = haskellPackages.cabal; 
+                       HStringTemplate = haskellPackages.HStringTemplate;
+                       fficxx = fficxx;
+                       configurator = haskellPackages.configurator;
+                       cmdargs = haskellPackages.cmdargs;
+                     } ;
 
-in [ root5 fficxx fficxx-runtime ]    
+in [ root5 fficxx fficxx-runtime HROOT-generate ]    
 
 
 
