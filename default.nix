@@ -66,10 +66,26 @@ let lib = import /afs/cern.ch/user/i/ikim/repo/ext/nixpkgs/lib;
                    HROOT-core = HROOT-core;
                    HROOT-hist = HROOT-hist;
                  } ;
+    HROOT-io   = callPackage ./packages/HROOT-io   {
+                   cabal = haskellPackages.cabal; 
+                   root5 = root5; 
+                   fficxx-runtime = fficxx-runtime;
+                   HROOT-src-tree = HROOT-src-tree;
+                   HROOT-core = HROOT-core;
+                 } ;
+    HROOT-math = callPackage ./packages/HROOT-math {
+                   cabal = haskellPackages.cabal; 
+                   root5 = root5; 
+                   fficxx-runtime = fficxx-runtime;
+                   HROOT-src-tree = HROOT-src-tree;
+                   HROOT-core = HROOT-core;
+                 } ;
 
 
-
-in [ root5 fficxx fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist HROOT-graf ]
+in [ root5 fficxx fficxx-runtime HROOT-src-tree 
+     HROOT-core HROOT-hist HROOT-graf HROOT-io 
+     HROOT-math
+   ]
 
 
 
