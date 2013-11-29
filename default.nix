@@ -45,8 +45,13 @@ let lib = import /afs/cern.ch/user/i/ikim/repo/ext/nixpkgs/lib;
     HROOT-src-tree = callPackage ./packages/HROOT-src-tree {
                        HROOT-generate = HROOT-generate;
                      } ;
+    HROOT-core = callPackage ./packages/HROOT-core {
+                   cabal = haskellPackages.cabal; 
+                   fficxx-runtime = fficxx-runtime;
+                   HROOT-src-tree = HROOT-src-tree;
+                 } ;
 
-in [ root5 fficxx fficxx-runtime HROOT-src-tree ] # [ HROOT-generate ]    
+in [ root5 fficxx fficxx-runtime HROOT-src-tree HROOT-core ] # [ HROOT-generate ]    
 
 
 
