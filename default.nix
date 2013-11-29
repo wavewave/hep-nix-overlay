@@ -42,8 +42,11 @@ let lib = import /afs/cern.ch/user/i/ikim/repo/ext/nixpkgs/lib;
                        configurator = haskellPackages.configurator;
                        cmdargs = haskellPackages.cmdargs;
                      } ;
+    HROOT-src-tree = callPackage ./packages/HROOT-src-tree {
+                       HROOT-generate = HROOT-generate;
+                     } ;
 
-in [ root5 fficxx fficxx-runtime HROOT-generate ]    
+in [ root5 fficxx fficxx-runtime HROOT-src-tree ] # [ HROOT-generate ]    
 
 
 
