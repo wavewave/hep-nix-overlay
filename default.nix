@@ -20,9 +20,9 @@ let lib = import /afs/cern.ch/user/i/ikim/repo/ext/nixpkgs/lib;
     haskellPackages = pkgs.haskellPackages_ghc763;
     callPackage = newScope {};
     newScope = extra: lib.callPackageWith (defaultScope // extra); 
-    # haskellPackages : lib.callPackageWith (defaultScope // haskellPackages ); 
-    # cabal = haskellPackages.cabal; 
-    root5 = callPackage ./packages/root5 { } ;
+    root5 = callPackage ./packages/root5 {
+#              zlib = zlib;   
+            } ;
     fficxx = callPackage ./packages/fficxx { 
                cabal = haskellPackages.cabal; 
                HStringTemplate = haskellPackages.HStringTemplate;
