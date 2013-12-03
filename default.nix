@@ -40,47 +40,32 @@ let lib = import "${nixpkgs}/lib";
     HROOT-generate = callPackage ./packages/HROOT-generate {
                        cabal = haskellPackages.cabal; 
                        HStringTemplate = haskellPackages.HStringTemplate;
-                       fficxx = fficxx;
                        configurator = haskellPackages.configurator;
                        cmdargs = haskellPackages.cmdargs;
+                       inherit fficxx;
                      } ;
     HROOT-src-tree = callPackage ./packages/HROOT-src-tree {
-                       HROOT-generate = HROOT-generate;
+                       inherit HROOT-generate;
                      } ;
     HROOT-core = callPackage ./packages/HROOT-core {
                    cabal = haskellPackages.cabal; 
-                   root5 = root5;
-                   fficxx-runtime = fficxx-runtime;
-                   HROOT-src-tree = HROOT-src-tree;
+                   inherit root5 fficxx-runtime HROOT-src-tree; 
                  } ;
     HROOT-hist = callPackage ./packages/HROOT-hist {
                    cabal = haskellPackages.cabal; 
-                   root5 = root5; 
-                   fficxx-runtime = fficxx-runtime;
-                   HROOT-src-tree = HROOT-src-tree;
-                   HROOT-core = HROOT-core;
+                   inherit root5 fficxx-runtime HROOT-src-tree HROOT-core; 
                  };
     HROOT-graf = callPackage ./packages/HROOT-graf {
-                   cabal = haskellPackages.cabal; 
-                   root5 = root5; 
-                   fficxx-runtime = fficxx-runtime;
-                   HROOT-src-tree = HROOT-src-tree;
-                   HROOT-core = HROOT-core;
-                   HROOT-hist = HROOT-hist;
+                   cabal = haskellPackages.cabal;
+                   inherit root5 fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist; 
                  } ;
     HROOT-io   = callPackage ./packages/HROOT-io   {
                    cabal = haskellPackages.cabal; 
-                   root5 = root5; 
-                   fficxx-runtime = fficxx-runtime;
-                   HROOT-src-tree = HROOT-src-tree;
-                   HROOT-core = HROOT-core;
+                   inherit root5 fficxx-runtime HROOT-src-tree HROOT-core;
                  } ;
     HROOT-math = callPackage ./packages/HROOT-math {
                    cabal = haskellPackages.cabal; 
-                   root5 = root5; 
-                   fficxx-runtime = fficxx-runtime;
-                   HROOT-src-tree = HROOT-src-tree;
-                   HROOT-core = HROOT-core;
+                   inherit root5 fficxx-runtime HROOT-src-tree HROOT-core;
                  } ;
 
 
