@@ -9,11 +9,13 @@
 , gccWithProfiling ? true
 , config ? null
 # additional:
-, nixpkgs ? /afs/cern.ch/user/i/ikim/repo/ext/nixpkgs
+, nixpkgs 
 , ...
 }:
 
-let lib = import /afs/cern.ch/user/i/ikim/repo/ext/nixpkgs/lib;
+#with import <nixpkgs> { }; 
+
+let lib = import "${nixpkgs}/lib"; 
     defaultScope = pkgs // pkgs.xorg;
     mainConfig = { inherit system stdenvType bootStdenv noSysDirs gccWithCC gccWithProfiling config; };
     pkgs = import nixpkgs mainConfig;
@@ -82,10 +84,7 @@ let lib = import /afs/cern.ch/user/i/ikim/repo/ext/nixpkgs/lib;
                  } ;
 
 
-in [ root5 fficxx fficxx-runtime HROOT-src-tree 
-     HROOT-core HROOT-hist HROOT-graf HROOT-io 
-     HROOT-math
-   ]
+in { inherit root5 fficxx fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist HROOT-graf HROOT-io HROOT-math ; } 
 
 
 
