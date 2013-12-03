@@ -15,7 +15,9 @@
 
 #with import <nixpkgs> { }; 
 
-let lib = import "${nixpkgs}/lib"; 
+let hepNixPackages =  rec { 
+
+    lib = import "${nixpkgs}/lib"; 
     defaultScope = pkgs // pkgs.xorg;
     mainConfig = { inherit system stdenvType bootStdenv noSysDirs gccWithCC gccWithProfiling config; };
     pkgs = import nixpkgs mainConfig;
@@ -67,9 +69,22 @@ let lib = import "${nixpkgs}/lib";
                    cabal = haskellPackages.cabal; 
                    inherit root5 fficxx-runtime HROOT-src-tree HROOT-core;
                  } ;
+    LHCOAnalysis-type = callPackage ./packages/LHCOAnalysis-type { 
+                   cabal = haskellPackages.cabal;
+                   # inherit haskellPackages; 
+                 } ;
+    HEPUtil = callPackage ./packages/HEPUtil { 
+                   cabal = haskellPackages.cabal;
+                   inherit haskellPackages;
+                   inherit hepNixPackages;
+                 } ;
+    allpkgs = {inherit root5 fficxx fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist;
+     inherit HROOT-graf HROOT-io HROOT-math ; 
+     inherit LHCOAnalysis-type HEPUtil;
+   };
+} . allpkgs;
 
-
-in { inherit root5 fficxx fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist HROOT-graf HROOT-io HROOT-math ; } 
+in hepNixPackages
 
 
 
