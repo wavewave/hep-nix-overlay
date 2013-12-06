@@ -78,9 +78,16 @@ let hepNixPackages =  rec {
                    inherit haskellPackages;
                    inherit hepNixPackages;
                  } ;
+    conduit-util = callPackage ./packages/conduit-util { 
+                     cabal = haskellPackages.cabal;
+                     inherit haskellPackages;
+                     inherit hepNixPackages;
+                   } ;
+     
     allpkgs = {inherit root5 fficxx fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist;
      inherit HROOT-graf HROOT-io HROOT-math ; 
-     inherit LHCOAnalysis-type HEPUtil;
+     inherit LHCOAnalysis-type HEPUtil conduit-util;
+     # inherit xml-types xml-conduit;
    };
 } . allpkgs;
 
