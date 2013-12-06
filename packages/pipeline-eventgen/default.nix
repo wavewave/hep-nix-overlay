@@ -34,8 +34,10 @@ cabal.mkDerivation (self: {
                    hs.cryptoApi
                  ];
                   
-  # NIX_GCC_WRAPPER_FLAGS_SET=1;
-
+  #NIX_DEBUG=1;
+  preBuild = ''
+    export NIX_LDFLAGS="-L${gfortran.gcc}/lib -L${gfortran.gcc}/lib64 $NIX_LDFLAGS";
+  '';
   doCheck = false;
   meta = {
     homepage = "http://github.com/hep-platform";
