@@ -119,15 +119,20 @@ let hepNixPackages =  rec {
                            cabal = haskellPackages.cabal;
                            inherit haskellPackages;
                            inherit hepNixPackages;
-                           inherit lib;
                         } ;
+    evchain = callPackage ./packages/evchain { 
+                            cabal = haskellPackages.cabal;
+                            inherit haskellPackages;
+                            inherit hepNixPackages;
+                          } ;
+
 
      
     allpkgs = {inherit root5 fficxx fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist;
      inherit HROOT-graf HROOT-io HROOT-math ; 
      inherit LHCOAnalysis-type HEPUtil conduit-util LHEParser LHE-sanitizer;
      inherit webdav-manager devadmin madgraph-auto madgraph-auto-model;
-     inherit pipeline-eventgen;
+     inherit pipeline-eventgen evchain;
    };
 } . allpkgs;
 
