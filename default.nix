@@ -72,7 +72,7 @@ let hepNixPackages =  rec {
                  } ;
     LHCOAnalysis-type = callPackage ./packages/LHCOAnalysis-type { 
                    cabal = haskellPackages.cabal;
-                   # inherit haskellPackages; 
+                   inherit haskellPackages; 
                  } ;
     HEPUtil = callPackage ./packages/HEPUtil { 
                    cabal = haskellPackages.cabal;
@@ -110,12 +110,24 @@ let hepNixPackages =  rec {
                       inherit hepNixPackages;
                       hashable = haskellPackages.hashable_1_2_1_0; 
                     } ;
+    madgraph-auto-model = callPackage ./packages/madgraph-auto-model { 
+                            cabal = haskellPackages.cabal;
+                            inherit haskellPackages;
+                            inherit hepNixPackages;
+                          } ;
+    pipeline-eventgen = callPackage ./packages/pipeline-eventgen { 
+                           cabal = haskellPackages.cabal;
+                           inherit haskellPackages;
+                           inherit hepNixPackages;
+                           inherit lib;
+                        } ;
 
      
     allpkgs = {inherit root5 fficxx fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist;
      inherit HROOT-graf HROOT-io HROOT-math ; 
      inherit LHCOAnalysis-type HEPUtil conduit-util LHEParser LHE-sanitizer;
-     inherit webdav-manager devadmin madgraph-auto;
+     inherit webdav-manager devadmin madgraph-auto madgraph-auto-model;
+     inherit pipeline-eventgen;
    };
 } . allpkgs;
 

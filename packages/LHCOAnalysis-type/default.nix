@@ -1,7 +1,6 @@
-{ cabal, fetchgit }:
-#{ haskellPackages }:
+{ cabal, fetchgit, haskellPackages }:
 
-#with import <haskellPackages> { }; 
+with { hs = haskellPackages; }; 
 
 cabal.mkDerivation (self: {
   pname = "LHCOAnalysis-type";
@@ -12,7 +11,7 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ ];
+  buildDepends = [ hs.binary ];
   doCheck = false;
   meta = {
     homepage = "";
