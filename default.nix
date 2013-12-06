@@ -83,10 +83,20 @@ let hepNixPackages =  rec {
                      inherit haskellPackages;
                      inherit hepNixPackages;
                    } ;
+    LHEParser = callPackage ./packages/LHEParser { 
+                     cabal = haskellPackages.cabal;
+                     inherit haskellPackages;
+                     inherit hepNixPackages;
+                   } ;
+    LHE-sanitizer = callPackage ./packages/LHE-sanitizer { 
+                     cabal = haskellPackages.cabal;
+                     inherit haskellPackages;
+                     inherit hepNixPackages;
+                   } ;
      
     allpkgs = {inherit root5 fficxx fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist;
      inherit HROOT-graf HROOT-io HROOT-math ; 
-     inherit LHCOAnalysis-type HEPUtil conduit-util;
+     inherit LHCOAnalysis-type HEPUtil conduit-util LHEParser LHE-sanitizer;
      # inherit xml-types xml-conduit;
    };
 } . allpkgs;
