@@ -1,6 +1,9 @@
-{ cabal, fetchgit, haskellPackages, hepNixPackages }:
+{ cabal, stdenv, fetchgit, haskellPackages, hepNixPackages, hashable }:
+# , hashable ? stdenv.lib.versionOlder "" hashble.version }:
 
 with { hs = haskellPackages; my = hepNixPackages; };
+
+assert !(stdenv.lib.versionOlder (stdenv.lib.getVersion hashable) "1.2");
 
 cabal.mkDerivation (self: {
   pname = "madgraph-auto";
@@ -13,16 +16,18 @@ cabal.mkDerivation (self: {
   isExecutable = false;
   buildDepends = [ my.LHE-sanitizer
                    my.webdav-manager
-                   hs.process
-                   hs.unix
+                   my.devadmin
+                   # hs.process
+                   # hs.unix
                    hs.filepath
                    hs.mtl
                    hs.aeson
                    hs.text
-                   hs.unordered-containers
+                   hs.unorderedContainers
                    hs.transformers
                    hs.HStringTemplate
-                   hs.devadmin
+                   hs.hslogger
+                   hashable 
                  ];
   doCheck = false;
   meta = {

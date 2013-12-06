@@ -13,6 +13,7 @@
 , ...
 }:
 
+
 #with import <nixpkgs> { }; 
 
 let hepNixPackages =  rec { 
@@ -93,11 +94,28 @@ let hepNixPackages =  rec {
                      inherit haskellPackages;
                      inherit hepNixPackages;
                    } ;
+    webdav-manager = callPackage ./packages/webdav-manager { 
+                     cabal = haskellPackages.cabal;
+                     inherit haskellPackages;
+                     inherit hepNixPackages;
+                   } ;
+    devadmin = callPackage ./packages/devadmin { 
+                     cabal = haskellPackages.cabal;
+                     inherit haskellPackages;
+                     inherit hepNixPackages;
+                   } ;
+    madgraph-auto = callPackage ./packages/madgraph-auto { 
+                      cabal = haskellPackages.cabal;
+                      inherit haskellPackages;
+                      inherit hepNixPackages;
+                      hashable = haskellPackages.hashable_1_2_1_0; 
+                    } ;
+
      
     allpkgs = {inherit root5 fficxx fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist;
      inherit HROOT-graf HROOT-io HROOT-math ; 
      inherit LHCOAnalysis-type HEPUtil conduit-util LHEParser LHE-sanitizer;
-     # inherit xml-types xml-conduit;
+     inherit webdav-manager devadmin madgraph-auto;
    };
 } . allpkgs;
 
