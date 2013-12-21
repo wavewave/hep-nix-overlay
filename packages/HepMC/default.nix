@@ -11,13 +11,6 @@ stdenv.mkDerivation {
   nativeBuildInputs = [ m4 autoconf automake libtool utillinux texLive texLiveExtra doxygen ];
   patches = [ ./no-doc-gen.patch ];
   configureFlags = "--with-momentum=GEV --with-length=MM";
-  # cmakeFlags = "-Dmomentum:STRING=GEV -Dlength:STRING=MM";
-  # cmakeBuildDir = "iwbuild";
-  # buildInputs = [ cmake texLive ]; # doxygen ]; 
-  # checkTarget = "test";
-  # buildInputs = [ automake autoconf libtool utillinux texLive doxygen ]; 
-  # patches = [./no-sys-dirs.patch ] ;
-  # builder = "${src}/bootstrap"; # libtool + "/bin/libtoolize"; # automake + "/bin/aclocal";
   preConfigure = ''
 sh ${./preconfigure.sh} 
 '';

@@ -127,7 +127,11 @@ let hepNixPackages =  rec {
                           } ;
     HepMC = callPackage ./packages/HepMC {
             } ;
-
+    FastJet = callPackage ./packages/FastJet {
+              };
+    Rivet = callPackage ./packages/Rivet {
+              inherit HepMC FastJet; 
+            } ;
 
      
     allpkgs = {
@@ -137,7 +141,7 @@ let hepNixPackages =  rec {
      inherit LHCOAnalysis-type HEPUtil conduit-util LHEParser LHE-sanitizer;
      inherit webdav-manager devadmin madgraph-auto madgraph-auto-model;
      inherit pipeline-eventgen evchain;
-     inherit HepMC;
+     inherit HepMC FastJet Rivet;
    };
 } . allpkgs;
 
