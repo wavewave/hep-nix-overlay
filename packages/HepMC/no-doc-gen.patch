@@ -1,0 +1,14 @@
+diff -rupN HepMC-2.06.08/bootstrap HepMC-2.06.08.2/bootstrap
+--- HepMC-2.06.08/bootstrap	2009-06-02 23:03:01.000000000 +0200
++++ HepMC-2.06.08.2/bootstrap	2013-12-21 19:34:50.346346930 +0100
+@@ -27,10 +27,5 @@ autoheader
+ automake --add-missing --copy
+ autoconf
+ 
+-# To avoid confusing people with failures in the documentation build, 
+-# build documents during the bootstrap process.
+-if [ $OSname != "Cygwin" ]; then
+-  cd doc; ./buildDoc.sh
+-fi
+ 
+ # ready to make a source code distribution tarball

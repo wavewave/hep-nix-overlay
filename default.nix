@@ -125,14 +125,19 @@ let hepNixPackages =  rec {
                             inherit haskellPackages;
                             inherit hepNixPackages;
                           } ;
+    HepMC = callPackage ./packages/HepMC {
+            } ;
 
 
      
-    allpkgs = {inherit root5 fficxx fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist;
+    allpkgs = {
+     inherit root5 fficxx fficxx-runtime HROOT-generate HROOT-src-tree;
+     inherit HROOT-core HROOT-hist;
      inherit HROOT-graf HROOT-io HROOT-math ; 
      inherit LHCOAnalysis-type HEPUtil conduit-util LHEParser LHE-sanitizer;
      inherit webdav-manager devadmin madgraph-auto madgraph-auto-model;
      inherit pipeline-eventgen evchain;
+     inherit HepMC;
    };
 } . allpkgs;
 
