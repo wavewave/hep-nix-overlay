@@ -1,4 +1,3 @@
-# { stdenv, fetchurl, cmake, texLive, doxygen }:
 { stdenv, fetchurl, m4, automake, autoconf, libtool, utillinux, texLive, texLiveExtra, doxygen }:
  
 stdenv.mkDerivation { 
@@ -10,7 +9,7 @@ stdenv.mkDerivation {
   };
   nativeBuildInputs = [ m4 autoconf automake libtool utillinux texLive texLiveExtra doxygen ];
   patches = [ ./no-doc-gen.patch ];
-  configureFlags = "--with-momentum=GEV --with-length=MM";
+  configureFlags = "--with-momentum=GEV --with-length=MM --enable-static";
   preConfigure = ''
 sh ${./preconfigure.sh} 
 '';

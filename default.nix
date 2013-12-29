@@ -137,9 +137,9 @@ let hepNixPackages =  rec {
                     };
 
     # not yet 
-    #convertStdHep = callPackage ./packages/convertStdHep {
-    #                  inherit HepMC;
-    #                };
+    convertStdHep = callPackage ./packages/convertStdHep {
+                      inherit HepMC;
+                    };
 
      
     allpkgs = {
@@ -150,7 +150,7 @@ let hepNixPackages =  rec {
      inherit webdav-manager devadmin madgraph-auto madgraph-auto-model;
      inherit pipeline-eventgen evchain;
      inherit HepMC FastJet Rivet LHAPDF; 
-     #inherit convertStdHep;
+     inherit convertStdHep;
 
    };
 } . allpkgs;

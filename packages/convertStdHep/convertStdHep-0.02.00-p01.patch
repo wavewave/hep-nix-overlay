@@ -1,0 +1,169 @@
+diff -rupN a/src/convertHEPEVT.cc b/src/convertHEPEVT.cc
+--- a/src/convertHEPEVT.cc	2007-10-02 09:35:07.000000000 -0700
++++ b/src/convertHEPEVT.cc	2012-07-26 11:04:56.000000000 -0700
+@@ -53,6 +53,7 @@ namespace HepMC {
+ 		<< std::endl;
+ 	    return 0;
+ 	}
++	// HEPEVT_CWrapper::print_hepevt(cout);
+ 	evt->set_event_number( HEPEVT_CWrapper::event_number() );
+ 	//
+ 	// 2. create a particle instance for each HEPEVT entry and fill a map
+@@ -89,6 +90,7 @@ namespace HepMC {
+ 	    //    Identical steps as for production vertex
+ 	    if ( !m_trust_mothers_before_daughters || 
+ 		 m_trust_both_mothers_and_daughters ) {
++	      std::cout << "I shouldnt be here...\n";
+ 		build_end_vertex( i, hepevt_particle, evt );
+ 	    }
+ 	}
+@@ -224,10 +226,12 @@ namespace HepMC {
+ 	//     consistent
+ 	mother = HEPEVT_CWrapper::first_parent(i);
+ 	while ( prod_vtx && mother > 0 ) {
+-	    if ( !hepevt_particle[mother]->end_vertex() ) {
++	  if ( !hepevt_particle[mother]->end_vertex()) {
++	    if(hepevt_particle[mother]->production_vertex() != prod_vtx)  {
+ 		// if end vertex of the mother isn't specified, do it now
+ 		prod_vtx->add_particle_in( hepevt_particle[mother] );
+-	    } else if (hepevt_particle[mother]->end_vertex() != prod_vtx ) {
++	    }
++	  } else if (hepevt_particle[mother]->end_vertex() != prod_vtx ) {
+ 		// problem scenario --- the mother already has a decay
+ 		// vertex which differs from the daughter's produciton 
+ 		// vertex. This means there is internal
+diff -rupN /Users/papucci/Downloads/convertStdHep/src/convertStdHep.cc /Users/papucci/Codes/convertStdHep/src/convertStdHep.cc
+--- a/src/convertStdHep.cc	2006-11-14 15:46:07.000000000 -0800
++++ b/convertStdHep/src/convertStdHep.cc	2012-07-26 11:26:11.000000000 -0700
+@@ -6,12 +6,16 @@
+ 
+ #include <iostream>
+ #include <string>
++#include <fstream>
++#include <cstring>
++#include <stdlib.h>
++#include <stdio.h>
+ 
+ #include "stdhep_mcfio.h"
+ #include "stdhep_declarations.h"
+ 
+ #include "convertStdHep/convertHEPEVT.h"
+-#include "HepMC/IO_Ascii.h"
++#include "HepMC/IO_GenEvent.h"
+ #include "HepMC/GenEvent.h"
+ 
+ int main(int argc, char *argv[])
+@@ -21,13 +25,16 @@ int main(int argc, char *argv[])
+     int istr = 0;
+     int nevt = 0;
+     std::string blank(" ");
+-    char  ext[7] = ".ascii";
++    char  ext[7] = ".hepmc";
+ 
+     // read file names from command line
+     std::string inflag("-i");
++    std::string xsflag("-c");
+     std::string outflag("-o");
+     char  infile[230] = " ";
+     char  outfile[230] = " ";
++    double xsval = 0.0;
++    double xserr = 0.0;
+     i = 0;
+     while ( i < argc ) {
+ 	if( argv[i] == inflag ) {
+@@ -52,6 +59,18 @@ int main(int argc, char *argv[])
+               std::cout << "convertStdHep ERROR: supply an argument for -o" << std::endl;
+               return 1;
+ 	   }
++	} else if ( argv[i] == xsflag ) {
++           // xsection
++	   ++i;
++	   ++i;
++	   if( i < argc  ) {
++	     xsval = strtod (argv[i-1],NULL);
++	     xserr = strtod (argv[i],NULL);
++	     std::cout << " xsection: " << xsval << " +- " << xserr << std::endl;
++	   } else {
++              std::cout << "convertStdHep ERROR: supply two arguments for -c" << std::endl;
++              return 1;
++	   }
+ 	}
+ 	++i;
+     }
+@@ -70,7 +89,8 @@ int main(int argc, char *argv[])
+     // Instantiate the HEPEVT IO class.
+     HepMC::convertHEPEVT hepevtio;
+     // Instantial an IO strategy to write the data to file 
+-    HepMC::IO_Ascii ascii_io(outfile,std::ios::out);
++    HepMC::IO_GenEvent ascii_io(outfile,std::ios::out);
++    HepMC::GenCrossSection xsec;
+     // initialize MCFio input
+     ierr = StdHepXdrReadInit(infile, nevt, istr);
+     if (ierr != 0) {
+@@ -79,19 +99,61 @@ int main(int argc, char *argv[])
+         return 1;
+     }
+     // start reading
++    hepevtio.set_trust_mothers_before_daughters(1);
+     i = 0;
++    xsec.set_cross_section( xsval,  xserr );
++    HepMC::GenEvent* evt = 0;
+     while (ierr == 0) {
+         ierr = StdHepXdrRead(&lbl,istr);
+         if (ierr == 0) {
++	  if(lbl==1) {
+ 	    ++i;
+ 	    std::cout << " at event " << myhepevt.nevhep 
+ 	              << " with " << myhepevt.nhep << " particles" << std::endl;
+             // fill HepMC
+-	    HepMC::GenEvent* evt = hepevtio.read_next_event();
+-	    // write the event out to the ascii file
+-	    ascii_io << evt;
+-	    // we also need to delete the created event from memory
+-	    delete evt;
++	    evt = new HepMC::GenEvent();
++	    if(hepevtio.fill_next_event(evt)) {
++	    //	    evt = hepevtio.read_next_event();
++	      evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
++	      evt->set_cross_section( xsec );
++	      evt->set_signal_process_id( hepeup_.idprup );
++	      evt->set_event_scale( hepeup_.scalup );
++	      evt->set_alphaQCD( hepeup_.aqcdup );
++	      evt->set_alphaQED( hepeup_.aqedup );
++	      evt->set_mpi( 1 );
++	      if(evt!=0) {
++		if(evt->vertices_size()>0) {
++		  // find the hard process defined as the first vertex with two different incoming particles
++		  for ( HepMC::GenEvent::vertex_const_iterator v = evt->vertices_begin();
++			v != evt->vertices_end(); ++v ) 
++		    if(evt->signal_process_vertex()==0) {
++		      if((*v)->particles_in_size()==2) {
++			int bcode=0;
++			for( HepMC::GenVertex::particles_in_const_iterator p = (*v)->particles_in_const_begin();
++			     p != (*v)->particles_in_const_end(); ++p ) {
++			  if(bcode==0) bcode = (*p)->barcode();
++			  else if(bcode==(*p)->barcode()) bcode=0;
++			}
++			if(bcode!=0) evt->set_signal_process_vertex(*v);
++		      }
++		    }
++		  // write the event out to the ascii file
++		  ascii_io << evt;
++		  // we also need to delete the created event from memory
++		  delete evt;
++		}
++	      }
++	    }
++	  }
++	  else if(lbl==12) {
++	    // set cross section information
++	    // pari is in mbarn. coverted in pb
++	    if(heprup_.xsecup[0]!=0.0)
++	      xsec.set_cross_section( heprup_.xsecup[0],  heprup_.xerrup[0] );
++	  }
++	  else if((lbl!=100)&&(lbl!=200)) {
++	    std::cout << "lbl =" << lbl << "\n";
++	  }
+         } else {
+ 	    std::cout << " end of file after " << i
+ 	              << " events" << std::endl;
