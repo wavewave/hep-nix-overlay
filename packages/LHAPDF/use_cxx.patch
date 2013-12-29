@@ -1,0 +1,11 @@
+diff -uNr a/pyext/setup.py.in b/pyext/setup.py.in
+--- a/pyext/setup.py.in	2011-06-28 12:54:52.000000000 +0200
++++ b/pyext/setup.py.in	2013-12-29 19:48:46.464310504 +0100
+@@ -15,6 +15,7 @@
+ libdir = os.path.abspath('@top_builddir@/lib')
+ cxxargs = '@CXXFLAGS@'.split()
+ ldargs = '@LDFLAGS@'.split()
++os.environ["CC"] = '@CXX@'
+ ext = Extension('_lhapdf',
+                 [wrapsrc],
+                 include_dirs=[incdir_src, incdir_build],

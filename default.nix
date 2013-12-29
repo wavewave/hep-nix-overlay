@@ -125,13 +125,21 @@ let hepNixPackages =  rec {
                             inherit haskellPackages;
                             inherit hepNixPackages;
                           } ;
-    HepMC = callPackage ./packages/HepMC {
-            } ;
-    FastJet = callPackage ./packages/FastJet {
-              };
-    Rivet = callPackage ./packages/Rivet {
-              inherit HepMC FastJet; 
-            } ;
+    HepMC         = callPackage ./packages/HepMC {
+                    };
+    FastJet       = callPackage ./packages/FastJet {
+                    };
+    Rivet         = callPackage ./packages/Rivet {
+                      inherit HepMC FastJet; 
+                    };
+    LHAPDF        = callPackage ./packages/LHAPDF {
+                      #inherit HepMC FastJet; 
+                    };
+
+    # not yet 
+    #convertStdHep = callPackage ./packages/convertStdHep {
+    #                  inherit HepMC;
+    #                };
 
      
     allpkgs = {
@@ -141,7 +149,9 @@ let hepNixPackages =  rec {
      inherit LHCOAnalysis-type HEPUtil conduit-util LHEParser LHE-sanitizer;
      inherit webdav-manager devadmin madgraph-auto madgraph-auto-model;
      inherit pipeline-eventgen evchain;
-     inherit HepMC FastJet Rivet;
+     inherit HepMC FastJet Rivet LHAPDF; 
+     #inherit convertStdHep;
+
    };
 } . allpkgs;
 
