@@ -23,6 +23,7 @@ let hepNixPackages =  rec {
     mainConfig = { inherit system stdenvType bootStdenv noSysDirs gccWithCC gccWithProfiling config; };
     pkgs = import nixpkgs mainConfig;
     haskellPackages = pkgs.haskellPackages_ghc763;
+    pythonPackages = pkgs.pythonPackages; 
     callPackage = newScope {};
     newScope = extra: lib.callPackageWith (defaultScope // extra); 
     root5 = callPackage ./packages/root5 {
@@ -135,10 +136,15 @@ let hepNixPackages =  rec {
     LHAPDF        = callPackage ./packages/LHAPDF {
                       #inherit HepMC FastJet; 
                     };
-
-    # not yet 
     convertStdHep = callPackage ./packages/convertStdHep {
                       inherit HepMC;
+                    };
+    professor     = callPackage ./packages/professor {
+                      inherit pythonPackages;
+                    };
+    pyminuit2     = callPackage ./packages/pyminuit2 {
+                      inherit pythonPackages;
+                      inherit root5;
                     };
 
      
@@ -149,9 +155,8 @@ let hepNixPackages =  rec {
      inherit LHCOAnalysis-type HEPUtil conduit-util LHEParser LHE-sanitizer;
      inherit webdav-manager devadmin madgraph-auto madgraph-auto-model;
      inherit pipeline-eventgen evchain;
-     inherit HepMC FastJet Rivet LHAPDF; 
-     inherit convertStdHep;
-
+     inherit HepMC FastJet Rivet LHAPDF professor convertStdHep; 
+     inherit pyminuit2;
    };
 } . allpkgs;
 
