@@ -1,5 +1,5 @@
 { stdenv, fetchgit, cmake, Rivet, root5, HepMC, gsl, FastJet, pkgconfig, 
-  python, cython, libyamlcpp, boost }:
+  python, cython0192, libyamlcpp, boost }:
  
 stdenv.mkDerivation { 
   name = "Atom"; 
@@ -10,7 +10,7 @@ stdenv.mkDerivation {
     sha256 = "50e8d375777a916b63ecd38a7790534099d2a8befe9ee2d2d61fcc668651d443" ;
   };
   buildInputs = [ cmake Rivet root5 HepMC gsl FastJet pkgconfig libyamlcpp 
-                  python cython boost 
+                  python cython0192 boost 
                 ];
   # patches = [ ];
   cmakeFlags = "-DCMAKE_CXX_FLAGS=-fPIC -DCMAKE_VERBOSE_MAKEFILE=ON";

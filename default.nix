@@ -135,6 +135,9 @@ let hepNixPackages =  rec {
     libyamlcpp025 = callPackage ./packages/legacy/libyaml-cpp/0.2.5.nix { 
                     };
 
+    cython0192    = callPackage ./packages/future/cython/0.19.2.nix { 
+                    };
+
     Rivet         = callPackage ./packages/Rivet {
                       inherit HepMC FastJet libyamlcpp025; 
                     };
@@ -154,8 +157,8 @@ let hepNixPackages =  rec {
                     };
 
     Atom          = callPackage ./packages/Atom {
-                      inherit Rivet root5 HepMC FastJet ;
-                      inherit (pkgs) cython gsl libyamlcpp pkgconfig  ;
+                      inherit Rivet root5 HepMC FastJet cython0192 ;
+                      inherit (pkgs) gsl libyamlcpp pkgconfig  ;
                     };
      
     allpkgs = {
@@ -167,6 +170,7 @@ let hepNixPackages =  rec {
      inherit pipeline-eventgen evchain;
      inherit HepMC FastJet Rivet LHAPDF professor convertStdHep; 
      inherit pyminuit2;
+     inherit cython0192;
      inherit libyamlcpp025 Atom;
    };
 } . allpkgs;
