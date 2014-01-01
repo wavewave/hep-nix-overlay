@@ -1,0 +1,427 @@
+--- a/src/Core/AnalysisInfo.cc	2012-06-29 08:05:32.000000000 -0700
++++ b/src/Core/AnlaysisInfo.cc	2013-10-13 13:37:43.000000000 -0700
+@@ -35,134 +35,197 @@ namespace Rivet {
+ 
+     // Read data from YAML document
+     MSG_DEBUG("Reading analysis data from " << datapath);
+-    std::ifstream io(datapath.c_str());
+-    YAML::Parser parser(io);
+     YAML::Node doc;
+     try {
++      #if YAMLCPP_API_VERSION == 3
++      std::ifstream file(datapath.c_str());
++      YAML::Parser parser(file);
+       parser.GetNextDocument(doc);
+-      //cout << doc << endl;
++      #elif YAMLCPP_API_VERSION == 5
++      doc = YAML::LoadFile(datapath);
++      #endif
+     } catch (const YAML::ParserException& ex) {
+       MSG_ERROR("Parse error when reading analysis data from " << datapath << " (" << ex.what() << ")");
+       return ai;
+     }
+ 
+-    for (YAML::Iterator it = doc.begin(); it != doc.end(); ++it) {
+-      string key;
+-      it.first() >> key;
+-      stringstream sec;
+-      // sec << it.second();
+-      // const string secstr = sec.str().substr(0, sec.str().length()-1);
+-      // MSG_TRACE(key << ": " << secstr);
+-      try {
+-        if (key == "Name") {
+-          it.second() >> ai->_name;
+-        } else if (key == "Summary") {
+-          it.second() >> ai->_summary;
+-        } else if (key == "Experiment") {
+-          it.second() >> ai->_experiment;
+-        } else if (key == "Beams") {
+-          const YAML::Node& beampairs = it.second();
+-          vector<PdgIdPair> beam_pairs;
+-          if (beampairs.size() == 2 &&
+-              beampairs[0].GetType() == YAML::CT_SCALAR &&
+-              beampairs[1].GetType() == YAML::CT_SCALAR) {
+-            string bstr0, bstr1;
+-            beampairs[0] >> bstr0;
+-            beampairs[1] >> bstr1;
+-            beam_pairs += make_pdgid_pair(bstr0, bstr1);
+-          } else {
+-            for (YAML::Iterator bpi = beampairs.begin(); bpi != beampairs.end(); ++bpi) {
+-              const YAML::Node& bp = *bpi;
+-              if (bp.size() == 2 &&
+-                  bp[0].GetType() == YAML::CT_SCALAR &&
+-                  bp[1].GetType() == YAML::CT_SCALAR) {
+-                string bstr0, bstr1;
+-                bp[0] >> bstr0;
+-                bp[1] >> bstr1;
+-                beam_pairs += make_pdgid_pair(bstr0, bstr1);
+-              } else {
+-                assert(0 && "Beam ID pairs have to be either a 2-tuple or a list of 2-tuples of particle names");
+-              }
++    #define THROW_INFOERR(KEY) throw InfoError("Problem in info parsing while accessing key " + string(KEY) + " in file " + datapath)
++
++    // Simple scalars (test for nullness before casting)
++    #if YAMLCPP_API_VERSION == 3
++    /// @todo Fix
++    #define TRY_GETINFO(KEY, VAR) try { if (doc.FindValue(KEY)) { string val; doc[KEY] >> val; ai->_ ## VAR = val; } } catch (...) { THROW_INFOERR(KEY); }
++    #elif YAMLCPP_API_VERSION == 5
++    #define TRY_GETINFO(KEY, VAR) try { if (doc[KEY] && !doc[KEY].IsNull()) ai->_ ## VAR = doc[KEY].as<string>(); } catch (...) { THROW_INFOERR(KEY); }
++    #endif
++    TRY_GETINFO("Name", name);
++    TRY_GETINFO("Summary", summary);
++    TRY_GETINFO("Status", status);
++    TRY_GETINFO("RunInfo", runInfo);
++    TRY_GETINFO("Description", description);
++    TRY_GETINFO("Experiment", experiment);
++    TRY_GETINFO("Collider", collider);
++    TRY_GETINFO("Year", year);
++    TRY_GETINFO("SpiresID", spiresId);
++    TRY_GETINFO("InspireID", inspireId);
++    TRY_GETINFO("BibKey", bibKey);
++    TRY_GETINFO("BibTeX", bibTeX);
++    #undef TRY_GETINFO
++
++    // Sequences (test the seq *and* each entry for nullness before casting)
++    #if YAMLCPP_API_VERSION == 3
++    /// @todo Fix
++    #define TRY_GETINFO_SEQ(KEY, VAR) try { \
++        if (const YAML::Node* VAR = doc.FindValue(KEY)) {               \
++          for (size_t i = 0; i < VAR->size(); ++i) {                     \
++            string val; (*VAR)[i] >> val; ai->_ ## VAR += val;          \
++          } } } catch (...) { THROW_INFOERR(KEY); }
++    #elif YAMLCPP_API_VERSION == 5
++    #define TRY_GETINFO_SEQ(KEY, VAR) try { \
++        if (doc[KEY] && !doc[KEY].IsNull()) {                           \
++          const YAML::Node& VAR = doc[KEY];                             \
++          for (size_t i = 0; i < VAR.size(); ++i)                       \
++            if (!VAR[i].IsNull()) ai->_ ## VAR += VAR[i].as<string>();  \
++        } } catch (...) { THROW_INFOERR(KEY); }
++    #endif
++    TRY_GETINFO_SEQ("Authors", authors);
++    TRY_GETINFO_SEQ("References", references);
++    TRY_GETINFO_SEQ("ToDo", todos);
++    #undef TRY_GETINFO_SEQ
++
++
++    // A boolean with some name flexibility
++    try {
++      #if YAMLCPP_API_VERSION == 3
++      bool val;
++      if (const YAML::Node* n = doc.FindValue("NeedsCrossSection")) { *n >> val; ai->_needsCrossSection = val; }
++      if (const YAML::Node* n = doc.FindValue("NeedCrossSection")) { *n >> val; ai->_needsCrossSection = val; }
++      #elif YAMLCPP_API_VERSION == 5
++      if (doc["NeedsCrossSection"]) ai->_needsCrossSection = doc["NeedsCrossSection"].as<bool>();
++      else if (doc["NeedCrossSection"]) ai->_needsCrossSection = doc["NeedCrossSection"].as<bool>();
++      #endif
++    } catch (...) {
++      THROW_INFOERR("NeedsCrossSection|NeedCrossSection");
++    }
++
++
++    // Beam particle identities
++    try {
++      #if YAMLCPP_API_VERSION == 3
++
++      if (const YAML::Node* pbeampairs = doc.FindValue("Beams")) {
++        const YAML::Node& beampairs = *pbeampairs;
++        vector<PdgIdPair> beam_pairs;
++        if (beampairs.size() == 2 &&
++            beampairs[0].Type() == YAML::NodeType::Scalar &&
++            beampairs[1].Type() == YAML::NodeType::Scalar) {
++          string bstr0, bstr1;
++          beampairs[0] >> bstr0;
++          beampairs[1] >> bstr1;
++          beam_pairs += make_pdgid_pair(bstr0, bstr1);
++        } else {
++          for (YAML::Iterator bpi = beampairs.begin(); bpi != beampairs.end(); ++bpi) {
++            const YAML::Node& bp = *bpi;
++            if (bp.size() == 2 &&
++                bp[0].Type() == YAML::NodeType::Scalar &&
++                bp[1].Type() == YAML::NodeType::Scalar) {
++              string bstr0, bstr1;
++              bp[0] >> bstr0;
++              bp[1] >> bstr1;
++              beam_pairs += make_pdgid_pair(bstr0, bstr1);
++            } else {
++              throw InfoError("Beam ID pairs have to be either a 2-tuple or a list of 2-tuples of particle names");
+             }
+           }
+-          ai->_beams = beam_pairs;
+         }
+-        else if (key == "Energies") {
+-          const YAML::Node& energies = it.second();
+-          vector<pair<double,double> > beam_energy_pairs;
+-          for (YAML::Iterator be = energies.begin(); be != energies.end(); ++be) {
+-            if (be->GetType() == YAML::CT_SCALAR) {
+-              // If beam energy is a scalar, then assume symmetric beams each with half that energy
++        ai->_beams = beam_pairs;
++      }
++
++      #elif YAMLCPP_API_VERSION == 5
++
++      if (doc["Beams"]) {
++        const YAML::Node& beams = doc["Beams"];
++        vector<PdgIdPair> beam_pairs;
++        if (beams.size() == 2 && beams[0].IsScalar() && beams[0].IsScalar()) {
++          beam_pairs += make_pdgid_pair(beams[0].as<string>(), beams[1].as<string>());
++        } else {
++          for (size_t i = 0; i < beams.size(); ++i) {
++            const YAML::Node& bp = beams[i];
++            if (bp.size() != 2 || !bp[0].IsScalar() || !bp[0].IsScalar())
++              throw InfoError("Beam ID pairs have to be either a 2-tuple or a list of 2-tuples of particle names");
++            beam_pairs += make_pdgid_pair(bp[0].as<string>(), bp[1].as<string>());
++          }
++        }
++        ai->_beams = beam_pairs;
++      }
++
++      #endif
++    } catch (...) { THROW_INFOERR("Beams"); }
++
++
++    // Beam energies
++    try {
++      #if YAMLCPP_API_VERSION == 3
++
++      if (const YAML::Node* penergies = doc.FindValue("Energies")) {
++        const YAML::Node& energies = *penergies;
++        vector<pair<double,double> > beam_energy_pairs;
++        for (YAML::Iterator be = energies.begin(); be != energies.end(); ++be) {
++          if (be->Type() == YAML::NodeType::Scalar) {
++            // If beam energy is a scalar, then assume symmetric beams each with half that energy
++            double sqrts;
++            *be >> sqrts;
++            beam_energy_pairs += make_pair(sqrts/2.0, sqrts/2.0);
++          } else if (be->Type() == YAML::NodeType::Sequence) {
++            const YAML::Node& beseq = *be;
++            // If the sub-sequence is of length 1, then it's another scalar sqrt(s)!
++            if (beseq.size() == 1) {
+               double sqrts;
+-              *be >> sqrts;
++              (*be)[0] >> sqrts;
+               beam_energy_pairs += make_pair(sqrts/2.0, sqrts/2.0);
+-            } else if (be->GetType() == YAML::CT_SEQUENCE) {
+-              const YAML::Node& beseq = *be;
+-              // If the sub-sequence is of length 1, then it's another scalar sqrt(s)!
+-              if (beseq.size() == 1) {
+-                double sqrts;
+-                (*be)[0] >> sqrts;
+-                beam_energy_pairs += make_pair(sqrts/2.0, sqrts/2.0);
+-              } else if (beseq.size() == 2) {
+-                vector<double> beamenergies;
+-                double beamenergy0, beamenergy1;
+-                beseq[0] >> beamenergy0;
+-                beseq[1] >> beamenergy1;
+-                beam_energy_pairs += make_pair(beamenergy0, beamenergy1);
+-              } else {
+-                assert(0 && "Beam energies have to be a list of either numbers or pairs of numbers");
+-              }
++            } else if (beseq.size() == 2) {
++              vector<double> beamenergies;
++              double beamenergy0, beamenergy1;
++              beseq[0] >> beamenergy0;
++              beseq[1] >> beamenergy1;
++              beam_energy_pairs += make_pair(beamenergy0, beamenergy1);
+             } else {
+-              assert(0 && "Beam energies have to be a list of either numbers or pairs of numbers");
++              throw InfoError("Beam energies have to be a list of either numbers or pairs of numbers");
+             }
++          } else {
++            throw InfoError("Beam energies have to be a list of either numbers or pairs of numbers");
+           }
+-          ai->_energies = beam_energy_pairs;
+-        } else if (key == "Collider") {
+-          it.second() >> ai->_collider;
+-        } else if (key == "SpiresID") {
+-          it.second() >> ai->_spiresId;
+-        } else if (key == "BibKey") {
+-          it.second() >> ai->_bibKey;
+-        } else if (key == "BibTeX") {
+-          it.second() >> ai->_bibTeX;//Body;
+-        } else if (key == "Status") {
+-          it.second() >> ai->_status;
+-        } else if (key == "ToDo") {
+-          const YAML::Node& todos = it.second();
+-          for (YAML::Iterator todo = todos.begin(); todo != todos.end(); ++todo) {
+-            string s;
+-            *todo >> s;
+-            ai->_todos += s;
+-          }
+-        } else if (key == "NeedCrossSection" || key == "NeedsCrossSection") {
+-          it.second() >> ai->_needsCrossSection;
+-        } else if (key == "RunInfo") {
+-          it.second() >> ai->_runInfo;
+-        } else if (key == "Description") {
+-          it.second() >> ai->_description;
+-        } else if (key == "Year") {
+-          it.second() >> ai->_year;
+-        } else if (key == "Authors") {
+-          const YAML::Node& authors = it.second();
+-          for (YAML::Iterator a = authors.begin(); a != authors.end(); ++a) {
+-            string astr;
+-            *a >> astr;
+-            ai->_authors += astr;
+-          }
+-        } else if (key == "References") {
+-          const YAML::Node& refs = it.second();
+-          for (YAML::Iterator r = refs.begin(); r != refs.end(); ++r) {
+-            string rstr;
+-            *r >> rstr;
+-            ai->_references += rstr;
++        }
++        ai->_energies = beam_energy_pairs;
++      }
++
++      #elif YAMLCPP_API_VERSION == 5
++
++      if (doc["Energies"]) {
++        vector< pair<double,double> > beam_energy_pairs;
++        for (size_t i = 0; i < doc["Energies"].size(); ++i) {
++          const YAML::Node& be = doc["Energies"][i];
++          if (be.IsScalar()) {
++            // If beam energy is a scalar, then assume symmetric beams each with half that energy
++            beam_energy_pairs += make_pair(be.as<double>()/2.0, be.as<double>()/2.0);
++          } else if (be.IsSequence()) {
++            if (be.size() != 2)
++              throw InfoError("Beam energies have to be a list of either numbers or pairs of numbers");
++            beam_energy_pairs += make_pair(be[0].as<double>(), be[1].as<double>());
++          } else {
++            throw InfoError("Beam energies have to be a list of either numbers or pairs of numbers");
+           }
+         }
+-      } catch (const YAML::RepresentationException& ex) {
+-        Log::getLog("Rivet.Analysis")
+-          << Log::WARN << "Type error when reading analysis data '"
+-          << key << "' from " << datapath << endl;
++        ai->_energies = beam_energy_pairs;
+       }
+-    }
++
++      #endif
++
++    } catch (...) { THROW_INFOERR("Energies"); }
++
++    #undef THROW_INFOERR
++
++
+     MSG_TRACE("AnalysisInfo pointer = " << ai);
+     return ai;
+   }
+--- a/src/Core/Makefile.am	2012-06-29 08:05:32.000000000 -0700
++++ b/src/Core/Makefile.am	2013-10-13 13:35:50.000000000 -0700
+@@ -6,10 +6,4 @@ libRivetCore_la_SOURCES = \
+   Analysis.cc AnalysisLoader.cc AnalysisInfo.cc \
+   AnalysisHandler.cc Run.cc ProjectionHandler.cc HistoHandler.cc
+ 
+-libRivetCore_la_CPPFLAGS = $(AM_CPPFLAGS)
+-if WITHOUT_YAML_CPP
+-libRivetCore_la_CPPFLAGS += -I$(top_srcdir)/src/Tools
+-else
+-libRivetCore_la_CPPFLAGS += -I$(YAML_CPPINCPATH)
+-endif
+-libRivetCore_la_CPPFLAGS += $(CPPFLAGS)
++libRivetCore_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(YAML_CPPINCPATH) -DYAMLCPP_API_VERSION=$(YAMLCPP_MAJOR_VERSION)
+--- a/src/Tools/Makefile.am	2012-06-29 08:05:32.000000000 -0700
++++ b/src/Tools/Makefile.am	2013-10-13 13:34:31.000000000 -0700
+@@ -1,7 +1,3 @@
+-if WITHOUT_YAML_CPP
+-SUBDIRS = yaml-cpp
+-endif
+-
+ noinst_LTLIBRARIES = libRivetTools.la
+ 
+ libRivetTools_la_SOURCES = \
+@@ -25,12 +21,8 @@ libRivetTools_la_CPPFLAGS = \
+   -I$(top_srcdir)/include/TinyXML \
+   -DENABLE_BINRELOC \
+   -DDEFAULTDATADIR=\"$(datadir)\" \
+-  -DDEFAULTLIBDIR=\"$(libdir)\"
++  -DDEFAULTLIBDIR=\"$(libdir)\" \
++  -I$(YAML_CPPINCDIR)
+ 
+-## NB. Using $(top_builddir)/src/Tools rather than $(builddir) because of SL4 automake bug
+-if WITH_YAML_CPP
+ libRivetTools_la_LDFLAGS = $(AM_LDFLAGS) -L$(YAML_CPPLIBPATH)
+ libRivetTools_la_LIBADD = -lyaml-cpp
+-else
+-libRivetTools_la_LIBADD = $(top_builddir)/src/Tools/yaml-cpp/libyaml-cpp.la
+-endif
+--- a/configure.ac	2012-07-05 06:13:23.000000000 -0700
++++ b/configure.ac	2013-10-13 13:44:23.000000000 -0700
+@@ -138,6 +138,25 @@ AC_CHECK_HEADER([fastjet/TrackJetPlugin.
+ CPPFLAGS=$oldCPPFLAGS
+ 
+ 
++## yaml-cpp metadata file parsing library
++AC_CEDAR_LIBRARYANDHEADERS([yaml-cpp], , , [AC_MSG_ERROR([yaml-cpp is required])])
++YAMLCPP_LIBS="-lyaml-cpp"
++oldCPPFLAGS=$CPPFLAGS
++oldLDFLAGS=$LDFLAGS
++CPPFLAGS="$AM_CPPFLAGS $CPPFLAGS -I$YAML_CPPINCPATH"
++LDFLAGS="$AM_LDFLAGS $LDFLAGS -L$YAML_CPP_LIBPATH"
++dnl AC_CHECK_HEADER([yaml-cpp/yaml.h], [], [AC_MSG_ERROR([yaml-cpp/yaml.h header not found.])])
++AC_CHECK_HEADER([yaml-cpp/node.h], [YAMLCPP_MAJOR_VERSION=3])
++AC_CHECK_HEADER([yaml-cpp/node/node.h], [YAMLCPP_MAJOR_VERSION=5])
++if test "x$YAMLCPP_MAJOR_VERSION" = x; then
++  AC_MSG_NOTICE([yaml-cpp API version could not be determined])
++  YAMLCPP_MAJOR_VERSION=5
++fi
++AC_MSG_NOTICE([yaml-cpp API version = $YAMLCPP_MAJOR_VERSION])
++AC_SUBST(YAMLCPP_MAJOR_VERSION)
++CPPFLAGS=$oldCPPFLAGS
++LDFLAGS=$oldLDFLAGS
++
+ ## Build Doxygen if possible
+ AC_ARG_ENABLE([doxygen],
+   [AC_HELP_STRING(--disable-doxygen, [don't try to make Doxygen documentation])],
+@@ -212,9 +230,6 @@ AC_PATH_PROG(ASCIIDOC, asciidoc)
+ AM_CONDITIONAL(WITH_ASCIIDOC, [test x$ASCIIDOC != x])
+ 
+ 
+-## Test to see if we have to install libyaml-cpp
+-AC_CEDAR_LIBRARYANDHEADERS([yaml-cpp], , , [AC_MSG_NOTICE([Rivet will install the yaml-cpp library])])
+-
+ 
+ ## Python extension
+ AC_ARG_ENABLE(pyext, [AC_HELP_STRING(--disable-pyext,
+@@ -331,7 +346,7 @@ AC_EMPTY_SUBST
+ AC_CONFIG_FILES(include/Makefile include/Rivet/Makefile)
+ AC_CONFIG_FILES(src/Makefile)
+ AC_CONFIG_FILES(src/Core/Makefile)
+-AC_CONFIG_FILES(src/Tools/Makefile src/Tools/yaml-cpp/Makefile)
++AC_CONFIG_FILES(src/Tools/Makefile)
+ AC_CONFIG_FILES(src/Projections/Makefile)
+ AC_CONFIG_FILES(src/Analyses/Makefile)
+ AC_CONFIG_FILES(test/Makefile)
+--- a/include/Rivet/Exceptions.hh	2012-06-29 08:05:32.000000000 -0700
++++ b/include/Rivet/Exceptions.hh	2013-10-12 11:35:06.000000000 -0700
+@@ -40,7 +40,15 @@ namespace Rivet {
+   };
+ 
+ 
++  /// @brief Error specialisation for failures relating to analysis info.
++  class InfoError : public Error {
++  public:
++    InfoError(const std::string& what) : Error(what) {}
++  };
++
++
+   /// @brief Errors relating to event/bin weights
++  ///
+   /// Arises in computing statistical quantities because e.g. the bin
+   /// weight is zero or negative.
+   class WeightError : public Error {
+@@ -49,6 +57,13 @@ namespace Rivet {
+   };
+ 
+ 
++  /// @brief Error specialisation for where the problem is between the chair and computer.
++  class UserError : public Error {
++  public:
++    UserError(const std::string& what) : Error(what) {}
++  };
++
++
+ }
+ 
+ #endif
