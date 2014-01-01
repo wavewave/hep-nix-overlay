@@ -162,7 +162,7 @@ let hepNixPackages =  rec {
                     };
 
     Atom          = callPackage ./packages/Atom {
-                      inherit root5 HepMC FastJet cython0192 ;
+                      inherit root5 HepMC FastJet cython0192 Rivet ;
                       inherit (pkgs) gsl pkgconfig  ;
                       inherit libyamlcppPIC;
                     };

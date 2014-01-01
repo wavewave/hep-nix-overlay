@@ -3,6 +3,7 @@
 stdenv.mkDerivation { 
   name = "Rivet"; 
   version = "1.8.1";
+
   src = fetchurl { 
     url = "http://www.hepforge.org/archive/rivet/Rivet-1.8.1.tar.gz";
     sha256 = "1gn0dlhvxfnv5wm2r5f311j757x4l8lr51jhhpgv74xlks020vwc";
@@ -36,5 +37,7 @@ autoreconf
 
   configureFlags = "CFLAGS=-fPIC CXXFLAGS=-fPIC --with-hepmc=${HepMC} --with-fastjet=${FastJet} --with-yaml_cpp=${libyamlcppPIC} ";
 
-
+  meta = { 
+    priority  = "10";
+  };
 }
