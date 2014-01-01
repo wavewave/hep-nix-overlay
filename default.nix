@@ -128,10 +128,15 @@ let hepNixPackages =  rec {
                           } ;
     HepMC         = callPackage ./packages/HepMC {
                     };
+
     FastJet       = callPackage ./packages/FastJet {
                     };
+
+    libyamlcpp025 = callPackage ./packages/legacy/libyaml-cpp { 
+                    };
+
     Rivet         = callPackage ./packages/Rivet {
-                      inherit HepMC FastJet; 
+                      inherit HepMC FastJet libyamlcpp025; 
                     };
     LHAPDF        = callPackage ./packages/LHAPDF {
                       #inherit HepMC FastJet; 
@@ -148,6 +153,9 @@ let hepNixPackages =  rec {
                       inherit pyminuit2;
                     };
 
+    Atom          = callPackage ./packages/Atom {
+                      inherit Rivet;
+                    };
      
     allpkgs = {
      inherit root5 fficxx fficxx-runtime HROOT-generate HROOT-src-tree;
@@ -158,6 +166,7 @@ let hepNixPackages =  rec {
      inherit pipeline-eventgen evchain;
      inherit HepMC FastJet Rivet LHAPDF professor convertStdHep; 
      inherit pyminuit2;
+     inherit Atom;
    };
 } . allpkgs;
 
