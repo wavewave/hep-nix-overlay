@@ -1,0 +1,132 @@
+diff -rupN a/setup.py b/setup.py
+--- a/setup.py	2012-02-14 12:10:29.000000000 +0100
++++ b/setup.py	2014-01-01 12:45:41.390270635 +0100
+@@ -4,11 +4,11 @@
+ 
+ import os
+ import sys
+-
++from distutils.core import setup
+ ## Import some info from the professor package itself
+-scriptdir = os.path.basename(sys.argv[0])
+-if not scriptdir in sys.path:
+-    sys.path.insert(0, scriptdir)
++#scriptdir = os.path.basename(sys.argv[0])
++#if not scriptdir in sys.path:
++#    sys.path.insert(0, scriptdir)
+ from professor import __doc__ as profdescr, __version__ as profversion
+ 
+ # There is a bug in setup tools, which means it does not search all directories
+@@ -25,15 +25,15 @@ from professor import __doc__ as profdes
+ # setuptools to install them if really necessary.
+ myinstallrequires = []
+ 
+-try:
+-    import matplotlib
+-    if matplotlib.__version__ < "0.98":
+-        raise ImportError("installed matplotlib version %s: version 0.98 required!" % matplotlib.__version__)
+-except ImportError, err:
+-    print "Failed to import a recent version of matplotlib:" , err
+-    print "Trying setuptools."
+-    print "NOTE that this might fail. Please install matplotlib (>=0.98) by hand then!"
+-    myinstallrequires.append("matplotlib >= 0.98")
++#try:
++#    import matplotlib
++#    if matplotlib.__version__ < "0.98":
++#        raise ImportError("installed matplotlib version %s: version 0.98 required!" % matplotlib.__version__)
++#except ImportError, err:
++#    print "Failed to import a recent version of matplotlib:" , err
++#    print "Trying setuptools."
++#    print "NOTE that this might fail. Please install matplotlib (>=0.98) by hand then!"
++#    myinstallrequires.append("matplotlib >= 0.98")
+ 
+ try:
+     import scipy
+@@ -105,42 +105,42 @@ setupkwargs = {
+ #     if len(myinstallrequires):
+ #         setupkwargs["install_requires"] = myinstallrequires
+ # except:
+-if True:
+-    ## Check that we're not missing anything.
+-    if len(myinstallrequires):
+-        for requirement in myinstallrequires:
+-            print "** Cannot fulfill dependency '%s' **" % (requirement)
+-        print "** Please install the above packages! **"
+-        sys.exit(1)
+-
+-    from distutils.core import setup
+-    ## Define function to dynamically build package list.
+-    ## Copied from setuptools.find_packages .
+-    def find_packages(where='.', exclude=()):
+-        """Return a list all Python packages found within directory 'where'
+-
+-	'where' should be supplied as a "cross-platform" (i.e. URL-style) path;
+-	it will be converted to the appropriate local path syntax.  'exclude'
+-	is a sequence of package names to exclude; '*' can be used as a
+-	wildcard in the names, such that 'foo.*' will exclude all subpackages
+-	of 'foo' (but not 'foo' itself).
+-        """
+-        out = []
+-        stack = [(where, '')]
+-        while stack:
+-            where, prefix = stack.pop(0)
+-            for name in os.listdir(where):
+-                fn = os.path.join(where, name)
+-                if ('.' not in name and os.path.isdir(fn) and
+-                    os.path.isfile(os.path.join(fn,'__init__.py'))):
+-                    out.append(prefix+name)
+-                    stack.append((fn,prefix+name+'.'))
+-        for pat in list(exclude)+['ez_setup', 'distribute_setup']:
+-            from fnmatch import fnmatchcase
+-            out = [item for item in out if not fnmatchcase(item, pat)]
+-        return out
+-
+-    print "Using distutils"
++#if True:
++#    ## Check that we're not missing anything.
++#    if len(myinstallrequires):
++#        for requirement in myinstallrequires:
++#            print "** Cannot fulfill dependency '%s' **" % (requirement)
++#        print "** Please install the above packages! **"
++#        sys.exit(1)
++#
++#    from distutils.core import setup, find_packages
++#    ## Define function to dynamically build package list.
++#    ## Copied from setuptools.find_packages .
++#    def find_packages(where='.', exclude=()):
++#        """Return a list all Python packages found within directory 'where'
++#
++#	'where' should be supplied as a "cross-platform" (i.e. URL-style) path;
++#	it will be converted to the appropriate local path syntax.  'exclude'
++#	is a sequence of package names to exclude; '*' can be used as a
++#	wildcard in the names, such that 'foo.*' will exclude all subpackages
++#	of 'foo' (but not 'foo' itself).
++#        """
++#        out = []
++#        stack = [(where, '')]
++#        while stack:
++#            where, prefix = stack.pop(0)
++#            for name in os.listdir(where):
++#                fn = os.path.join(where, name)
++#                if ('.' not in name and os.path.isdir(fn) and
++#                    os.path.isfile(os.path.join(fn,'__init__.py'))):
++#                    out.append(prefix+name)
++#                    stack.append((fn,prefix+name+'.'))
++#        for pat in list(exclude)+['ez_setup', 'distribute_setup']:
++#            from fnmatch import fnmatchcase
++#            out = [item for item in out if not fnmatchcase(item, pat)]
++#        return out
++#
++#    print "Using distutils"
+ 
+ setupkwargs["data_files"] = [
+     ("share/professor/scripts", ["contrib/makegallery.py", "contrib/prof-validateipol", "contrib/prof-filltemplates"]),
+@@ -148,7 +148,7 @@ setupkwargs["data_files"] = [
+     ("etc/bash_completion.d", ["prof-completion"])
+     ]
+ 
+-setupkwargs["packages"] = find_packages(exclude=["test*"])
++#setupkwargs["packages"] = find_packages(exclude=["test*"])
+ 
+ if __name__ == "__main__":
+     setup(**setupkwargs)

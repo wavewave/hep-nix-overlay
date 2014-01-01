@@ -139,12 +139,13 @@ let hepNixPackages =  rec {
     convertStdHep = callPackage ./packages/convertStdHep {
                       inherit HepMC;
                     };
-    professor     = callPackage ./packages/professor {
-                      inherit pythonPackages;
-                    };
     pyminuit2     = callPackage ./packages/pyminuit2 {
                       inherit pythonPackages;
                       inherit root5;
+                    };
+    professor     = callPackage ./packages/professor {
+                      inherit pythonPackages;
+                      inherit pyminuit2;
                     };
 
      
