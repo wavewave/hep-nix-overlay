@@ -9,19 +9,21 @@
 , gccWithProfiling ? true
 , config ? null
 # additional:
-, nixpkgs 
+# , nixpkgs 
 , ...
 }:
 
+#import <nixpkgs>;
 
 #with import <nixpkgs> { }; 
 
 let hepNixPackages =  rec { 
 
-    lib = import "${nixpkgs}/lib"; 
+    lib = import <nixpkgs/lib>; 
+      # import "${nixpkgs}/lib"; 
     defaultScope = pkgs // pkgs.xorg;
     mainConfig = { inherit system stdenvType bootStdenv noSysDirs gccWithCC gccWithProfiling config; };
-    pkgs = import nixpkgs mainConfig;
+    pkgs = import <nixpkgs> mainConfig;
     haskellPackages = pkgs.haskellPackages_ghc763;
     pythonPackages = pkgs.pythonPackages; 
     callPackage = newScope {};
