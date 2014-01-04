@@ -1,15 +1,17 @@
---- root/configure	2013-11-19 16:49:10.000000000 +0100
-+++ root2/configure	2013-11-29 14:52:57.395027808 +0100
-@@ -227,6 +227,8 @@
+diff -rupN a/configure b/configure
+--- a/configure	2013-11-19 16:49:10.000000000 +0100
++++ b/configure	2014-01-04 14:42:39.354001170 +0100
+@@ -227,6 +227,9 @@ MINUIT2          \
  TABLE            \
  XMLDIR           \
  ROOTDICTTYPE     \
 +X11              \
 +XPM
++XEXT
  "
  configenvvars=
  for c in $envvars ; do
-@@ -2518,11 +2520,7 @@
+@@ -2518,11 +2521,7 @@ fi
  # Check for X11 and Xpm library (for X11 use always shared lib)
  #
  if test ! "x$enable_x11" = "xno" ; then
@@ -22,7 +24,7 @@
      x11libdir=$found_dir
  
      if test "x$found_lib" = "x" ; then
-@@ -2531,11 +2529,7 @@
+@@ -2531,11 +2530,7 @@ if test ! "x$enable_x11" = "xno" ; then
          exit 1
      fi
  
@@ -35,7 +37,7 @@
      x11incdir=$found_dir
  
      if test "x$found_dir" = "x" ; then
-@@ -2544,12 +2538,7 @@
+@@ -2544,12 +2539,7 @@ if test ! "x$enable_x11" = "xno" ; then
          exit 1
      fi
  
@@ -49,7 +51,7 @@
  
      if test "x$found_dir" = "x" ; then
          result "`basename $0`: xpm headers MUST be installed"
-@@ -2557,11 +2546,7 @@
+@@ -2557,11 +2547,7 @@ if test ! "x$enable_x11" = "xno" ; then
          exit 1
      fi
  
@@ -62,7 +64,20 @@
  
      if test "x$found_dir" = "x" ; then
          result "`basename $0`: Xft headers MUST be installed"
-@@ -2583,12 +2568,7 @@
+@@ -2570,11 +2556,7 @@ if test ! "x$enable_x11" = "xno" ; then
+     fi
+ 
+     if test ! "x$arch" = "xaix5" ; then
+-        check_header "X11/extensions/shape.h" "" \
+-            ${finkdir:+$finkdir/include} \
+-            /usr/include /usr/X11R6/include /usr/include/X11 \
+-            /usr/openwin/include /usr/local/include /usr/local/include/X11 \
+-            /usr/local/X11R6/include /usr/X11/include /usr/include/X11R5
++        check_header "X11/extensions/shape.h" "" "$XEXT/include"  
+ 
+         if test "x$found_dir" = "x" ; then
+             result "`basename $0`: X11/extensions/shape.h header MUST be installed"
+@@ -2583,12 +2565,7 @@ if test ! "x$enable_x11" = "xno" ; then
          fi
      fi
  
@@ -76,7 +91,7 @@
      xpmlib=$found_lib
      xpmlibdir=$found_dir
  
-@@ -2598,11 +2578,7 @@
+@@ -2598,11 +2575,7 @@ if test ! "x$enable_x11" = "xno" ; then
          exit 1
      fi
  
@@ -89,7 +104,7 @@
  
      if test "x$found_lib" = "x" ; then
          result "`basename $0`: libXft MUST be installed"
-@@ -2616,11 +2592,7 @@
+@@ -2616,11 +2589,7 @@ if test ! "x$enable_x11" = "xno" ; then
          exit 1
      fi
  
@@ -98,11 +113,11 @@
 -        /usr/local/lib /usr/lib /usr/lib/X11 \
 -        /usr/local/lib/X11 /usr/X11R6/lib /usr/local/X11R6/lib \
 -        /usr/X11/lib
-+    check_library "libXext" "$enable_shared" "$xextlibdir" "$Xextdir/lib"
++    check_library "libXext" "$enable_shared" "$XEXT/lib" "$xextlibdir" "$Xextdir/lib"
  
      if test "x$found_lib" = "x" ; then
          result "`basename $0`: libXext MUST be installed"
-@@ -6638,7 +6610,7 @@
+@@ -6638,7 +6607,7 @@ if test ! "x$haveconfig" = "x" ; then
      if test "x$bindir" = "x";       then bindir=$prefix/bin; fi
      if test "x$libdir" = "x";       then libdir=$prefix/lib/root; fi
      if test "x$incdir" = "x";       then incdir=$prefix/include/root; fi
