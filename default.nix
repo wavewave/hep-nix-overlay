@@ -111,7 +111,7 @@ let hepNixPackages =  rec {
                       cabal = haskellPackages.cabal;
                       inherit haskellPackages;
                       inherit hepNixPackages;
-                      hashable = haskellPackages.hashable_1_2_1_0; 
+                      #hashable = haskellPackages.hashable_1_2_1_0; 
                     } ;
     madgraph-auto-model = callPackage ./packages/madgraph-auto-model { 
                             cabal = haskellPackages.cabal;

@@ -5,7 +5,7 @@ with { hs = haskellPackages; my = hepNixPackages; };
 cabal.mkDerivation (self: {
   pname = "conduit-util";
   version = "0.999";
-  src = fetchgit { url = "https://github.com/hep-platform/HEPUtil.git"; 
+  src = fetchgit { url = "https://github.com/hep-platform/conduit-util.git"; 
                    rev = "7b2457fcdb2ccb1e0360a3c68808043e337e7360";
                    sha256 = "45b43bff12e8615e8f7dad253e1e6a2db8c833759b8970e833107222956b95ab";
                  };  
