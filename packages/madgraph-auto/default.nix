@@ -1,9 +1,10 @@
-{ cabal, stdenv, fetchgit, haskellPackages, hepNixPackages, hashable }:
+{ cabal, stdenv, fetchgit, haskellPackages, hepNixPackages}:
+#, hashable }:
 # , hashable ? stdenv.lib.versionOlder "" hashble.version }:
 
 with { hs = haskellPackages; my = hepNixPackages; };
 
-assert !(stdenv.lib.versionOlder (stdenv.lib.getVersion hashable) "1.2");
+#assert !(stdenv.lib.versionOlder (stdenv.lib.getVersion hashable) "1.2");
 
 cabal.mkDerivation (self: {
   pname = "madgraph-auto";
@@ -27,9 +28,10 @@ cabal.mkDerivation (self: {
                    hs.transformers
                    hs.HStringTemplate
                    hs.hslogger
-                   hashable 
+                   hs.hashable 
                  ];
   doCheck = false;
+  jailbreak = true; 
   meta = {
     homepage = "http://github.com/hep-platform";
     description = "automated program library for madgraph run";

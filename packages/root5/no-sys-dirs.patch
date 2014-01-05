@@ -1,6 +1,6 @@
 diff -rupN a/configure b/configure
 --- a/configure	2013-11-19 16:49:10.000000000 +0100
-+++ b/configure	2014-01-04 14:42:39.354001170 +0100
++++ b/configure	2014-01-04 19:39:39.737996232 +0100
 @@ -227,6 +227,9 @@ MINUIT2          \
  TABLE            \
  XMLDIR           \
@@ -117,7 +117,43 @@ diff -rupN a/configure b/configure
  
      if test "x$found_lib" = "x" ; then
          result "`basename $0`: libXext MUST be installed"
-@@ -6638,7 +6607,7 @@ if test ! "x$haveconfig" = "x" ; then
+@@ -4334,22 +4303,15 @@ if test ! "x$enable_asimage" = "xno" ; t
+     # for a system library, then see if we have various headers needed.
+     if test "x$enable_builtin_afterimage" = "xyes" && test ! "x$enable_cocoa" = "xyes"; then
+        check_header "jpeglib.h" "" \
+-          $ASIMAGE ${ASIMAGE:+$ASIMAGE/include} \
+-          ${finkdir:+$finkdir/include} \
+-          /usr/local/include /usr/include /opt/include
++          $ASIMAGE ${ASIMAGE:+$ASIMAGE/include} 
+        asjpegincdir=$found_dir
+        check_header "png.h" "" \
+           $ASIMAGE ${ASIMAGE:+$ASIMAGE/include} \
+-          ${ASPNG:+$ASPNG/include} \
+-          ${finkdir:+$finkdir/include} \
+-          /usr/local/include /usr/X11/include /usr/include \
+-          /usr/local/include/libpng /opt/include
++          ${ASPNG:+$ASPNG/include} $libpng/include
+        aspngincdir=$found_dir
+        if test ! "x$enable_astiff" = "xno" ; then
+            check_header "tiffio.h" "" \
+                $ASIMAGE ${ASIMAGE:+$ASIMAGE/include} \
+-               ${finkdir:+$finkdir/include} \
+-               /usr/local/include /usr/include /opt/include
+            astiffincdir=$found_dir
+        else
+            astiffincdir="--with-tiff=no"
+@@ -4368,9 +4330,7 @@ if test ! "x$enable_asimage" = "xno" ; t
+        fi
+        for k in $aslibs ; do
+            check_library $k "$enable_shared" "" \
+-               $ASIMAGE ${ASIMAGE:+$ASIMAGE/lib} ${ASPNG:+$ASPNG/lib} \
+-               ${finkdir:+$finkdir/lib} \
+-               /usr/local/lib /usr/X11/lib /usr/lib /opt/lib
++               $ASIMAGE ${ASIMAGE:+$ASIMAGE/lib} ${ASPNG:+$ASPNG/lib} $libpng/lib 
+            if test "x$k" = "xlibz" ; then
+                found_libz=$found_lib
+                found_dirz=$found_dir
+@@ -6638,7 +6598,7 @@ if test ! "x$haveconfig" = "x" ; then
      if test "x$bindir" = "x";       then bindir=$prefix/bin; fi
      if test "x$libdir" = "x";       then libdir=$prefix/lib/root; fi
      if test "x$incdir" = "x";       then incdir=$prefix/include/root; fi

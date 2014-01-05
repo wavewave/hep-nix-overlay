@@ -21,6 +21,7 @@ cabal.mkDerivation (self: {
                    hs.hmatrix 
                  ];
   doCheck = false;
+  jailbreak = true;
   meta = {
     homepage = "";
     description = "Collection of useful functions for High Energy Physics project";
