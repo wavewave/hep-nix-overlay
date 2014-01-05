@@ -168,7 +168,15 @@ let hepNixPackages =  rec {
                       inherit (pkgs) gsl pkgconfig  ;
                       inherit libyamlcppPIC;
                     };
-     
+
+    ThePEG        = callPackage ./packages/ThePEG { 
+                      inherit HepMC LHAPDF Rivet FastJet;
+                    };
+    HERWIGpp      = callPackage ./packages/HERWIGpp {
+                      inherit ThePEG;
+                      inherit FastJet;
+                    };     
+
     allpkgs = {
      inherit root5 fficxx fficxx-runtime HROOT-generate HROOT-src-tree;
      inherit HROOT-core HROOT-hist;
@@ -180,6 +188,7 @@ let hepNixPackages =  rec {
      inherit pyminuit2;
      inherit cython0192;
      inherit libyamlcpp025 Atom;
+     inherit HERWIGpp ThePEG;
    };
 } . allpkgs;
 
