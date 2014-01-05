@@ -178,6 +178,10 @@ let hepNixPackages =  rec {
                     };     
     SHERPA        = callPackage ./packages/SHERPA { 
                     };
+    PYTHIA8       = callPackage ./packages/PYTHIA8 { 
+                    };
+
+
 
     allpkgs = {
      inherit root5 fficxx fficxx-runtime HROOT-generate HROOT-src-tree;
@@ -191,7 +195,7 @@ let hepNixPackages =  rec {
      inherit cython0192;
      inherit libyamlcpp025 Atom;
      inherit HERWIGpp ThePEG;
-     inherit SHERPA;
+     inherit SHERPA PYTHIA8;
    };
 } . allpkgs;
 
