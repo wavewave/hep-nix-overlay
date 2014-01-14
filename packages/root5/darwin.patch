@@ -1,0 +1,42 @@
+diff -Naur a/cmake/modules/SetUpMacOS.cmake b/cmake/modules/SetUpMacOS.cmake
+--- a/cmake/modules/SetUpMacOS.cmake	2013-11-19 16:49:10.000000000 +0100
++++ b/cmake/modules/SetUpMacOS.cmake	2014-01-14 00:07:20.000000000 +0100
+@@ -8,7 +8,7 @@
+ set(CMAKE_M_LIBS -lm)
+ 
+ #---This is needed to help CMake to locate the X11 headers in the correct place and not under /usr/include
+-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} /usr/X11R6)
++set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} )
+ #---------------------------------------------------------------------------------------------------------
+ 
+ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+@@ -35,8 +35,8 @@
+     #TODO: check haveconfig and rpath -> set rpath true
+     #TODO: check Thread, define link command
+     #TODO: more stuff check configure script
+-    execute_process(COMMAND /usr/sbin/sysctl machdep.cpu.extfeatures OUTPUT_VARIABLE SYSCTL_OUTPUT)
+-    if(${SYSCTL_OUTPUT} MATCHES 64)
++    #execute_process(COMMAND /usr/sbin/sysctl machdep.cpu.extfeatures OUTPUT_VARIABLE SYSCTL_OUTPUT)
++    #if(${SYSCTL_OUTPUT} MATCHES 64)
+        MESSAGE(STATUS "Found a 64bit system") 
+        set(ROOT_ARCHITECTURE macosx64)
+        SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
+@@ -45,12 +45,12 @@
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
+        SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m64")
+        SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m64")
+-    else(${SYSCTL_OUTPUT} MATCHES 64)
+-       MESSAGE(STATUS "Found a 32bit system") 
+-       SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+-       SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+-       SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m32")
+-    endif(${SYSCTL_OUTPUT} MATCHES 64)
++    #else(${SYSCTL_OUTPUT} MATCHES 64)
++    #   MESSAGE(STATUS "Found a 32bit system") 
++    #   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
++    #   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
++    #   SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m32")
++    #endif(${SYSCTL_OUTPUT} MATCHES 64)
+   endif()
+   
+   if (CMAKE_COMPILER_IS_GNUCXX)
