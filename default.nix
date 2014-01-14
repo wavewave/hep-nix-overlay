@@ -4,7 +4,9 @@
 { system ? builtins.currentSystem
 , stdenvType ? system
 , bootStdenv ? null
-, noSysDirs ? true
+, noSysDirs ? (system != "x86_64-darwin"
+               && system != "x86_64-freebsd" && system != "i686-freebsd"
+               && system != "x86_64-kfreebsd-gnu") # false # true
 , gccWithCC ? true
 , gccWithProfiling ? true
 , config ? null
@@ -164,7 +166,7 @@ let hepNixPackages =  rec {
                     };
 
     Atom          = callPackage ./packages/Atom {
-                      inherit root5 HepMC FastJet cython0192 Rivet ;
+                      inherit root5 HepMC FastJet cython0192; # Rivet ;
                       inherit (pkgs) gsl pkgconfig  ;
                       inherit libyamlcppPIC;
                     };

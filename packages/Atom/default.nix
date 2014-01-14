@@ -1,6 +1,8 @@
 { stdenv, fetchgit, cmake, root5, HepMC, gsl, FastJet, pkgconfig, 
-  python, cython0192, libyamlcppPIC, Rivet, boost }:
+  python, cython0192, libyamlcppPIC,  boost }:
  
+# Rivet,
+
 stdenv.mkDerivation { 
   name = "Atom"; 
   version = "0.1";
@@ -11,7 +13,7 @@ stdenv.mkDerivation {
   };
   patches = [ ./findYamlCpp.patch ];
   buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
-                  python cython0192 boost Rivet
+                  python cython0192 boost # Rivet
                 ];
   pkgconfigDepends = [ libyamlcppPIC ] ;
   # patches = [ ];

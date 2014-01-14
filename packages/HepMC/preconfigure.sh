@@ -12,7 +12,7 @@ echo $PATH
 
 OS=`uname`
 if [ $OS = "Darwin" ]; then
-  glibtoolize --copy
+  libtoolize --copy
   OSname=`uname -s`
 else
   libtoolize --copy

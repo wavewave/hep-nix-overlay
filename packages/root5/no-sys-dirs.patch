@@ -1,164 +1,408 @@
-diff -rupN a/configure b/configure
---- a/configure	2013-11-19 16:49:10.000000000 +0100
-+++ b/configure	2014-01-04 19:39:39.737996232 +0100
-@@ -227,6 +227,9 @@ MINUIT2          \
- TABLE            \
- XMLDIR           \
- ROOTDICTTYPE     \
-+X11              \
-+XPM
-+XEXT
- "
- configenvvars=
- for c in $envvars ; do
-@@ -2518,11 +2521,7 @@ fi
- # Check for X11 and Xpm library (for X11 use always shared lib)
- #
- if test ! "x$enable_x11" = "xno" ; then
--    check_library "libX11" "yes" "$x11libdir" \
--        ${finkdir:+$finkdir/lib} \
--        /usr/lib /usr/X11R6/lib /usr/lib/X11 /usr/openwin/lib \
--        /usr/local/lib /usr/local/lib/X11 /usr/local/X11R6/lib \
--        /usr/X11/lib /usr/lib/X11R5
-+    check_library "libX11" "no" "$x11libdir" "$x11dir/lib"
-     x11libdir=$found_dir
+diff -Naur a/cmake/modules/Platform/Darwin.cmake b/cmake/modules/Platform/Darwin.cmake
+--- a/cmake/modules/Platform/Darwin.cmake	1970-01-01 01:00:00.000000000 +0100
++++ b/cmake/modules/Platform/Darwin.cmake	2014-01-14 08:05:18.000000000 +0100
+@@ -0,0 +1,270 @@
++SET(APPLE 1)
++
++# Darwin versions:
++#   6.x == Mac OSX 10.2 (Jaguar)
++#   7.x == Mac OSX 10.3 (Panther)
++#   8.x == Mac OSX 10.4 (Tiger)
++#   9.x == Mac OSX 10.5 (Leopard)
++#  10.x == Mac OSX 10.6 (Snow Leopard)
++#  11.x == Mac OSX 10.7 (Lion)
++#  12.x == Mac OSX 10.8 (Mountain Lion)
++STRING(REGEX REPLACE "^([0-9]+)\\.([0-9]+).*$" "\\1" DARWIN_MAJOR_VERSION "${CMAKE_SYSTEM_VERSION}")
++STRING(REGEX REPLACE "^([0-9]+)\\.([0-9]+).*$" "\\2" DARWIN_MINOR_VERSION "${CMAKE_SYSTEM_VERSION}")
++
++# Do not use the "-Wl,-search_paths_first" flag with the OSX 10.2 compiler.
++# Done this way because it is too early to do a TRY_COMPILE.
++IF(NOT DEFINED HAVE_FLAG_SEARCH_PATHS_FIRST)
++  SET(HAVE_FLAG_SEARCH_PATHS_FIRST 0)
++  IF("${DARWIN_MAJOR_VERSION}" GREATER 6)
++    SET(HAVE_FLAG_SEARCH_PATHS_FIRST 1)
++  ENDIF("${DARWIN_MAJOR_VERSION}" GREATER 6)
++ENDIF(NOT DEFINED HAVE_FLAG_SEARCH_PATHS_FIRST)
++# More desirable, but does not work:
++  #INCLUDE(CheckCXXCompilerFlag)
++  #CHECK_CXX_COMPILER_FLAG("-Wl,-search_paths_first" HAVE_FLAG_SEARCH_PATHS_FIRST)
++
++SET(CMAKE_SHARED_LIBRARY_PREFIX "lib")
++SET(CMAKE_SHARED_LIBRARY_SUFFIX ".dylib")
++SET(CMAKE_SHARED_MODULE_PREFIX "lib")
++SET(CMAKE_SHARED_MODULE_SUFFIX ".so")
++SET(CMAKE_MODULE_EXISTS 1)
++SET(CMAKE_DL_LIBS "")
++
++SET(CMAKE_C_OSX_COMPATIBILITY_VERSION_FLAG "-compatibility_version ")
++SET(CMAKE_C_OSX_CURRENT_VERSION_FLAG "-current_version ")
++SET(CMAKE_CXX_OSX_COMPATIBILITY_VERSION_FLAG "${CMAKE_C_OSX_COMPATIBILITY_VERSION_FLAG}")
++SET(CMAKE_CXX_OSX_CURRENT_VERSION_FLAG "${CMAKE_C_OSX_CURRENT_VERSION_FLAG}")
++
++SET(CMAKE_C_LINK_FLAGS "-Wl,-headerpad_max_install_names")
++SET(CMAKE_CXX_LINK_FLAGS "-Wl,-headerpad_max_install_names")
++
++IF(HAVE_FLAG_SEARCH_PATHS_FIRST)
++  SET(CMAKE_C_LINK_FLAGS "-Wl,-search_paths_first ${CMAKE_C_LINK_FLAGS}")
++  SET(CMAKE_CXX_LINK_FLAGS "-Wl,-search_paths_first ${CMAKE_CXX_LINK_FLAGS}")
++ENDIF(HAVE_FLAG_SEARCH_PATHS_FIRST)
++
++SET(CMAKE_PLATFORM_HAS_INSTALLNAME 1)
++SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "-dynamiclib -Wl,-headerpad_max_install_names")
++SET(CMAKE_SHARED_MODULE_CREATE_C_FLAGS "-bundle -Wl,-headerpad_max_install_names")
++SET(CMAKE_SHARED_MODULE_LOADER_C_FLAG "-Wl,-bundle_loader,")
++SET(CMAKE_SHARED_MODULE_LOADER_CXX_FLAG "-Wl,-bundle_loader,")
++SET(CMAKE_FIND_LIBRARY_SUFFIXES ".dylib" ".so" ".a")
++
++# hack: if a new cmake (which uses CMAKE_INSTALL_NAME_TOOL) runs on an old build tree
++# (where install_name_tool was hardcoded) and where CMAKE_INSTALL_NAME_TOOL isn't in the cache
++# and still cmake didn't fail in CMakeFindBinUtils.cmake (because it isn't rerun)
++# hardcode CMAKE_INSTALL_NAME_TOOL here to install_name_tool, so it behaves as it did before, Alex
++IF(NOT DEFINED CMAKE_INSTALL_NAME_TOOL)
++  FIND_PROGRAM(CMAKE_INSTALL_NAME_TOOL install_name_tool)
++  MARK_AS_ADVANCED(CMAKE_INSTALL_NAME_TOOL)
++ENDIF(NOT DEFINED CMAKE_INSTALL_NAME_TOOL)
++
++# Set the assumed (Pre 10.5 or Default) location of the developer tools
++SET(OSX_DEVELOPER_ROOT "/Developer")
++
++# Use the xcode-select tool if it's available (Xcode >= 3.0 installations)
++FIND_PROGRAM(CMAKE_XCODE_SELECT xcode-select)
++MARK_AS_ADVANCED(CMAKE_XCODE_SELECT)
++IF(CMAKE_XCODE_SELECT)
++  EXECUTE_PROCESS(COMMAND ${CMAKE_XCODE_SELECT} "-print-path"
++    OUTPUT_VARIABLE OSX_DEVELOPER_ROOT
++    OUTPUT_STRIP_TRAILING_WHITESPACE)
++ENDIF(CMAKE_XCODE_SELECT)
++
++# Find installed SDKs
++# Start with Xcode-4.3+ default SDKs directory
++SET(_CMAKE_OSX_SDKS_DIR
++  "${OSX_DEVELOPER_ROOT}/Platforms/MacOSX.platform/Developer/SDKs")
++FILE(GLOB _CMAKE_OSX_SDKS "${_CMAKE_OSX_SDKS_DIR}/*")
++
++# If not present, try pre-4.3 SDKs directory
++IF(NOT _CMAKE_OSX_SDKS)
++SET(_CMAKE_OSX_SDKS_DIR "${OSX_DEVELOPER_ROOT}/SDKs")
++  FILE(GLOB _CMAKE_OSX_SDKS "${_CMAKE_OSX_SDKS_DIR}/*")
++ENDIF(NOT _CMAKE_OSX_SDKS)
++
++EXECUTE_PROCESS(COMMAND sw_vers -productVersion
++  OUTPUT_VARIABLE CURRENT_OSX_VERSION
++  OUTPUT_STRIP_TRAILING_WHITESPACE)
++
++#----------------------------------------------------------------------------
++# _CURRENT_OSX_VERSION - as a two-component string: 10.5, 10.6, ...
++#
++STRING(REGEX REPLACE "^([0-9]+\\.[0-9]+).*$" "\\1"
++  _CURRENT_OSX_VERSION "${CURRENT_OSX_VERSION}")
++
++#----------------------------------------------------------------------------
++# CMAKE_OSX_DEPLOYMENT_TARGET
++
++# Set cache variable - end user may change this during ccmake or cmake-gui configure.
++IF(_CURRENT_OSX_VERSION VERSION_GREATER 10.3)
++  SET(CMAKE_OSX_DEPLOYMENT_TARGET "$ENV{MACOSX_DEPLOYMENT_TARGET}" CACHE STRING
++    "Minimum OS X version to target for deployment (at runtime); newer APIs weak linked. Set to empty string for default value.")
++ENDIF(_CURRENT_OSX_VERSION VERSION_GREATER 10.3)
++
++#----------------------------------------------------------------------------
++# CMAKE_OSX_SYSROOT
++
++# Environment variable set by the user overrides our default.
++# Use the same environment variable that Xcode uses.
++SET(ENV_SDKROOT "$ENV{SDKROOT}")
++
++# Set CMAKE_OSX_SYSROOT_DEFAULT based on _CURRENT_OSX_VERSION,
++# accounting for the known specially named SDKs.
++SET(CMAKE_OSX_SYSROOT_DEFAULT
++  "${_CMAKE_OSX_SDKS_DIR}/MacOSX${_CURRENT_OSX_VERSION}.sdk")
++
++IF(_CURRENT_OSX_VERSION STREQUAL "10.4")
++  SET(CMAKE_OSX_SYSROOT_DEFAULT
++    "${_CMAKE_OSX_SDKS_DIR}/MacOSX10.4u.sdk")
++ENDIF(_CURRENT_OSX_VERSION STREQUAL "10.4")
++
++IF(_CURRENT_OSX_VERSION STREQUAL "10.3")
++  SET(CMAKE_OSX_SYSROOT_DEFAULT
++    "${_CMAKE_OSX_SDKS_DIR}/MacOSX10.3.9.sdk")
++ENDIF(_CURRENT_OSX_VERSION STREQUAL "10.3")
++
++# Use environment or default as initial cache value:
++IF(NOT ENV_SDKROOT STREQUAL "")
++  SET(CMAKE_OSX_SYSROOT_VALUE ${ENV_SDKROOT})
++ELSE(NOT ENV_SDKROOT STREQUAL "")
++  SET(CMAKE_OSX_SYSROOT_VALUE ${CMAKE_OSX_SYSROOT_DEFAULT})
++ENDIF(NOT ENV_SDKROOT STREQUAL "")
++
++# Set cache variable - end user may change this during ccmake or cmake-gui configure.
++SET(CMAKE_OSX_SYSROOT ${CMAKE_OSX_SYSROOT_VALUE} CACHE PATH
++  "The product will be built against the headers and libraries located inside the indicated SDK.")
++
++#----------------------------------------------------------------------------
++function(SanityCheckSDKAndDeployTarget _sdk_path _deploy)
++  if(_deploy STREQUAL "")
++    return()
++  endif()
++
++  if(_sdk_path STREQUAL "")
++    message(FATAL_ERROR "CMAKE_OSX_DEPLOYMENT_TARGET='${_deploy}' but CMAKE_OSX_SYSROOT is empty... - either set CMAKE_OSX_SYSROOT to a valid SDK or set CMAKE_OSX_DEPLOYMENT_TARGET to empty")
++  endif()
++
++  string(REGEX REPLACE "(.*MacOSX*)(....)(.*\\.sdk)" "\\2" SDK "${_sdk_path}")
++  if(_deploy GREATER "${SDK}")
++    message(FATAL_ERROR "CMAKE_OSX_DEPLOYMENT_TARGET (${_deploy}) is greater than CMAKE_OSX_SYSROOT SDK (${_sdk_path}). Please set CMAKE_OSX_DEPLOYMENT_TARGET to ${SDK} or lower")
++  endif()
++endfunction(SanityCheckSDKAndDeployTarget)
++#----------------------------------------------------------------------------
++
++# Make sure the combination of SDK and Deployment Target are allowed
++SanityCheckSDKAndDeployTarget("${CMAKE_OSX_SYSROOT}" "${CMAKE_OSX_DEPLOYMENT_TARGET}")
++
++# set _CMAKE_OSX_MACHINE to uname -m
++EXECUTE_PROCESS(COMMAND uname -m
++  OUTPUT_STRIP_TRAILING_WHITESPACE
++  OUTPUT_VARIABLE _CMAKE_OSX_MACHINE)
++
++# check for Power PC and change to ppc
++IF(_CMAKE_OSX_MACHINE MATCHES "Power")
++  SET(_CMAKE_OSX_MACHINE ppc)
++ENDIF(_CMAKE_OSX_MACHINE MATCHES "Power")
++
++# check for environment variable CMAKE_OSX_ARCHITECTURES
++# if it is set.
++IF(NOT "$ENV{CMAKE_OSX_ARCHITECTURES}" STREQUAL "")
++  SET(CMAKE_OSX_ARCHITECTURES_VALUE "$ENV{CMAKE_OSX_ARCHITECTURES}")
++ELSE(NOT "$ENV{CMAKE_OSX_ARCHITECTURES}" STREQUAL "")
++  SET(CMAKE_OSX_ARCHITECTURES_VALUE "")
++ENDIF(NOT "$ENV{CMAKE_OSX_ARCHITECTURES}" STREQUAL "")
++
++# now put _CMAKE_OSX_MACHINE into the cache
++SET(CMAKE_OSX_ARCHITECTURES ${CMAKE_OSX_ARCHITECTURES_VALUE} CACHE STRING
++  "Build architectures for OSX")
++
++
++IF("${CMAKE_BACKWARDS_COMPATIBILITY}" MATCHES "^1\\.[0-6]$")
++  SET(CMAKE_SHARED_MODULE_CREATE_C_FLAGS
++    "${CMAKE_SHARED_MODULE_CREATE_C_FLAGS} -flat_namespace -undefined suppress")
++ENDIF("${CMAKE_BACKWARDS_COMPATIBILITY}" MATCHES "^1\\.[0-6]$")
++
++IF(NOT XCODE)
++  # Enable shared library versioning.  This flag is not actually referenced
++  # but the fact that the setting exists will cause the generators to support
++  # soname computation.
++  SET(CMAKE_SHARED_LIBRARY_SONAME_C_FLAG "-install_name")
++ENDIF(NOT XCODE)
++
++# Xcode does not support -isystem yet.
++IF(XCODE)
++  SET(CMAKE_INCLUDE_SYSTEM_FLAG_C)
++  SET(CMAKE_INCLUDE_SYSTEM_FLAG_CXX)
++ENDIF(XCODE)
++
++IF("${_CURRENT_OSX_VERSION}" VERSION_LESS "10.5")
++  # Need to list dependent shared libraries on link line.  When building
++  # with -isysroot (for universal binaries), the linker always looks for
++  # dependent libraries under the sysroot.  Listing them on the link
++  # line works around the problem.
++  SET(CMAKE_LINK_DEPENDENT_LIBRARY_FILES 1)
++ENDIF()
++
++SET(CMAKE_C_CREATE_SHARED_LIBRARY_FORBIDDEN_FLAGS -w)
++SET(CMAKE_CXX_CREATE_SHARED_LIBRARY_FORBIDDEN_FLAGS -w)
++SET(CMAKE_C_CREATE_SHARED_LIBRARY
++  "<CMAKE_C_COMPILER> <LANGUAGE_COMPILE_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS> <LINK_FLAGS> -o <TARGET> <SONAME_FLAG> <TARGET_INSTALLNAME_DIR><TARGET_SONAME> <OBJECTS> <LINK_LIBRARIES>")
++SET(CMAKE_CXX_CREATE_SHARED_LIBRARY
++  "<CMAKE_CXX_COMPILER> <LANGUAGE_COMPILE_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS> <LINK_FLAGS> -o <TARGET> <SONAME_FLAG> <TARGET_INSTALLNAME_DIR><TARGET_SONAME> <OBJECTS> <LINK_LIBRARIES>")
++SET(CMAKE_Fortran_CREATE_SHARED_LIBRARY
++  "<CMAKE_Fortran_COMPILER> <LANGUAGE_COMPILE_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS> <LINK_FLAGS> -o <TARGET> <SONAME_FLAG> <TARGET_INSTALLNAME_DIR><TARGET_SONAME> <OBJECTS> <LINK_LIBRARIES>")
++
++SET(CMAKE_CXX_CREATE_SHARED_MODULE
++      "<CMAKE_CXX_COMPILER> <LANGUAGE_COMPILE_FLAGS> <CMAKE_SHARED_MODULE_CREATE_CXX_FLAGS> <LINK_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES>")
++
++SET(CMAKE_C_CREATE_SHARED_MODULE
++      "<CMAKE_C_COMPILER>  <LANGUAGE_COMPILE_FLAGS> <CMAKE_SHARED_MODULE_CREATE_C_FLAGS> <LINK_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES>")
++
++SET(CMAKE_Fortran_CREATE_SHARED_MODULE
++      "<CMAKE_Fortran_COMPILER>  <LANGUAGE_COMPILE_FLAGS> <CMAKE_SHARED_MODULE_CREATE_Fortran_FLAGS> <LINK_FLAGS> -o <TARGET> <OBJECTS> <LINK_LIBRARIES>")
++
++SET(CMAKE_C_CREATE_MACOSX_FRAMEWORK
++      "<CMAKE_C_COMPILER> <LANGUAGE_COMPILE_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS> <LINK_FLAGS> -o <TARGET> <SONAME_FLAG> <TARGET_INSTALLNAME_DIR><TARGET_SONAME> <OBJECTS> <LINK_LIBRARIES>")
++SET(CMAKE_CXX_CREATE_MACOSX_FRAMEWORK
++      "<CMAKE_CXX_COMPILER> <LANGUAGE_COMPILE_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS> <LINK_FLAGS> -o <TARGET> <SONAME_FLAG> <TARGET_INSTALLNAME_DIR><TARGET_SONAME> <OBJECTS> <LINK_LIBRARIES>")
++
++
++# default to searching for frameworks first
++IF(NOT DEFINED CMAKE_FIND_FRAMEWORK)
++  SET(CMAKE_FIND_FRAMEWORK FIRST)
++ENDIF()
++# set up the default search directories for frameworks
++SET(CMAKE_SYSTEM_FRAMEWORK_PATH
++#  ~/Library/Frameworks
++#  /Library/Frameworks
++#  /Network/Library/Frameworks
++#  /System/Library/Frameworks
++  /var/empty
++)
++
++# default to searching for application bundles first
++IF(NOT DEFINED CMAKE_FIND_APPBUNDLE)
++  SET(CMAKE_FIND_APPBUNDLE FIRST)
++ENDIF()
++# set up the default search directories for application bundles
++SET(_apps_paths)
++FOREACH(_path
++  "~/Applications"
++  "/Applications"
++  "${OSX_DEVELOPER_ROOT}/../Applications" # Xcode 4.3+
++  "${OSX_DEVELOPER_ROOT}/Applications"    # pre-4.3
++  )
++  GET_FILENAME_COMPONENT(_apps "${_path}" ABSOLUTE)
++  IF(EXISTS "${_apps}")
++    LIST(APPEND _apps_paths "${_apps}")
++  ENDIF()
++ENDFOREACH()
++LIST(REMOVE_DUPLICATES _apps_paths)
++SET(CMAKE_SYSTEM_APPBUNDLE_PATH
++  ${_apps_paths})
++UNSET(_apps_paths)
++
++INCLUDE(Platform/UnixPaths)
++#LIST(APPEND CMAKE_SYSTEM_PREFIX_PATH
++
++
++#  )
+diff -Naur a/cmake/modules/Platform/UnixPaths.cmake b/cmake/modules/Platform/UnixPaths.cmake
+--- a/cmake/modules/Platform/UnixPaths.cmake	1970-01-01 01:00:00.000000000 +0100
++++ b/cmake/modules/Platform/UnixPaths.cmake	2014-01-14 08:03:54.000000000 +0100
+@@ -0,0 +1,88 @@
++
++#=============================================================================
++# Copyright 2006-2009 Kitware, Inc.
++#
++# Distributed under the OSI-approved BSD License (the "License");
++# see accompanying file Copyright.txt for details.
++#
++# This software is distributed WITHOUT ANY WARRANTY; without even the
++# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
++# See the License for more information.
++#=============================================================================
++# (To distribute this file outside of CMake, substitute the full
++#  License text for the above reference.)
++
++# Block multiple inclusion because "CMakeCInformation.cmake" includes
++# "Platform/${CMAKE_SYSTEM_NAME}" even though the generic module
++# "CMakeSystemSpecificInformation.cmake" already included it.
++# The extra inclusion is a work-around documented next to the include()
++# call, so this can be removed when the work-around is removed.
++IF(__UNIX_PATHS_INCLUDED)
++  RETURN()
++ENDIF()
++SET(__UNIX_PATHS_INCLUDED 1)
++
++SET(UNIX 1)
++
++# also add the install directory of the running cmake to the search directories
++# CMAKE_ROOT is CMAKE_INSTALL_PREFIX/share/cmake, so we need to go two levels up
++GET_FILENAME_COMPONENT(_CMAKE_INSTALL_DIR "${CMAKE_ROOT}" PATH)
++GET_FILENAME_COMPONENT(_CMAKE_INSTALL_DIR "${_CMAKE_INSTALL_DIR}" PATH)
++
++# List common installation prefixes.  These will be used for all
++# search types.
++LIST(APPEND CMAKE_SYSTEM_PREFIX_PATH
++  # Standard
++
++
++  # CMake install location
++  "${_CMAKE_INSTALL_DIR}"
++
++  # Project install destination.
++  "${CMAKE_INSTALL_PREFIX}"
++  )
++
++# List common include file locations not under the common prefixes.
++#LIST(APPEND CMAKE_SYSTEM_INCLUDE_PATH
++  # Windows API on Cygwin
++
++
++  # X11
++
++
++  # Other
++
++
++
++#  )
++
++#LIST(APPEND CMAKE_SYSTEM_LIBRARY_PATH
++  # Windows API on Cygwin
++
++
++  # X11
++
++
++  # Other
++
++
++
++#  )
++
++#LIST(APPEND CMAKE_SYSTEM_PROGRAM_PATH
++
++#  )
++
++#LIST(APPEND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES
++
++#  )
++
++#LIST(APPEND CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES
++
++#  )
++#LIST(APPEND CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES
++
++#  )
++
++# Enable use of lib64 search path variants by default.
++SET_PROPERTY(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS TRUE)
+diff -Naur a/cmake/modules/SetUpMacOS.cmake b/cmake/modules/SetUpMacOS.cmake
+--- a/cmake/modules/SetUpMacOS.cmake	2013-11-19 16:49:10.000000000 +0100
++++ b/cmake/modules/SetUpMacOS.cmake	2014-01-14 00:07:20.000000000 +0100
+@@ -8,7 +8,7 @@
+ set(CMAKE_M_LIBS -lm)
  
-     if test "x$found_lib" = "x" ; then
-@@ -2531,11 +2530,7 @@ if test ! "x$enable_x11" = "xno" ; then
-         exit 1
-     fi
+ #---This is needed to help CMake to locate the X11 headers in the correct place and not under /usr/include
+-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} /usr/X11R6)
++set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} )
+ #---------------------------------------------------------------------------------------------------------
  
--    check_header "X11/Xlib.h" "" \
--        ${finkdir:+$finkdir/include} \
--        /usr/include /usr/X11R6/include /usr/include/X11 /usr/openwin/include \
--        /usr/local/include /usr/local/include/X11 /usr/local/X11R6/include \
--        /usr/X11/include /usr/include/X11R5
-+    check_header "X11/Xlib.h" "" "$x11dir/include"
-     x11incdir=$found_dir
- 
-     if test "x$found_dir" = "x" ; then
-@@ -2544,12 +2539,7 @@ if test ! "x$enable_x11" = "xno" ; then
-         exit 1
-     fi
- 
--    check_header "X11/xpm.h" "" \
--        $XPM ${XPM:+$XPM/include} \
--        ${finkdir:+$finkdir/include} \
--        /usr/include /usr/X11R6/include /usr/include/X11 /usr/openwin/include \
--        /usr/local/include /usr/local/include/X11 /usr/local/X11R6/include \
--        /usr/X11/include /usr/include/X11R5
-+    check_header "X11/xpm.h" "" "$XPM/include"
- 
-     if test "x$found_dir" = "x" ; then
-         result "`basename $0`: xpm headers MUST be installed"
-@@ -2557,11 +2547,7 @@ if test ! "x$enable_x11" = "xno" ; then
-         exit 1
-     fi
- 
--    check_header "X11/Xft/Xft.h" "" \
--        ${finkdir:+$finkdir/include} \
--        /usr/include /usr/X11R6/include /usr/include/X11 /usr/openwin/include \
--        /usr/local/include /usr/local/include/X11 /usr/local/X11R6/include \
--        /usr/X11/include /usr/include/X11R5
-+    check_header "X11/Xft/Xft.h" "" "$Xftdir/include"
- 
-     if test "x$found_dir" = "x" ; then
-         result "`basename $0`: Xft headers MUST be installed"
-@@ -2570,11 +2556,7 @@ if test ! "x$enable_x11" = "xno" ; then
-     fi
- 
-     if test ! "x$arch" = "xaix5" ; then
--        check_header "X11/extensions/shape.h" "" \
--            ${finkdir:+$finkdir/include} \
--            /usr/include /usr/X11R6/include /usr/include/X11 \
--            /usr/openwin/include /usr/local/include /usr/local/include/X11 \
--            /usr/local/X11R6/include /usr/X11/include /usr/include/X11R5
-+        check_header "X11/extensions/shape.h" "" "$XEXT/include"  
- 
-         if test "x$found_dir" = "x" ; then
-             result "`basename $0`: X11/extensions/shape.h header MUST be installed"
-@@ -2583,12 +2565,7 @@ if test ! "x$enable_x11" = "xno" ; then
-         fi
-     fi
- 
--    check_library "libXpm" "$enable_shared" "$xpmlibdir" \
--        $XPM ${XPM:+$XPM/lib} \
--        ${finkdir:+$finkdir/lib} \
--        /usr/local/lib /usr/lib /usr/lib/X11 \
--        /usr/local/lib/X11 /usr/X11R6/lib /usr/local/X11R6/lib \
--        /usr/X11/lib
-+    check_library "libXpm" "$enable_shared" "$xpmlibdir" $XPM ${XPM:+$XPM/lib} 
-     xpmlib=$found_lib
-     xpmlibdir=$found_dir
- 
-@@ -2598,11 +2575,7 @@ if test ! "x$enable_x11" = "xno" ; then
-         exit 1
-     fi
- 
--    check_library "libXft" "$enable_shared" "$xftlibdir" \
--        ${finkdir:+$finkdir/lib} \
--        /usr/local/lib /usr/lib /usr/lib/X11 \
--        /usr/local/lib/X11 /usr/X11R6/lib /usr/local/X11R6/lib \
--        /usr/X11/lib
-+    check_library "libXft" "$enable_shared" "$xftlibdir" "$Xftdir/lib"
- 
-     if test "x$found_lib" = "x" ; then
-         result "`basename $0`: libXft MUST be installed"
-@@ -2616,11 +2589,7 @@ if test ! "x$enable_x11" = "xno" ; then
-         exit 1
-     fi
- 
--    check_library "libXext" "$enable_shared" "$xextlibdir" \
--        ${finkdir:+$finkdir/lib} \
--        /usr/local/lib /usr/lib /usr/lib/X11 \
--        /usr/local/lib/X11 /usr/X11R6/lib /usr/local/X11R6/lib \
--        /usr/X11/lib
-+    check_library "libXext" "$enable_shared" "$XEXT/lib" "$xextlibdir" "$Xextdir/lib"
- 
-     if test "x$found_lib" = "x" ; then
-         result "`basename $0`: libXext MUST be installed"
-@@ -4334,22 +4303,15 @@ if test ! "x$enable_asimage" = "xno" ; t
-     # for a system library, then see if we have various headers needed.
-     if test "x$enable_builtin_afterimage" = "xyes" && test ! "x$enable_cocoa" = "xyes"; then
-        check_header "jpeglib.h" "" \
--          $ASIMAGE ${ASIMAGE:+$ASIMAGE/include} \
--          ${finkdir:+$finkdir/include} \
--          /usr/local/include /usr/include /opt/include
-+          $ASIMAGE ${ASIMAGE:+$ASIMAGE/include} 
-        asjpegincdir=$found_dir
-        check_header "png.h" "" \
-           $ASIMAGE ${ASIMAGE:+$ASIMAGE/include} \
--          ${ASPNG:+$ASPNG/include} \
--          ${finkdir:+$finkdir/include} \
--          /usr/local/include /usr/X11/include /usr/include \
--          /usr/local/include/libpng /opt/include
-+          ${ASPNG:+$ASPNG/include} $libpng/include
-        aspngincdir=$found_dir
-        if test ! "x$enable_astiff" = "xno" ; then
-            check_header "tiffio.h" "" \
-                $ASIMAGE ${ASIMAGE:+$ASIMAGE/include} \
--               ${finkdir:+$finkdir/include} \
--               /usr/local/include /usr/include /opt/include
-            astiffincdir=$found_dir
-        else
-            astiffincdir="--with-tiff=no"
-@@ -4368,9 +4330,7 @@ if test ! "x$enable_asimage" = "xno" ; t
-        fi
-        for k in $aslibs ; do
-            check_library $k "$enable_shared" "" \
--               $ASIMAGE ${ASIMAGE:+$ASIMAGE/lib} ${ASPNG:+$ASPNG/lib} \
--               ${finkdir:+$finkdir/lib} \
--               /usr/local/lib /usr/X11/lib /usr/lib /opt/lib
-+               $ASIMAGE ${ASIMAGE:+$ASIMAGE/lib} ${ASPNG:+$ASPNG/lib} $libpng/lib 
-            if test "x$k" = "xlibz" ; then
-                found_libz=$found_lib
-                found_dirz=$found_dir
-@@ -6638,7 +6598,7 @@ if test ! "x$haveconfig" = "x" ; then
-     if test "x$bindir" = "x";       then bindir=$prefix/bin; fi
-     if test "x$libdir" = "x";       then libdir=$prefix/lib/root; fi
-     if test "x$incdir" = "x";       then incdir=$prefix/include/root; fi
--    if test "x$etcdir" = "x";       then etcdir=/etc/root; fi
-+    if test "x$etcdir" = "x";       then etcdir=$prefix/etc; fi
-     if test "x$mandir" = "x";       then mandir=$prefix/share/man/man1; fi
-     if test "x$datadir" = "x";      then datadir=$prefix/share/root; fi
-     if test "x$macrodir" = "x";     then macrodir=$datadir/macros; fi
+ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+@@ -35,8 +35,8 @@
+     #TODO: check haveconfig and rpath -> set rpath true
+     #TODO: check Thread, define link command
+     #TODO: more stuff check configure script
+-    execute_process(COMMAND /usr/sbin/sysctl machdep.cpu.extfeatures OUTPUT_VARIABLE SYSCTL_OUTPUT)
+-    if(${SYSCTL_OUTPUT} MATCHES 64)
++    #execute_process(COMMAND /usr/sbin/sysctl machdep.cpu.extfeatures OUTPUT_VARIABLE SYSCTL_OUTPUT)
++    #if(${SYSCTL_OUTPUT} MATCHES 64)
+        MESSAGE(STATUS "Found a 64bit system") 
+        set(ROOT_ARCHITECTURE macosx64)
+        SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
+@@ -45,12 +45,12 @@
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
+        SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m64")
+        SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m64")
+-    else(${SYSCTL_OUTPUT} MATCHES 64)
+-       MESSAGE(STATUS "Found a 32bit system") 
+-       SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+-       SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+-       SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m32")
+-    endif(${SYSCTL_OUTPUT} MATCHES 64)
++    #else(${SYSCTL_OUTPUT} MATCHES 64)
++    #   MESSAGE(STATUS "Found a 32bit system") 
++    #   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
++    #   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
++    #   SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m32")
++    #endif(${SYSCTL_OUTPUT} MATCHES 64)
+   endif()
+   
+   if (CMAKE_COMPILER_IS_GNUCXX)
