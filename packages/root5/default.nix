@@ -17,7 +17,7 @@ stdenv.mkDerivation {
   preConfigure = '' 
     substituteInPlace cmake/modules/FindGSL.cmake --replace "/usr/bin/" "" --replace "/usr/bin" "" --replace "/usr/local/bin" "" 
 '';
-  # cmakeFlags = "-DX11_FIND_QUIETLY=OFF";   
+  cmakeFlags = "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF";   
 
 }
 
