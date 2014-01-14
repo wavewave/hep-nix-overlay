@@ -17,11 +17,11 @@ stdenv.mkDerivation {
                   gsl krb5 libxml2 openssl
                   pkgconfig fftw sqlite cfitsio
                 ];
-  patches = [ ./darwin.patch ];
+  patches = [ ./no-sys-dirs.patch ];
   preConfigure = '' 
     substituteInPlace cmake/modules/FindGSL.cmake --replace "/usr/bin/" "" --replace "/usr/bin" "" --replace "/usr/local/bin" "" 
 '';
-  cmakeFlags = "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=OFF";   
+  cmakeFlags = "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=OFF -Drpath:String=ON";   
 
 }
 
