@@ -1,6 +1,7 @@
-{ stdenv, fetchgit, fetchfile, cmake, root5, HepMC, gsl, FastJet, pkgconfig, 
-  python, cython0192, libyamlcppPIC,  boost, 
-#, doxygen 
+{ stdenv, fetchgit, cmake, root5, HepMC, gsl, FastJet, pkgconfig
+, python, cython0192, libyamlcppPIC,  boost
+#, graphviz
+# , doxygen 
 }:
  
 # Rivet,
@@ -21,7 +22,8 @@ stdenv.mkDerivation {
   patches = [ ./findYamlCpp.patch ./findROOT.patch ]; # ./findHepMC.patch 
   buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   python cython0192 boost 
-                  # doxygen
+                # graphviz
+                #  doxygen
                 ];
   pkgconfigDepends = [ libyamlcppPIC ] ;
   # patches = [ ];
