@@ -35,7 +35,7 @@ autoreconf
 
 
 
-  configureFlags = "CFLAGS=-fPIC CXXFLAGS=-fPIC --with-boost=${boost} --with-hepmc=${HepMC} --with-fastjet=${FastJet} --with-yaml_cpp=${libyamlcppPIC} ";
+  configureFlags = "CFLAGS=-fPIC CXXFLAGS=-fPIC --with-boost=${boost} --with-hepmc=${HepMC} --with-fastjet=${FastJet} --with-yaml_cpp=${libyamlcppPIC}  --disable-pyext";
 
   meta = { 
     priority  = "10";

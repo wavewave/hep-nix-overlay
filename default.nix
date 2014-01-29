@@ -26,6 +26,8 @@ let hepNixPackages =  rec {
     defaultScope = pkgs // pkgs.xorg;
     mainConfig = { inherit system stdenvType bootStdenv noSysDirs gccWithCC gccWithProfiling config; };
     pkgs = import <nixpkgs> mainConfig;
+    fetchfile = import <nixpkgs/pkgs/build-support/fetchfile> { inherit (pkgs) stdenv; } ;
+
     haskellPackages = pkgs.haskellPackages_ghc763;
     pythonPackages = pkgs.pythonPackages; 
     callPackage = newScope {};
@@ -167,7 +169,9 @@ let hepNixPackages =  rec {
 
     Atom          = callPackage ./packages/Atom {
                       inherit root5 HepMC FastJet cython0192; # Rivet ;
-                      inherit (pkgs) gsl pkgconfig  ;
+                      inherit (pkgs) gsl pkgconfig; 
+                      # doxygen ;
+                      # inherit fetchfile;
                       inherit libyamlcppPIC;
                     };
 
