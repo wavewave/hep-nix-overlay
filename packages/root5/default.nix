@@ -21,7 +21,7 @@ stdenv.mkDerivation {
   preConfigure = '' 
     substituteInPlace cmake/modules/FindGSL.cmake --replace "/usr/bin/" "" --replace "/usr/bin" "" --replace "/usr/local/bin" "" 
 '';
-  cmakeFlags = "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=OFF -Drpath:String=ON";   
+  cmakeFlags = "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=OFF -Dgviz:String=OFF -Drpath:String=ON";   
 
 }
 
