@@ -188,6 +188,11 @@ let hepNixPackages =  rec {
                     };
 
 
+    atomEnv       = callPackage ./packages/Atom/atomenv.nix {
+                      inherit pkgs;
+                      inherit Atom;
+                    };
+
 
     allpkgs = {
      inherit root5 fficxx fficxx-runtime HROOT-generate HROOT-src-tree;
@@ -202,6 +207,7 @@ let hepNixPackages =  rec {
      inherit libyamlcpp025 Atom;
      inherit HERWIGpp ThePEG;
      inherit SHERPA PYTHIA8;
+     inherit atomEnv;
    };
 } . allpkgs;
 
