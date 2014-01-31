@@ -13,8 +13,8 @@ stdenv.mkDerivation {
 
   src = fetchgit { 
     url = "/Users/iwkim/repo/srcc/Atom";
-    rev = "11f0efee302ba46ee9832c1bad2b947dac9f9712";
-    sha256 = "50e8d375777a916b63ecd38a7790534099d2a8befe9ee2d2d61fcc668651d443" ;
+    rev = "1afa89578b61b7bff9698823b1217f77f330265d";
+    sha256 = "24bdb9470c771da9f02791571957dc26f60fb9c65f2a13033c67f8fd47cd793c" ;
   };
   patches = [ ./findYamlCpp.patch ./findROOT.patch ./noDoxygen.patch ./absolutePathInAtomenv.patch ]; # ./findHepMC.patch 
 

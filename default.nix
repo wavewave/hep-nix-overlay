@@ -192,7 +192,9 @@ let hepNixPackages =  rec {
                       inherit pkgs;
                       inherit Atom;
                     };
+    googletest    = callPackage ./packages/googletest {
 
+                    };
 
     allpkgs = {
      inherit root5 fficxx fficxx-runtime HROOT-generate HROOT-src-tree;
@@ -208,6 +210,7 @@ let hepNixPackages =  rec {
      inherit HERWIGpp ThePEG;
      inherit SHERPA PYTHIA8;
      inherit atomEnv;
+     inherit googletest;
    };
 } . allpkgs;
 
