@@ -9,7 +9,7 @@ pkgs.myEnvFun {
     stdenv
   ];
   extraCmds = with pkgs; ''
-    # source ${Atom}/bin/atomenv.sh
+    source ${Atom}/bin/atomenv.sh
     export DYLD_LIBRARY_PATH=${stdenv.gcc.gcc}/lib:${Atom}/lib:${boost}/lib:$DYLD_LIBRARY_PATH
   '';
 }
