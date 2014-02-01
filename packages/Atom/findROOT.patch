@@ -20,21 +20,21 @@ diff -Naur a/CMakeModules/FindROOT.cmake b/CMakeModules/FindROOT.cmake
 -        MESSAGE( STATUS "Check for libdl.so: ${DL_LIB}" )
 -    ENDIF()
 -
-+    IF(!APPLE)
++    IF(NOT APPLE)
 +      # ====== DL LIBRARY ==================================================
 +      # workaround for cmake bug in 64 bit:
 +      # see: http://public.kitware.com/mantis/view.php?id=10813
 +      IF( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-+          FIND_LIBRARY( DL_LIB NAMES ${CMAKE_DL_LIBS} dl PATHS /usr/lib64 /lib64 NO_DEFAULT_PATH )
++          FIND_LIBRARY( DL_LIB NAMES ${CMAKE_DL_LIBS} dl PATHS @dlpath@/lib64 /usr/lib64 /lib64 NO_DEFAULT_PATH )
 +      ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 8 )
 +
-+      FIND_LIBRARY( DL_LIB NAMES ${CMAKE_DL_LIBS} dl )
++      FIND_LIBRARY( DL_LIB NAMES ${CMAKE_DL_LIBS} dl PATHS @dlpath@/lib64 @dlpath@/lib NO_DEFAULT_PATH )
 +      MARK_AS_ADVANCED( DL_LIB )
 +    
 +      IF( NOT ROOT_FIND_QUIETLY )
 +          MESSAGE( STATUS "Check for libdl.so: ${DL_LIB}" )
 +      ENDIF()
-+    ENDIF(!APPLE)
++    ENDIF(NOT APPLE)
  ENDIF( ROOT_CONFIG_EXECUTABLE )
  
  # Threads library
@@ -53,9 +53,9 @@ diff -Naur a/CMakeModules/FindROOT.cmake b/CMakeModules/FindROOT.cmake
 -    LIST( APPEND ROOT_LIBRARIES ${DL_LIB} )
  
 +IF( ROOT_FOUND )
-+    IF(!APPLE )
++    IF(NOT APPLE )
 +      LIST( APPEND ROOT_LIBRARIES ${DL_LIB} )
-+    ENDIF(!APPLE)
++    ENDIF(NOT APPLE)
      # file including MACROS for generating root dictionary sources
      GET_FILENAME_COMPONENT( _aux ${CMAKE_CURRENT_LIST_FILE} PATH )
      SET( ROOT_DICT_MACROS_FILE ${_aux}/MacroRootDict.cmake )
