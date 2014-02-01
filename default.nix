@@ -196,6 +196,11 @@ let hepNixPackages =  rec {
 
                     };
 
+    YODA          = callPackage ./packages/YODA {
+
+                    };
+
+
     allpkgs = {
      inherit root5 fficxx fficxx-runtime HROOT-generate HROOT-src-tree;
      inherit HROOT-core HROOT-hist;
@@ -211,6 +216,7 @@ let hepNixPackages =  rec {
      inherit SHERPA PYTHIA8;
      inherit atomEnv;
      inherit googletest;
+     inherit YODA;
    };
 } . allpkgs;
 
