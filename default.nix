@@ -173,6 +173,8 @@ let hepNixPackages =  rec {
                       # doxygen ;
                       # inherit fetchfile;
                       inherit libyamlcppPIC;
+                      inherit YODA;
+
                     };
 
     ThePEG        = callPackage ./packages/ThePEG { 
@@ -197,7 +199,6 @@ let hepNixPackages =  rec {
                     };
 
     YODA          = callPackage ./packages/YODA {
-
                     };
 
 

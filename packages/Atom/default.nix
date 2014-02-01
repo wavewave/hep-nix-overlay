@@ -1,5 +1,5 @@
 { stdenv, fetchgit, cmake, root5, HepMC, gsl, FastJet, pkgconfig
-, python, cython0192, libyamlcppPIC,  boost
+, python, cython0192, libyamlcppPIC,  boost, YODA
 # , Rivet
 # , graphviz
 # , doxygen 
@@ -13,18 +13,18 @@ stdenv.mkDerivation rec {
 
   src = fetchgit { 
     url = "/home/wavewave/repo/srcc/Atom";
-    rev = "1afa89578b61b7bff9698823b1217f77f330265d";
-    sha256 = "24bdb9470c771da9f02791571957dc26f60fb9c65f2a13033c67f8fd47cd793c" ;
+    rev = "402b37e812a8a0419d2a8786087dad1742a3ff1c";
+    sha256 = "0e1d97e22f4472e0e3b0ba757d787269acd58423476facc91b738c27f0563d4e";
   };
   patches = [ ./findYamlCpp.patch ./findROOT.patch ./noDoxygen.patch ./absolutePathInAtomenv.patch ]; # ./findHepMC.patch 
 
   buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
-                  python cython0192 boost 
+                  python cython0192 boost YODA
                 # graphviz
                 #  doxygen
                 ] ++ (if (!stdenv.isDarwin) then [stdenv.gcc.libc] else []);
   pkgconfigDepends = [ libyamlcppPIC ] ;
-  #enableParallelBuilding = true; 
+  enableParallelBuilding = true; 
 
   # Necessary to find libdl (for linux)
   dlpath = if ( !stdenv.isDarwin ) then "${stdenv.gcc.libc}" else "";
