@@ -1,6 +1,6 @@
-{ cabal, fetchgit, haskellPackages, hepNixPackages }:
+{ cabal, fetchgit, haskellPackages }:
 
-with { hs = haskellPackages; my = hepNixPackages; };
+with { hs = haskellPackages; };
 
 cabal.mkDerivation (self: {
   pname = "devadmin";
@@ -13,7 +13,6 @@ cabal.mkDerivation (self: {
   isExecutable = false;
   buildDepends = [ hs.mtl
                    hs.filepath
-                   # hs.unix
                    hs.fgl
                    hs.time
                    hs.filemanip

@@ -1,6 +1,6 @@
-{ cabal, lib, gfortran, fetchgit, haskellPackages, hepNixPackages }:
+{ cabal, lib, gfortran, fetchgit, haskellPackages, webdav-manager, HEPUtil, LHEParser, madgraph-auto, madgraph-auto-model }:
 
-with { hs = haskellPackages; my = hepNixPackages; };
+with { hs = haskellPackages; };
 
 cabal.mkDerivation (self: {
   pname = "pipeline-eventgen";
@@ -11,11 +11,11 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = true;
-  buildDepends = [ my.webdav-manager
-                   my.HEPUtil
-                   my.LHEParser
-                   my.madgraph-auto
-                   my.madgraph-auto-model
+  buildDepends = [ webdav-manager
+                   HEPUtil
+                   LHEParser
+                   madgraph-auto
+                   madgraph-auto-model
                    gfortran
                    hs.cmdargs
                    hs.mtl

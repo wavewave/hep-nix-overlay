@@ -1,37 +1,8 @@
-{ system ? builtins.currentSystem
-, stdenvType ? system
-, bootStdenv ? null
-, noSysDirs ? (system != "x86_64-darwin"
-               && system != "x86_64-freebsd" && system != "i686-freebsd"
-               && system != "x86_64-kfreebsd-gnu") # false # true
-, gccWithCC ? true
-, gccWithProfiling ? true
-, config ? null
-, ...
-}:
+{ pkgs } : 
 
-let hepNixPackages =  rec { 
-      lib = import <nixpkgs/lib>; 
-      mainConfig = { inherit system stdenvType bootStdenv noSysDirs gccWithCC gccWithProfiling config; };
-      pkgs = import <nixpkgs> mainConfig;
-
-      defaultScope = pkgs // pkgs.xorg;
-
-      #packageOverrides = pkgs : with pkgs; { gcc = gcc46; }; 
-
-      newScope = extra: lib.callPackageWith (defaultScope // extra); 
-      callPackage = newScope {};
-
-
-
-      # for the time being for darwin (python 2.7.5, gcc 4.8 and XCode5 == crash)
-      # gcc = pkgs.gcc46; 
-
-      # fetchfile = import <nixpkgs/pkgs/build-support/fetchfile> { inherit (pkgs) stdenv; } ;
-
-      HepMC         = callPackage ./packages/HepMC {
-		      };
-
+with pkgs; 
+rec { 
+      HepMC         = callPackage ./packages/HepMC { };
       FastJet       = callPackage ./packages/FastJet {
 		      };
 
@@ -100,8 +71,8 @@ let hepNixPackages =  rec {
 
 
 
-      haskellPackages = pkgs.haskellPackages_ghc763;
-      pythonPackages = pkgs.pythonPackages; 
+      #haskellPackages = pkgs.haskellPackages_ghc763;
+      #pythonPackages = pkgs.pythonPackages; 
       root5 = callPackage ./packages/root5 {} ;
       fficxx = callPackage ./packages/fficxx { 
 		 cabal = haskellPackages.cabal; 
@@ -152,77 +123,72 @@ let hepNixPackages =  rec {
       HEPUtil = callPackage ./packages/HEPUtil { 
 		     cabal = haskellPackages.cabal;
 		     inherit haskellPackages;
-		     inherit hepNixPackages;
+                     inherit LHCOAnalysis-type;
+		     #inherit hepNixPackages;
 		   } ;
       conduit-util = callPackage ./packages/conduit-util { 
 		       cabal = haskellPackages.cabal;
 		       inherit haskellPackages;
-		       inherit hepNixPackages;
+		       inherit HEPUtil;
 		     } ;
       LHEParser = callPackage ./packages/LHEParser { 
 		       cabal = haskellPackages.cabal;
 		       inherit haskellPackages;
-		       inherit hepNixPackages;
+                       inherit HEPUtil conduit-util;
 		     } ;
       LHE-sanitizer = callPackage ./packages/LHE-sanitizer { 
 		       cabal = haskellPackages.cabal;
 		       inherit haskellPackages;
-		       inherit hepNixPackages;
+                       inherit HEPUtil conduit-util LHEParser;
 		     } ;
       webdav-manager = callPackage ./packages/webdav-manager { 
 		       cabal = haskellPackages.cabal;
 		       inherit haskellPackages;
-		       inherit hepNixPackages;
+		       #inherit hepNixPackages;
 		     } ;
       devadmin = callPackage ./packages/devadmin { 
 		       cabal = haskellPackages.cabal;
 		       inherit haskellPackages;
-		       inherit hepNixPackages;
 		     } ;
       madgraph-auto = callPackage ./packages/madgraph-auto { 
 			cabal = haskellPackages.cabal;
 			inherit haskellPackages;
-			inherit hepNixPackages;
-			#hashable = haskellPackages.hashable_1_2_1_0; 
+                        inherit LHE-sanitizer webdav-manager devadmin;
 		      } ;
       madgraph-auto-model = callPackage ./packages/madgraph-auto-model { 
 			      cabal = haskellPackages.cabal;
 			      inherit haskellPackages;
-			      inherit hepNixPackages;
+                              inherit madgraph-auto HEPUtil devadmin;
 			    } ;
       pipeline-eventgen = callPackage ./packages/pipeline-eventgen { 
 			     cabal = haskellPackages.cabal;
 			     inherit haskellPackages;
-			     inherit hepNixPackages;
+                             inherit webdav-manager HEPUtil LHEParser;
+                             inherit madgraph-auto madgraph-auto-model;
 			  } ;
       evchain = callPackage ./packages/evchain { 
 			      cabal = haskellPackages.cabal;
 			      inherit haskellPackages;
-			      inherit hepNixPackages;
+                              inherit webdav-manager HEPUtil LHEParser;
+                              inherit LHE-sanitizer conduit-util;
+                              inherit madgraph-auto pipeline-eventgen;
 			    } ;
 
 
+}
 
-      allpkgs = {
-       inherit root5 fficxx fficxx-runtime HROOT-generate HROOT-src-tree;
-       inherit HROOT-core HROOT-hist;
-       inherit HROOT-graf HROOT-io HROOT-math ; 
-       inherit LHCOAnalysis-type HEPUtil conduit-util LHEParser LHE-sanitizer;
-       inherit webdav-manager devadmin madgraph-auto madgraph-auto-model;
-       inherit pipeline-eventgen evchain;
-       inherit HepMC FastJet Rivet LHAPDF professor convertStdHep; 
-       inherit pyminuit2;
-       inherit cython0192;
-       inherit libyamlcpp025 Atom;
-       inherit HERWIGpp ThePEG;
-       inherit SHERPA PYTHIA8;
-       inherit atomEnv;
-       inherit googletest;
-       inherit YODA;
-     };
-} . allpkgs;
 
-in hepNixPackages
+
+#      lib = import <nixpkgs/lib>; 
+#      mainConfig = { inherit system stdenvType bootStdenv noSysDirs gccWithCC gccWithProfiling config; };
+#      pkgs = import <nixpkgs> mainConfig;
+#
+#      defaultScope = pkgs // pkgs.xorg;
+#
+#      #packageOverrides = pkgs : with pkgs; { gcc = gcc46; }; 
+#
+#      newScope = extra: lib.callPackageWith (defaultScope // extra); 
+#      callPackage = newScope {};
 
 
 
