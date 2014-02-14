@@ -204,10 +204,8 @@ let hepNixPackages =  rec {
     Fastlim       = callPackage ./packages/Fastlim { 
                     };
     
-    FastlimSrc    = callPackage ./packages/Fastlim/FastlimSrc.nix {};
-
     FastlimEnv    = callPackage ./packages/Fastlim/FastlimEnv.nix { 
-                      inherit FastlimSrc;
+                      inherit Fastlim;
                     };
 
     allpkgs = {
