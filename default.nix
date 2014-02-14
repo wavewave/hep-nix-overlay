@@ -201,6 +201,14 @@ let hepNixPackages =  rec {
     YODA          = callPackage ./packages/YODA {
                     };
 
+    Fastlim       = callPackage ./packages/Fastlim { 
+                    };
+    
+    FastlimSrc    = callPackage ./packages/Fastlim/FastlimSrc.nix {};
+
+    FastlimEnv    = callPackage ./packages/Fastlim/FastlimEnv.nix { 
+                      inherit FastlimSrc;
+                    };
 
     allpkgs = {
      inherit root5 fficxx fficxx-runtime HROOT-generate HROOT-src-tree;
@@ -218,6 +226,7 @@ let hepNixPackages =  rec {
      inherit atomEnv;
      inherit googletest;
      inherit YODA;
+     inherit Fastlim FastlimEnv;
    };
 } . allpkgs;
 
