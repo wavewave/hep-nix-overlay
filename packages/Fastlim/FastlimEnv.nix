@@ -1,12 +1,16 @@
 { pkgs, Fastlim }:
- 
-pkgs.myEnvFun { 
+
+let pythonFastlim = pkgs.pythonFull.override { 
+      extraLibs = with pkgs.pythonPackages; [ numpy scipy ];
+    };
+in pkgs.myEnvFun { 
   name = "Fastlim";
+
   buildInputs = with pkgs; [
-    pythonFull 
+    pythonFastlim
     stdenv
-    pythonPackages.numpy
-    pythonPackages.scipy
+    #pythonPackages.numpy
+    #pythonPackages.scipy
   ];
   
   extraCmds = with pkgs; ''
