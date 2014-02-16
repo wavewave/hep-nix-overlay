@@ -1,6 +1,6 @@
-{ cabal, fetchgit, haskellPackages, hepNixPackages }:
+{ cabal, fetchgit, haskellPackages, HEPUtil }:
 
-with { hs = haskellPackages; my = hepNixPackages; };
+with { hs = haskellPackages; };
 
 cabal.mkDerivation (self: {
   pname = "conduit-util";
@@ -11,7 +11,7 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ my.HEPUtil
+  buildDepends = [ HEPUtil
                    hs.conduit
                    hs.mtl
                    hs.MaybeT

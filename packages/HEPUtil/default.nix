@@ -1,6 +1,6 @@
-{ cabal, fetchgit, haskellPackages, hepNixPackages }:
+{ cabal, fetchgit, haskellPackages, LHCOAnalysis-type }:
 
-with { hs = haskellPackages; my = hepNixPackages; };
+with { hs = haskellPackages; };
 
 cabal.mkDerivation (self: {
   pname = "HEPUtil";
@@ -11,7 +11,7 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ my.LHCOAnalysis-type
+  buildDepends = [ LHCOAnalysis-type
                    hs.mtl
                    hs.filepath
                    hs.split

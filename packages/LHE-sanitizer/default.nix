@@ -1,6 +1,6 @@
-{ cabal, fetchgit, haskellPackages, hepNixPackages }:
+{ cabal, fetchgit, haskellPackages, HEPUtil, conduit-util, LHEParser }:
 
-with { hs = haskellPackages; my = hepNixPackages; };
+with { hs = haskellPackages; };
 
 cabal.mkDerivation (self: {
   pname = "LHE-sanitizer";
@@ -11,16 +11,14 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ my.HEPUtil
-                   my.conduit-util
-                   my.LHEParser
+  buildDepends = [ HEPUtil
+                   conduit-util
+                   LHEParser
                    hs.mtl
                    hs.transformers
-                   # hs.directory
                    hs.conduit
                    hs.xmlConduit
                    hs.attoparsec
-                   # hs.containers
                    hs.text
                    hs.pureMD5
                    hs.random

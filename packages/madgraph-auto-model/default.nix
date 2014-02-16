@@ -1,6 +1,6 @@
-{ cabal, stdenv, fetchgit, haskellPackages, hepNixPackages }:
+{ cabal, stdenv, fetchgit, haskellPackages, madgraph-auto, HEPUtil, devadmin }:
 
-with { hs = haskellPackages; my = hepNixPackages; };
+with { hs = haskellPackages; };
 
 cabal.mkDerivation (self: {
   pname = "madgraph-auto-model";
@@ -11,9 +11,9 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ my.madgraph-auto
-                   my.HEPUtil
-                   my.devadmin
+  buildDepends = [ madgraph-auto
+                   HEPUtil
+                   devadmin
                    hs.mtl
                    hs.HStringTemplate
                    hs.pureMD5

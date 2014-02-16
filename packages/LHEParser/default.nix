@@ -1,6 +1,6 @@
-{ cabal, fetchgit, haskellPackages, hepNixPackages, gfortran}:
+{ cabal, fetchgit, haskellPackages, gfortran, HEPUtil, conduit-util, }:
 
-with { hs = haskellPackages; my = hepNixPackages; };
+with { hs = haskellPackages; };
 
 cabal.mkDerivation (self: {
   pname = "LHEParser";
@@ -11,13 +11,12 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ my.HEPUtil
-                   my.conduit-util
+  buildDepends = [ HEPUtil
+                   conduit-util
                    gfortran
                    hs.mtl
                    hs.attoparsec
                    hs.bytestringLexing
-                   # hs.containers
                    hs.text
                    hs.xmlTypes
                    hs.conduit

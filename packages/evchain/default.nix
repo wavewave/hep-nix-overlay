@@ -1,6 +1,8 @@
-{ cabal, lib, gfortran, fetchgit, haskellPackages, hepNixPackages }:
+{ cabal, lib, gfortran, fetchgit, haskellPackages
+, webdav-manager, HEPUtil, LHEParser, LHE-sanitizer
+, conduit-util, madgraph-auto, pipeline-eventgen }:
 
-with { hs = haskellPackages; my = hepNixPackages; };
+with { hs = haskellPackages; };
 
 cabal.mkDerivation (self: {
   pname = "evchain";
@@ -11,13 +13,13 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = true;
-  buildDepends = [ my.webdav-manager
-                   my.HEPUtil
-                   my.LHEParser
-                   my.LHE-sanitizer
-                   my.conduit-util
-                   my.madgraph-auto
-                   my.pipeline-eventgen
+  buildDepends = [ webdav-manager
+                   HEPUtil
+                   LHEParser
+                   LHE-sanitizer
+                   conduit-util
+                   madgraph-auto
+                   pipeline-eventgen
                    hs.mtl
                    hs.filepath
                    hs.transformers

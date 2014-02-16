@@ -1,6 +1,6 @@
-{ cabal, fetchgit, haskellPackages, hepNixPackages }:
+{ cabal, fetchgit, haskellPackages }:
 
-with { hs = haskellPackages; my = hepNixPackages; };
+with { hs = haskellPackages; };
 
 cabal.mkDerivation (self: {
   pname = "webdav-manager";
