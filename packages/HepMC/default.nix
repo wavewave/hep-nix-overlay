@@ -1,6 +1,4 @@
 { stdenv, fetchurl, m4, automake, autoconf, libtool }: 
-# ,texLive, texLiveExtra, doxygen }:
-#utillinux
 
 stdenv.mkDerivation { 
   name = "HepMC"; 
