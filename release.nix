@@ -1,7 +1,10 @@
 { nixpkgs, hepNixOverlay }: 
 
-let pkgs = import nixpkgs { system = "x86_64-linux"; };
-    heppkgs = import hepNixOverlay { inherit pkgs; }; 
-    systems = [ "x86_64-linux" ]; 
-    jobs = heppkgs; #{ HepMC = heppkgs.HepMC; }; 
+let pkgs_linux64 = import nixpkgs { system = "x86_64-linux"; };
+    pkgs_darwin64 = import nixpkgs { system = "x86_64-darwin"; };
+
+    heppkgs_linux64 = import hepNixOverlay { inherit pkgs_linux64; };
+    heppkgs_darwin64 = import hepNixOverlay { inherit pkgs_darwin64; }; 
+    #systems = [ "x86_64-linux" ]; 
+    jobs = heppkgs_darwin64; #{ HepMC = heppkgs.HepMC; }; 
 in jobs
