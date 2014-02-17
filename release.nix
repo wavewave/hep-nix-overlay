@@ -5,5 +5,5 @@ let pkgs_linux64 = import nixpkgs { system = "x86_64-linux"; };
 
     heppkgs_linux64 = import hepNixOverlay { pkgs = pkgs_linux64; };
     heppkgs_darwin64 = import hepNixOverlay { pkgs = pkgs_darwin64; }; 
-    jobs = heppkgs_darwin64; 
+    jobs = heppkgs_linux64 // heppkgs_darwin64 ; 
 in jobs
