@@ -46,7 +46,7 @@ rec {
 		      };
 
       ThePEG        = callPackage ./packages/ThePEG { 
-			inherit HepMC LHAPDF Rivet FastJet;
+			inherit HepMC LHAPDF Rivet FastJet libyamlcppPIC;
 		      };
       HERWIGpp      = callPackage ./packages/HERWIGpp {
 			inherit ThePEG;
