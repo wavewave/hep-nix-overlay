@@ -62,9 +62,8 @@ rec {
 			inherit pkgs;
 			inherit Atom;
 		      };
-      googletest    = callPackage ./packages/googletest {
-
-		      };
+      #googletest    = callPackage ./packages/googletest {
+      #		      };
 
       YODA          = callPackage ./packages/YODA {
 		      };
