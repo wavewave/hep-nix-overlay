@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   version = "0.1";
 
   src = fetchgit { 
-    url = "/afs/cern.ch/user/i/ikim/repo/srcc/Atom";
+    url = "/Users/iwkim/repo/srcc/Atom";
     rev = "a51ed234774beaa84b674579444f8cfac38366ec";
     sha256 = "0d741f2f7b8b10e2a1adf4156aeabc9c41d704faae23b0f1b8a22770c6a0a21f";
   };
