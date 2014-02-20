@@ -45,6 +45,23 @@ rec {
 
 		      };
 
+      AtomDev      = callPackage ./packages/dev/Atom {
+			inherit root5 HepMC FastJet cython0192; 
+			inherit (pkgs) gsl pkgconfig; 
+			inherit libyamlcppPIC;
+			inherit YODA;
+		      };
+      atomEnv       = callPackage ./packages/Atom/atomenv.nix {
+			inherit pkgs;
+			inherit Atom;
+		      };
+
+      atomDevEnv    = callPackage ./packages/dev/Atom/atomenv.nix {
+			inherit pkgs;
+			inherit AtomDev;
+		      };
+
+
       ThePEG        = callPackage ./packages/ThePEG { 
 			inherit HepMC LHAPDF Rivet FastJet libyamlcppPIC;
 		      };
@@ -58,10 +75,6 @@ rec {
 		      };
 
 
-      atomEnv       = callPackage ./packages/Atom/atomenv.nix {
-			inherit pkgs;
-			inherit Atom;
-		      };
       #googletest    = callPackage ./packages/googletest {
       #		      };
 

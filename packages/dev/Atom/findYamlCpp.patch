@@ -1,0 +1,12 @@
+diff -rupN a/CMakeModules/FindYamlCpp.cmake b/CMakeModules/FindYamlCpp.cmake
+--- a/CMakeModules/FindYamlCpp.cmake	2014-01-01 20:35:22.071603321 +0100
++++ b/CMakeModules/FindYamlCpp.cmake	2014-01-01 20:48:41.784294481 +0100
+@@ -13,7 +13,7 @@
+ 
+ # attempt to find static library first if this is set
+ find_package(PkgConfig)
+-pkg_check_modules(PC_YamlCpp QUIET libyaml-cpp)
++pkg_check_modules(PC_YamlCpp yaml-cpp)
+ set(YamlCpp_DEFINITIONS ${PC_YamlCpp_CFLAGS_OTHER})
+ 
+ if(YamlCpp_STATIC_LIBRARY)
