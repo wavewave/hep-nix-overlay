@@ -1,0 +1,12 @@
+diff -Naur a/cmake/modules/SearchInstalledSoftware.cmake b/cmake/modules/SearchInstalledSoftware.cmake
+--- a/cmake/modules/SearchInstalledSoftware.cmake	2013-11-19 16:49:10.000000000 +0100
++++ b/cmake/modules/SearchInstalledSoftware.cmake	2014-02-27 23:27:47.000000000 +0100
+@@ -210,7 +210,7 @@
+ if(python)
+   message(STATUS "Looking for Python")
+   #---First look for the python interpreter and fix the version of it for the libraries--
+-  find_package(PythonInterp)
++  find_package(PythonInterp PATHS "@pythonnix@" NO_DEFAULT_PATH)
+   if(PYTHONINTERP_FOUND)
+     execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import sys;sys.stdout.write(sys.version[:3])"
+                     OUTPUT_VARIABLE PYTHON_VERSION)
