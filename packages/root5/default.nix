@@ -1,8 +1,6 @@
 { stdenv, fetchurl, cmake, gfortran, zlib, libX11, libXext, libXpm, libXft
 , libtiff, libjpeg, giflib, libpng, pcre, freetype
-# , python # for the time being
-, libxml2
-, gsl, krb5, openssl, pkgconfig, fftw, sqlite, cfitsio
+, python, libxml2, gsl, krb5, openssl, pkgconfig, fftw, sqlite, cfitsio
 }:
  
 stdenv.mkDerivation { 
@@ -14,7 +12,7 @@ stdenv.mkDerivation {
   enableParallelBuilding = true;
   buildInputs = [ cmake gfortran zlib libX11 libXext libXpm libXft pcre freetype 
                   giflib libtiff libjpeg libpng 
-                  # python 
+                  python 
                   gsl krb5 libxml2 openssl
                   pkgconfig fftw sqlite cfitsio
                 ];
@@ -22,7 +20,7 @@ stdenv.mkDerivation {
   preConfigure = '' 
     substituteInPlace cmake/modules/FindGSL.cmake --replace "/usr/bin/" "" --replace "/usr/bin" "" --replace "/usr/local/bin" "" 
 '';
-  cmakeFlags = "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=OFF -Dgviz:String=OFF -Drpath:String=ON";   
+  cmakeFlags = "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Drpath:String=ON";   
 
 }
 

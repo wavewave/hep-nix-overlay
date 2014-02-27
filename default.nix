@@ -53,12 +53,12 @@ rec {
 		      };
       atomEnv       = callPackage ./packages/Atom/atomenv.nix {
 			inherit pkgs;
-			inherit Atom;
+			inherit Atom root5;
 		      };
 
       atomDevEnv    = callPackage ./packages/dev/Atom/atomenv.nix {
 			inherit pkgs;
-			inherit AtomDev;
+                        inherit root5;
 		      };
 
 
@@ -89,9 +89,12 @@ rec {
                     };
 
 
-      #haskellPackages = pkgs.haskellPackages_ghc763;
-      #pythonPackages = pkgs.pythonPackages; 
       root5 = callPackage ./packages/root5 {} ;
+
+      rootEnv = callPackage ./packages/root5/rootEnv.nix {
+                  inherit root5;
+                };
+       
       fficxx = callPackage ./packages/fficxx { 
 		 cabal = haskellPackages.cabal; 
 		 HStringTemplate = haskellPackages.HStringTemplate;
