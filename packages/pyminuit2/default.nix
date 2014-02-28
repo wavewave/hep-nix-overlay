@@ -8,15 +8,5 @@ buildPythonPackage rec {
     sha256 = "1969lmz077v38ywk1chg9rpxpdca99rvhbm6bjpd76v004nckybq";
   };
   buildInputs = [ python root5 ];
-  buildPhase = 
-    '' 
-      python ./setup.py build
-    ''; 
   doCheck = false;
-#  installPhase = 
-#    ''
-#      python ./setup.py install --prefix=$out
-#    ''; 
-
-  #configureFlags = "--with-hepmc=${HepMC} --with-fastjet=${FastJet}";
 }

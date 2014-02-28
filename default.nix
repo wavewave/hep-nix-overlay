@@ -34,7 +34,6 @@ rec {
 			inherit pythonPackages;
 			inherit pyminuit2;
 		      };
-
       Atom          = callPackage ./packages/Atom {
 			inherit root5 HepMC FastJet cython0192; # Rivet ;
 			inherit (pkgs) gsl pkgconfig; 
