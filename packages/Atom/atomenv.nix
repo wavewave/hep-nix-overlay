@@ -3,7 +3,8 @@
 pkgs.myEnvFun { 
   name = "atom";
   buildInputs = with pkgs; [
-    pythonFull 
+    pythonFull
+    pythonPackages.ipython
     Atom
     root5
     boost
