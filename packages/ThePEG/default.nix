@@ -9,5 +9,5 @@ stdenv.mkDerivation {
     sha256 = "0p8af2jdbn6pil0jzrr2yf38w8nzf35116hvvxkla61679g8xr9y"; 
   };
   buildInputs = [ gsl zlib HepMC LHAPDF Rivet FastJet libyamlcppPIC ];
-  configureFlags = "--with-zlib=${zlib} --with-lhapdf=${LHAPDF} --with-hepmc=${HepMC} --with-rivet=${Rivet} --with-fastjet=${FastJet} " ;  
+  configureFlags = "--with-zlib=${zlib} --with-gsl=${gsl} --with-lhapdf=${LHAPDF} --with-hepmc=${HepMC} --with-rivet=${Rivet} --with-fastjet=${FastJet} " ;  
 }
