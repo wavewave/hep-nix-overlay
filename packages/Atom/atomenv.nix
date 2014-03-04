@@ -4,12 +4,11 @@ pkgs.myEnvFun {
   name = "atom";
   buildInputs = with pkgs; [
     pythonFull
-    pythonPackages.ipython
     Atom
     root5
     boost
     stdenv
-  ];
+  ] ++ (if (stdenv.isDarwin) then [] else [pythonPackages.ipython]); 
   
   extraCmds = with pkgs; if(stdenv.isDarwin) then ''
     source ${Atom}/bin/atomenv.sh
