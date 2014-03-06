@@ -8,7 +8,9 @@ pkgs.myEnvFun {
     root5
     boost
     stdenv
-  ] ++ (if (stdenv.isDarwin) then [] else [pythonPackages.ipython]); 
+    pythonPackages.ipython
+  ]; 
+  # ++ (if (stdenv.isDarwin) then [] else [pythonPackages.ipython]); 
   
   extraCmds = with pkgs; if(stdenv.isDarwin) then ''
     source ${Atom}/bin/atomenv.sh
