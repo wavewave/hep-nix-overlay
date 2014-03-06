@@ -1,54 +1,64 @@
-{ stdenv, fetchgit, cmake, root5, HepMC, gsl, FastJet, pkgconfig
-, python, cython0192, libyamlcppPIC,  boost, YODA, gtest
+{ pkgs, stdenv, fetchgit, cmake, root5, HepMC, gsl, FastJet, pkgconfig
+, cython0192, libyamlcppPIC, YODA
+# , python
+# ,  boost
+# , gtest
 # , Rivet
 # , graphviz
 # , doxygen 
 }:
  
-# Rivet,
+let pythonAtom = pkgs.pythonFull.override { 
+      # extraLibs = with pkgs.pythonPackages; [ numpy scipy ];
+    };
+in pkgs.myEnvFun { 
+  name = "atom-dev";
 
-stdenv.mkDerivation rec { 
-  name = "Atom"; 
-  version = "0.1";
+  buildInputs = with pkgs; [
+    pythonAtom
+    stdenv
+  ];
+  
+  extraCmds = with pkgs; ''
+    export PYTHONPATH=
+    export LD_LIBRARY_PATH=
+    unpack () { 
+    }
+    export -f unpack 
+  '';
+}
 
-  src = fetchgit { 
-    url = "/Users/iwkim/repo/srcc/Atom";
-    rev = "7f1b6997cda658f4b7e0f6bb03b9c23a5820aa1b";
-    sha256 = "1e260f14266a36b0c2f2f9529d1d21932e764052ee623fffb5434b14084fee32";
-  };
-  patches = [ ./findYamlCpp.patch ./findROOT.patch ./noDoxygen.patch ./absolutePathInAtomenv.patch ]; # ./findHepMC.patch 
+#stdenv.mkDerivation rec { 
+#  name = "Atom"; 
+#  version = "0.1";
 
-  buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
-                  python cython0192 boost YODA gtest
-                # graphviz
-                #  doxygen
-                ] ++ (if (!stdenv.isDarwin) then [stdenv.gcc.libc] else []);
-  pkgconfigDepends = [ libyamlcppPIC ] ;
-  enableParallelBuilding = true; 
+#  patches = [ ./findYamlCpp.patch ./findROOT.patch ./noDoxygen.patch ./absolutePathInAtomenv.patch ]; # ./findHepMC.patch 
+
+#  buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
+#                  python cython0192 boost YODA gtest
+#                # graphviz
+#                #  doxygen
+#                ] ++ (if (!stdenv.isDarwin) then [stdenv.gcc.libc] else []);
+#  pkgconfigDepends = [ libyamlcppPIC ] ;
+#  enableParallelBuilding = true; 
 
   # Necessary to find libdl (for linux)
-  dlpath = if ( !stdenv.isDarwin ) then "${stdenv.gcc.libc}" else "";
+#  dlpath = if ( !stdenv.isDarwin ) then "${stdenv.gcc.libc}" else "";
 
 
-  preConfigure = '' 
+#  preConfigure = '' 
+#
+#    substituteInPlace bin/atomenv.sh --subst-var prefix
+#    substituteInPlace bin/atomenv.csh --subst-var prefix 
+#    substituteInPlace CMakeModules/FindROOT.cmake --subst-var dlpath 
+#''; 
 
-    substituteInPlace bin/atomenv.sh --subst-var prefix
-    substituteInPlace bin/atomenv.csh --subst-var prefix 
-    substituteInPlace CMakeModules/FindROOT.cmake --subst-var dlpath 
-''; 
-
-
-
-  cmakeFlags = if ( stdenv.isDarwin ) then
-    ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-undefined,dynamic_lookup"  -DCMAKE_VERBOSE_MAKEFILE=ON -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF ''
-               else ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_VERBOSE_MAKEFILE=ON -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF '';
+#  cmakeFlags = if ( stdenv.isDarwin ) then
+#    ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-undefined,dynamic_lookup"  -DCMAKE_VERBOSE_MAKEFILE=ON -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF ''
+#               else ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_VERBOSE_MAKEFILE=ON -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF '';
  
-  # 
-  # -DCMAKE_SKIP_RPATH=FALSE -DCMAKE_SKIP_BUILD_RPATH=FALSE
-  # -DMACOSX_RPATH
-  # -DBoost_SYSTEM_LIBRARY=${boost}/lib/libboost_system.dylib -DBoost_FILESYSTEM_LIBRARY=${boost}/lib/libboost_filesystem.dylib
-  meta = { 
-    priority  = "9";
-  };
+#  meta = { 
+#    priority  = "9";
+#  };
 
-}
+#}

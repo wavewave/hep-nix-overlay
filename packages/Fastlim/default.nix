@@ -10,8 +10,6 @@ stdenv.mkDerivation {
   };
   enableParallelBuilding = true; 
 
-  #builder = ./builder.sh;
-
   buildPhase = '' 
     for i in *.py; do 
       substituteInPlace $i --replace "/usr/bin/env python" "${python}/bin/python"
@@ -29,10 +27,6 @@ stdenv.mkDerivation {
     cp -a $sourceRoot $out/share/Fastlim/1.0
  
   '';
-
-  
-  
-  #dlpath = if ( !stdenv.isDarwin ) then "${stdenv.gcc.libc}" else "";
 
   meta = { 
 
