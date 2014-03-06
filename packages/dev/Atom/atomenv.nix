@@ -1,25 +1,25 @@
-{ pkgs, root5 }:
+{ pkgs, Atom, root5 }:
  
 pkgs.myEnvFun { 
-  name = "atom-dev";
+  name = "atom";
   buildInputs = with pkgs; [
     pythonFull
-    root5 
+    Atom
+    root5
     boost
     stdenv
-  ];
+    pythonPackages.ipython
+  ]; 
+  # ++ (if (stdenv.isDarwin) then [] else [pythonPackages.ipython]); 
   
   extraCmds = with pkgs; if(stdenv.isDarwin) then ''
+    source ${Atom}/bin/atomenv.sh
     source ${root5}/bin/thisroot.sh
-    #export DYLD_LIBRARY_PATH=${stdenv.gcc.gcc}/lib:${boost}/lib:$DYLD_LIBRARY_PATH
-
+    export DYLD_LIBRARY_PATH=${stdenv.gcc.gcc}/lib:${Atom}/lib:${boost}/lib:$DYLD_LIBRARY_PATH
   ''
     else ''
+    source ${Atom}/bin/atomenv.sh
     source ${root5}/bin/thisroot.sh
     export LD_LIBRARY_PATH=
   '';
 }
-
-    #source ${AtomDev}/bin/atomenv.sh
-
-    #source ${AtomDev}/bin/atomenv.sh
