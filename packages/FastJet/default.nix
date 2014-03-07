@@ -1,8 +1,8 @@
 { stdenv, fetchurl}: # , libtool, gmp, mpfr }: # ,  cgal, boost }:
 #, cgal 
 
-stdenv.mkDerivation { 
-  name = "FastJet"; 
+stdenv.mkDerivation rec { 
+  name = "FastJet-${version}"; 
   version = "3.0.6";
   src = fetchurl { 
     url = "http://fastjet.fr/repo/fastjet-3.0.6.tar.gz";

@@ -1,7 +1,8 @@
 { pkgs, root5 }:
- 
-pkgs.myEnvFun { 
-  name = "root5";
+
+let version = "34.12";
+in pkgs.myEnvFun rec { 
+  name = "root5-${version}";
   buildInputs = with pkgs; [
     pythonFull 
     root5

@@ -1,7 +1,8 @@
 { pkgs, Atom, root5 }:
  
-pkgs.myEnvFun { 
-  name = "atom";
+let version="0.1";
+in pkgs.myEnvFun { 
+  name = "atom-${version}";
   buildInputs = with pkgs; [
     pythonFull
     Atom

@@ -1,7 +1,7 @@
 { stdenv, fetchurl, python, buildPythonPackage, pythonPackages, pyminuit2 }:
  
 buildPythonPackage rec { 
-  name = "professor"; 
+  name = "professor-${version}"; 
   version = "1.3.3";
   src = fetchurl { 
     url = "http://www.hepforge.org/archive/professor/professor-1.3.3.tar.bz2";

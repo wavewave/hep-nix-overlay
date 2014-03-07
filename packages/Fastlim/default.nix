@@ -1,7 +1,7 @@
 { stdenv, fetchurl, python }:
 
-stdenv.mkDerivation { 
-  name = "Fastlim"; 
+stdenv.mkDerivation rec { 
+  name = "Fastlim-${version}"; 
   version = "0.1";
 
   src = fetchurl { 

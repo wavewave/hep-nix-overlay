@@ -1,7 +1,7 @@
 { stdenv, fetchurl, libtool, m4, automake, autoconf, gsl, boost, HepMC, FastJet, libyamlcppPIC, python, swig}:
  
-stdenv.mkDerivation { 
-  name = "Rivet"; 
+stdenv.mkDerivation rec { 
+  name = "Rivet-${version}"; 
   version = "1.8.1";
 
   src = fetchurl { 

@@ -1,7 +1,8 @@
 { stdenv, HROOT-generate }:
 
-stdenv.mkDerivation { 
-  name = "HROOT-src-tree.tar.gz";
+stdenv.mkDerivation rec { 
+  name = "HROOT-src-tree-${version}.tar.gz";
+  version = "0.8";
   src = [./HROOT-src.tar ];
   builder = ./build.sh;
   buildDepends = [ HROOT-generate ];

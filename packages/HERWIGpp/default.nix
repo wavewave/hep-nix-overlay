@@ -1,7 +1,7 @@
 { stdenv, fetchurl, gfortran, gsl, ThePEG, boost, FastJet }:
  
-stdenv.mkDerivation { 
-  name = "Herwig++"; 
+stdenv.mkDerivation rec { 
+  name = "Herwig++-${version}"; 
   version = "2.7.0";
   src = fetchurl { 
     url = "http://www.hepforge.org/archive/herwig/Herwig++-2.7.0.tar.bz2";

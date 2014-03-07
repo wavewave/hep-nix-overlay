@@ -1,8 +1,8 @@
 { stdenv, fetchurl, gsl, zlib, HepMC, LHAPDF, Rivet, FastJet
 , libyamlcppPIC }:
  
-stdenv.mkDerivation { 
-  name = "ThePEG"; 
+stdenv.mkDerivation rec { 
+  name = "ThePEG-${version}"; 
   version = "1.9.0";
   src = fetchurl { 
     url = "http://www.hepforge.org/archive/thepeg/ThePEG-1.9.0.tar.bz2";

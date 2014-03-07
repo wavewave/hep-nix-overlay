@@ -9,12 +9,12 @@ rec {
 			inherit YODA;
 		      };
 
-      AtomDev      = callPackage ./packages/dev/Atom {
-			inherit root5 HepMC FastJet cython0192; 
-			inherit (pkgs) gsl pkgconfig; 
-			inherit libyamlcppPIC;
-			inherit YODA;
-		      };
+      #AtomDev      = callPackage ./packages/dev/Atom {
+      #			inherit root5 HepMC FastJet cython0192; 
+      #			inherit pkgconfig; 
+      #			inherit libyamlcppPIC;
+      #			inherit YODA;
+      #		      };
 
       AtomEnv       = callPackage ./packages/Atom/atomenv.nix {
 			inherit pkgs;

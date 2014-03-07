@@ -8,7 +8,7 @@
 # Rivet,
 
 stdenv.mkDerivation rec { 
-  name = "Atom"; 
+  name = "Atom-${version}"; 
   version = "0.1";
 
   src = fetchgit { 

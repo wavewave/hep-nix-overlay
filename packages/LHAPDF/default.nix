@@ -1,7 +1,7 @@
 { stdenv, fetchurl, gfortran, python, swig }:
  
-stdenv.mkDerivation { 
-  name = "LHAPDF"; 
+stdenv.mkDerivation rec { 
+  name = "LHAPDF-${version}"; 
   version = "5.9.1";
   src = fetchurl { 
     url = "http://www.hepforge.org/archive/lhapdf/lhapdf-5.9.1.tar.gz";

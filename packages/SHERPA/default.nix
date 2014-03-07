@@ -1,7 +1,7 @@
 { stdenv, fetchurl, gfortran }:
  
-stdenv.mkDerivation { 
-  name = "SHERPA"; 
+stdenv.mkDerivation rec { 
+  name = "SHERPA-${version}"; 
   version = "2.0.0";
   src = fetchurl { 
     url = "http://www.hepforge.org/archive/sherpa/SHERPA-MC-2.0.0.tar.gz";

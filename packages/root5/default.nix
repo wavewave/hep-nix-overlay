@@ -3,8 +3,9 @@
 , python, libxml2, gsl, krb5, openssl, pkgconfig, fftw, sqlite, cfitsio
 }:
  
-stdenv.mkDerivation { 
-  name = "root5-34.12"; 
+stdenv.mkDerivation rec { 
+  name = "root5-${version}";
+  version = "34.12";
   src = fetchurl { 
     url = "ftp://root.cern.ch/root/root_v5.34.12.source.tar.gz";
     sha256 = "b471def39ef2ce032a820e46b4c7a699ca0a7f123f4d975a7bf151b49831e802";

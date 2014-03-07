@@ -1,7 +1,7 @@
 { stdenv, fetchurl, HepMC, gfortran }:
  
-stdenv.mkDerivation { 
-  name = "convertStdHep"; 
+stdenv.mkDerivation rec { 
+  name = "convertStdHep-${version}"; 
   version = "0.02.00";
   src = fetchurl { 
     url = "http://cepa.fnal.gov/psm/stdhep/dist/convertStdHep-0.02.00.tar.gz";

@@ -1,7 +1,7 @@
 { stdenv, fetchurl }:
  
-stdenv.mkDerivation { 
-  name = "PYTHIA8"; 
+stdenv.mkDerivation rec { 
+  name = "PYTHIA8-${version}"; 
   version = "180";
   src = fetchurl { 
     url = "http://home.thep.lu.se/~torbjorn/pythia8/pythia8180.tgz";

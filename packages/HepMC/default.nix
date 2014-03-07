@@ -1,7 +1,7 @@
 { stdenv, fetchurl, m4, automake, autoconf, libtool }: 
 
-stdenv.mkDerivation { 
-  name = "HepMC"; 
+stdenv.mkDerivation rec { 
+  name = "HepMC-${version}"; 
   version = "2.06.08";
   src = fetchurl { 
     url = "http://lcgapp.cern.ch/project/simu/HepMC/download/HepMC-2.06.08.tar.gz";

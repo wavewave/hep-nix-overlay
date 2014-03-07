@@ -1,30 +1,62 @@
-{ pkgs, stdenv, fetchgit, cmake, root5, HepMC, gsl, FastJet, pkgconfig
-, cython0192, libyamlcppPIC, YODA
+{ pkgs, stdenv, fetchgit, root5, HepMC, FastJet, pkgconfig, cython0192, libyamlcppPIC, YODA
+}:
+
+# , cmake
+# , gsl
 # , python
 # ,  boost
 # , gtest
 # , Rivet
 # , graphviz
 # , doxygen 
-}:
  
+
+
 let pythonAtom = pkgs.pythonFull.override { 
       # extraLibs = with pkgs.pythonPackages; [ numpy scipy ];
     };
-in pkgs.myEnvFun { 
+    sourcePatches = [ ./findYamlCpp.patch 
+                      ./findROOT.patch 
+                      ./noDoxygen.patch 
+                      ./absolutePathInAtomenv.patch ]; 
+    tet = stdenv.lib.concatStringsSep ":" sourcePatches;
+in pkgs.myEnvFun rec { 
   name = "atom-dev";
 
   buildInputs = with pkgs; [
-    pythonAtom
+    # pythonAtom
     stdenv
   ];
+
+  #    for i in ${sourcePatches}; do 
+  #      echo "applying patch $i"
+  #    done;
   
+
   extraCmds = with pkgs; ''
     export PYTHONPATH=
     export LD_LIBRARY_PATH=
-    unpack () { 
+
+    patchPhase () {
+      echo ${tet}
     }
-    export -f unpack 
+    export -f patchPhase 
+
+    cmakeConfigurePhase () {
+      echo "configure phase";
+    }
+    export -f cmakeConfigurePhase
+
+    #buildPhase () {
+    #  echo "build phase";
+    #} 
+    #export -f buildPhase
+ 
+    #installPhase () {
+    #  echo "install phase";
+    #}
+    #export -f installPhase
+ 
   '';
 }
 

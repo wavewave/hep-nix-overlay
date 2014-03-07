@@ -1,7 +1,7 @@
 { stdenv, fetchurl, boost, python }:
  
-stdenv.mkDerivation { 
-  name = "YODA"; 
+stdenv.mkDerivation rec { 
+  name = "YODA-${version}"; 
   version = "1.0.4";
 
   src = fetchurl { 

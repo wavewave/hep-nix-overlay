@@ -1,7 +1,7 @@
 { stdenv, fetchurl, python, buildPythonPackage, pythonPackages, root5 }:
  
 buildPythonPackage rec { 
-  name = "pyminuit2"; 
+  name = "pyminuit2-${version}"; 
   version = "1.1.0";
   src = fetchurl { 
     url = "https://pyminuit2.googlecode.com/files/pyminuit2-1.1.0.tar.gz";
