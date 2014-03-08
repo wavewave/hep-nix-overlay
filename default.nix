@@ -16,6 +16,10 @@ rec {
 
       FastJet       = callPackage ./packages/FastJet {
 		      };
+ 
+      FastJetEnv    = callPackage ./packages/FastJet/FastJetEnv.nix { 
+                        inherit FastJet;
+                      };
 
       Fastlim       = callPackage ./packages/Fastlim { 
                     };
