@@ -9,22 +9,10 @@ rec {
 			inherit YODA;
 		      };
 
-      #AtomDev      = callPackage ./packages/dev/Atom {
-      #			inherit root5 HepMC FastJet cython0192; 
-      #			inherit pkgconfig; 
-      #			inherit libyamlcppPIC;
-      #			inherit YODA;
-      #		      };
-
       AtomEnv       = callPackage ./packages/Atom/atomenv.nix {
 			inherit pkgs;
 			inherit Atom root5;
 		      };
-
-      #AtomDevEnv    = callPackage ./packages/dev/Atom/atomenv.nix {
-      #			inherit pkgs;
-      #                  inherit root5;
-      #	      };
 
       FastJet       = callPackage ./packages/FastJet {
 		      };
@@ -213,6 +201,17 @@ rec {
 		       cabal = haskellPackages.cabal;
 		       inherit haskellPackages;
 		     } ;
+
+
+      # development
+      dev = { 
+              AtomDev        = callPackage ./packages/dev/Atom {
+		                 inherit root5 HepMC FastJet cython0192;
+			         inherit (pkgs) gsl pkgconfig; 
+			         inherit libyamlcppPIC;
+		                 inherit YODA;
+		               };
+            };
 
 }
 

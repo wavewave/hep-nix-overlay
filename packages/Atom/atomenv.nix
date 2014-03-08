@@ -11,7 +11,6 @@ in pkgs.myEnvFun {
     stdenv
     pythonPackages.ipython
   ]; 
-  # ++ (if (stdenv.isDarwin) then [] else [pythonPackages.ipython]); 
   
   extraCmds = with pkgs; if(stdenv.isDarwin) then ''
     source ${Atom}/bin/atomenv.sh

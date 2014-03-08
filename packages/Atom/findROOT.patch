@@ -25,10 +25,10 @@ diff -Naur a/CMakeModules/FindROOT.cmake b/CMakeModules/FindROOT.cmake
 +      # workaround for cmake bug in 64 bit:
 +      # see: http://public.kitware.com/mantis/view.php?id=10813
 +      IF( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-+          FIND_LIBRARY( DL_LIB NAMES ${CMAKE_DL_LIBS} dl PATHS @dlpath@/lib64 /usr/lib64 /lib64 NO_DEFAULT_PATH )
++          FIND_LIBRARY( DL_LIB NAMES ${CMAKE_DL_LIBS} dl )
 +      ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 8 )
 +
-+      FIND_LIBRARY( DL_LIB NAMES ${CMAKE_DL_LIBS} dl PATHS @dlpath@/lib64 @dlpath@/lib NO_DEFAULT_PATH )
++      FIND_LIBRARY( DL_LIB NAMES ${CMAKE_DL_LIBS} dl )
 +      MARK_AS_ADVANCED( DL_LIB )
 +    
 +      IF( NOT ROOT_FIND_QUIETLY )
