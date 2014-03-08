@@ -208,14 +208,19 @@ rec {
 
 
       # development
-      dev = { 
+      dev = rec { 
               AtomDev        = callPackage ./packages/dev/Atom {
 		                 inherit root5 HepMC FastJet cython0192;
 			         inherit (pkgs) gsl pkgconfig; 
 			         inherit libyamlcppPIC;
 		                 inherit YODA;
-		               };
+                               };
+              AtomDevEnv      = callPackage ./packages/dev/Atom/AtomEnv.nix {
+                                  inherit pkgs;
+	                          inherit root5;
+                              };
             };
+
 
 }
 
