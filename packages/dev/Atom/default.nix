@@ -1,4 +1,5 @@
-{ stdenv, cmake, root5, HepMC, gsl, FastJet, pkgconfig
+{ stdenv, cmake, git
+, root5, HepMC, gsl, FastJet, pkgconfig
 , python, cython0192, libyamlcppPIC,  boost, YODA, gtest, pkgs
 }:
  
@@ -25,9 +26,9 @@ in stdenv.mkDerivation rec {
               ../../Atom/absolutePathInAtomenv.patch ];
   postPatch = postPatchStr;
 
-  buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
+  buildInputs = [ git cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   #cython0192 
-                  boost YODA gtest
+                  boost YODA gtest  
                   #pkgs.pythonFull
                   #python
                   pythonWithCython 
