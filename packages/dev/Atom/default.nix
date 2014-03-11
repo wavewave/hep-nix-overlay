@@ -4,8 +4,14 @@
 }:
  
 let patchedFiles = [ "CMakeLists.txt"
+                     "CMakeModules/FindCython.cmake"
                      "CMakeModules/FindYamlCpp.cmake"
                      "CMakeModules/FindROOT.cmake"
+                     "CMakeModules/UseCython.cmake"
+                     "master/CMakeModules/FindCython.cmake"
+                     "master/CMakeModules/FindROOT.cmake"
+                     "master/CMakeModules/FindYamlCpp.cmake"
+                     "master/CMakeModules/UseCython.cmake"
                      "bin/atomenv.csh"
                      "bin/atomenv.sh"
                    ];
