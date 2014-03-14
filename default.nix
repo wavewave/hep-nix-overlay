@@ -35,9 +35,13 @@ rec {
 
       HepMC         = callPackage ./packages/HepMC { };
 
-      LHAPDF        = callPackage ./packages/LHAPDF {
-			#inherit HepMC FastJet; 
-		      };
+      LHAPDF        = callPackage ./packages/LHAPDF { };
+  
+      MadGraph5_aMCatNLO = callPackage ./packages/MadGraph5_aMCatNLO { };
+
+      MadGraph5_aMCatNLOEnv = callPackage ./packages/MadGraph5_aMCatNLO/env.nix {  
+                                inherit MadGraph5_aMCatNLO FastJet;
+                              };
 
       Rivet         = callPackage ./packages/Rivet {
 			inherit HepMC FastJet;
