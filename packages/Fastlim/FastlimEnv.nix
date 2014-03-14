@@ -1,6 +1,6 @@
 { pkgs, Fastlim }:
 
-let version = "0.1";
+let version = Fastlim.version;
     pythonFastlim = pkgs.pythonFull.override { 
       extraLibs = with pkgs.pythonPackages; [ numpy scipy ];
     };
@@ -10,16 +10,14 @@ in pkgs.myEnvFun rec {
   buildInputs = with pkgs; [
     pythonFastlim
     stdenv
-    #pythonPackages.numpy
-    #pythonPackages.scipy
   ];
   
   extraCmds = with pkgs; ''
     export PYTHONPATH=
     export LD_LIBRARY_PATH=
     unpack () { 
-      cp -a ${Fastlim}/share/Fastlim/1.0 fastlim-1.0; 
-      chmod -R u+w fastlim-1.0; 
+      tar xvzf ${Fastlim}/share/Fastlim-${version}/Fastlim-${version}.tar.gz; 
+      #chmod -R u+w fastlim-1.0; 
     }
     export -f unpack 
   '';

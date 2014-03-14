@@ -1,6 +1,6 @@
 { pkgs, evchain }:
 
-let version = "0.999";
+let version = evchain.version;
     hsEnvEvchain = with (pkgs // pkgs.haskellPackages); ghcWithPackages (self : [ evchain ]);
 in pkgs.myEnvFun { 
   name = "evchain-${version}";

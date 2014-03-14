@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec { 
   name = "Fastlim-${version}"; 
-  version = "0.1";
+  version = "1.0";
 
   src = fetchurl { 
     url = "http://fastlim.web.cern.ch/fastlim/downloads/fastlim-1.0.tar.gz";
@@ -23,9 +23,9 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     cd ..
-    mkdir -p $out/share/Fastlim 
-    cp -a $sourceRoot $out/share/Fastlim/1.0
- 
+    tar cvzf Fastlim-${version}.tar.gz $sourceRoot
+    mkdir -p $out/share/Fastlim-${version}
+    cp Fastlim-${version}.tar.gz $out/share/Fastlim-${version}
   '';
 
   meta = { 
