@@ -1,10 +1,17 @@
-{ stdenv, cmake, root5, HepMC, gsl, FastJet, pkgconfig
+{ stdenv, cmake, git
+, root5, HepMC, gsl, FastJet, pkgconfig
 , python, cython0192, libyamlcppPIC,  boost, YODA, gtest, pkgs
 }:
  
 let patchedFiles = [ "CMakeLists.txt"
+                     "CMakeModules/FindCython.cmake"
                      "CMakeModules/FindYamlCpp.cmake"
                      "CMakeModules/FindROOT.cmake"
+                     "CMakeModules/UseCython.cmake"
+                     "master/CMakeModules/FindCython.cmake"
+                     "master/CMakeModules/FindROOT.cmake"
+                     "master/CMakeModules/FindYamlCpp.cmake"
+                     "master/CMakeModules/UseCython.cmake"
                      "bin/atomenv.csh"
                      "bin/atomenv.sh"
                    ];
@@ -25,9 +32,9 @@ in stdenv.mkDerivation rec {
               ../../Atom/absolutePathInAtomenv.patch ];
   postPatch = postPatchStr;
 
-  buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
+  buildInputs = [ git cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   #cython0192 
-                  boost YODA gtest
+                  boost YODA gtest  
                   #pkgs.pythonFull
                   #python
                   pythonWithCython 
