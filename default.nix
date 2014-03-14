@@ -182,6 +182,10 @@ rec {
                               inherit madgraph-auto pipeline-eventgen;
 			    } ;
 
+      evchainEnv = callPackage ./packages/evchain/evchainEnv.nix {
+                     inherit evchain;
+                   };
+
       madgraph-auto = callPackage ./packages/madgraph-auto { 
 			cabal = haskellPackages.cabal;
 			inherit haskellPackages;
