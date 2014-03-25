@@ -186,8 +186,8 @@ rec {
                               inherit madgraph-auto pipeline-eventgen;
 			    } ;
 
-      evchainEnv = callPackage ./packages/evchain/evchainEnv.nix {
-                     inherit evchain;
+      evchainEnv = callPackage ./packages/evchain/env.nix {
+                     inherit evchain MadGraph5_aMCatNLO;
                    };
 
       madgraph-auto = callPackage ./packages/madgraph-auto { 
