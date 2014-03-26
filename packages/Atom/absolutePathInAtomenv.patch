@@ -17,7 +17,7 @@ diff -Naur a/bin/atomenv.csh b/bin/atomenv.csh
 +#endif
  
 -set ATOMCFG=` cd ${script_dir} && pwd `/atom-config
-+set ATOMCFG=` @prefix@/bin/atom-config
++set ATOMCFG=@prefix@/bin/atom-config
  
  
  setenv ATOM_PATH `${ATOMCFG} --prefix`
