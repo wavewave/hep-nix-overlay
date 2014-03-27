@@ -29,7 +29,9 @@ in stdenv.mkDerivation rec {
   patches = [ ../../Atom/findYamlCpp.patch 
               ../../Atom/findROOT.patch 
               ../../Atom/noDoxygen.patch 
-              ../../Atom/absolutePathInAtomenv.patch ];
+              ../../Atom/absolutePathInAtomenv.patch 
+              ../../Atom/TestsCMakeEnv.patch
+            ];
   postPatch = postPatchStr;
 
   buildInputs = [ git cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
