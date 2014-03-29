@@ -2,7 +2,7 @@ Binary files Atom/.git/index and Atomx/.git/index differ
 diff -Nurp Atom/Tests/CMakeLists.txt Atomx/Tests/CMakeLists.txt
 --- Atom/Tests/CMakeLists.txt	2014-03-27 07:40:24.918326539 +0100
 +++ Atomx/Tests/CMakeLists.txt	2014-03-27 07:42:05.418395346 +0100
-@@ -33,14 +33,14 @@ function (new_test name libs)
+@@ -33,14 +33,21 @@ function (new_test name libs)
      ENVIRONMENT "ATOM_PLUGINS_PATH=${CMAKE_BINARY_DIR}/lib;ATOM_ANALYSIS_PATH=${CMAKE_BINARY_DIR}/lib;ATOM_REF_PATH=${CMAKE_SOURCE_DIR}/Analyses/refdata;ATOM_INFO_PATH=${CMAKE_SOURCE_DIR}/Analyses/anainfo")
  
    # adding LD_LIBRARY_PATH for tests
@@ -20,6 +20,13 @@ diff -Nurp Atom/Tests/CMakeLists.txt Atomx/Tests/CMakeLists.txt
 +       APPEND
 +       PROPERTY 
 +         ENVIRONMENT LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/lib
++     )
++   else(NOT APPLE)
++     set_property( 
++       TEST Test${name}
++       APPEND
++       PROPERTY 
++         ENVIRONMENT DYLD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/lib:${Boost_LIBRARY_DIR}
 +     )
 +   endif(NOT APPLE)
  
