@@ -41,6 +41,9 @@ in stdenv.mkDerivation rec {
                   #python
                   pythonWithCython 
                 ] ++ (if (!stdenv.isDarwin) then [stdenv.gcc.libc] else []);
+  propagatedBuildInputs = [ pkgs.pythonPackages.readline ];
+
+
   pkgconfigDepends = [ libyamlcppPIC ] ;
   enableParallelBuilding = true; 
   doCheck = true;
@@ -48,6 +51,7 @@ in stdenv.mkDerivation rec {
   preConfigure = '' 
     substituteInPlace bin/atomenv.sh --subst-var prefix
     substituteInPlace bin/atomenv.csh --subst-var prefix 
+    export DYLD_LIBRARY_PATH=${stdenv.gcc.gcc}/lib:$prefix/lib:${pkgs.readline}/lib:${boost}/lib:$DYLD_LIBRARY_PATH
 ''; 
 
   cmakeFlags = if ( stdenv.isDarwin ) then
