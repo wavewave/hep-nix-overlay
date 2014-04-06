@@ -25,7 +25,9 @@ let patchedFiles = [ "CMakeLists.txt"
     
 in stdenv.mkDerivation rec { 
   name = "Atom-dev"; 
-  src = ./.; 
+  # src = ./.; 
+  # src = /Users/iwkim/temp/testAtomDev/AtomNew;
+  src = ./.;
   patches = [ ../../Atom/findYamlCpp.patch 
               ../../Atom/findROOT.patch 
               ../../Atom/noDoxygen.patch 
