@@ -7,7 +7,7 @@ let pythonWithCython = pkgs.pythonFull.override {
                        }; 
 in stdenv.mkDerivation rec { 
   name = "Atom-${version}"; 
-  version = "0.1";
+  version = "0.1x";
 
   src = fetchgit { 
     url = "/Users/iwkim/repo/srcc/Atom";
@@ -26,7 +26,7 @@ in stdenv.mkDerivation rec {
 
 
   preConfigure = '' 
-
+ 
     substituteInPlace bin/atomenv.sh --subst-var prefix
     substituteInPlace bin/atomenv.csh --subst-var prefix 
 

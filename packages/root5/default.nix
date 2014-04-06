@@ -5,10 +5,10 @@
  
 stdenv.mkDerivation rec { 
   name = "root5-${version}";
-  version = "34.12";
+  version = "34.18";
   src = fetchurl { 
-    url = "ftp://root.cern.ch/root/root_v5.34.12.source.tar.gz";
-    sha256 = "b471def39ef2ce032a820e46b4c7a699ca0a7f123f4d975a7bf151b49831e802";
+    url = "ftp://root.cern.ch/root/root_v5.34.18.source.tar.gz";
+    sha256 = "0rrm5bw4xyhffd7yhz0c9n67r6sdphqvv1frmfyfacbbszkxr5li";
   };
   enableParallelBuilding = true;
   buildInputs = [ cmake gfortran zlib libX11 libXext libXpm libXft pcre freetype 
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
                   gsl krb5 libxml2 openssl
                   pkgconfig fftw sqlite cfitsio
                 ];
-  patches = [ ./no-sys-dirs.patch ]; #./no-system-python.patch ];
+  patches = [ ./no-sys-dirs.patch ]; 
   preConfigure = '' 
     #export pythonnix=${python}
     substituteInPlace cmake/modules/FindGSL.cmake --replace "/usr/bin/" "" --replace "/usr/bin" "" --replace "/usr/local/bin" "" 

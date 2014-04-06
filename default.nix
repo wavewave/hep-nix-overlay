@@ -86,6 +86,12 @@ rec {
 
       root5 = callPackage ./packages/root5 {} ;
 
+      root5min = callPackage ./packages/root5/minimal.nix {                       
+  #                 stdenv = clangStdenv; 
+                    stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
+                             in if stdenv.isDarwin then clang33Stdenv else stdenv;
+                 };
+
       rootEnv = callPackage ./packages/root5/rootEnv.nix {
                   inherit root5;
                 };
@@ -218,13 +224,14 @@ rec {
       # development
       dev = rec { 
               AtomDev        = callPackage ./packages/dev/Atom {
-		                 inherit root5 HepMC FastJet cython0192;
+		                 inherit root5min HepMC FastJet cython0192;
 			         inherit (pkgs) gsl pkgconfig; 
 			         inherit libyamlcppPIC;
-		                 inherit YODA;
+		                 inherit  YODA;
                                };
               AtomDevEnv      = callPackage ./packages/dev/Atom/AtomEnv.nix {
                                   inherit pkgs;
+                                  inherit AtomDev;
 	                          inherit root5;
                               };
             };

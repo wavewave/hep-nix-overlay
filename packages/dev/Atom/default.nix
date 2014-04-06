@@ -1,5 +1,5 @@
 { stdenv, cmake, git
-, root5, HepMC, gsl, FastJet, pkgconfig
+, root5min, HepMC, gsl, FastJet, pkgconfig
 , python, cython0192, libyamlcppPIC,  boost, YODA, gtest, pkgs
 }:
  
@@ -34,7 +34,7 @@ in stdenv.mkDerivation rec {
             ];
   postPatch = postPatchStr;
 
-  buildInputs = [ git cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
+  buildInputs = [ git cmake root5min HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   #cython0192 
                   boost YODA gtest  
                   #pkgs.pythonFull
@@ -57,6 +57,8 @@ in stdenv.mkDerivation rec {
   cmakeFlags = if ( stdenv.isDarwin ) then
     ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-undefined,dynamic_lookup"  -DCMAKE_VERBOSE_MAKEFILE=ON -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=true''
                else ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_VERBOSE_MAKEFILE=ON -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=true'';
+
+  dontPatchShebangs = true; 
  
   meta = { 
   };

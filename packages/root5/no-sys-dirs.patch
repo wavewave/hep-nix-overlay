@@ -1,19 +1,19 @@
-diff -Naur a/cmake/modules/RootNewMacros.cmake b/cmake/modules/RootNewMacros.cmake
---- a/cmake/modules/RootNewMacros.cmake	2013-11-19 16:49:10.000000000 +0100
-+++ b/cmake/modules/RootNewMacros.cmake	2014-01-14 20:22:24.000000000 +0100
-@@ -46,7 +46,7 @@
- 
- if(APPLE)
-    set(ROOT_LIBRARY_PROPERTIES ${ROOT_LIBRARY_PROPERTIES} 
--       INSTALL_NAME_DIR "@rpath"
-+       INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/lib
-        BUILD_WITH_INSTALL_RPATH ON)
+diff -Nurp a/cmake/modules/RootNewMacros.cmake b/cmake/modules/RootNewMacros.cmake
+--- a/cmake/modules/RootNewMacros.cmake	2014-03-14 16:21:52.000000000 +0100
++++ b/cmake/modules/RootNewMacros.cmake	2014-04-03 20:36:43.000000000 +0200
+@@ -53,7 +53,7 @@ if(APPLE)
+          BUILD_WITH_INSTALL_RPATH ON)
+   else()
+     set(ROOT_LIBRARY_PROPERTIES ${ROOT_LIBRARY_PROPERTIES}
+-         INSTALL_NAME_DIR "@rpath"
++         INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
+          BUILD_WITH_INSTALL_RPATH ON)
+   endif()
  endif()
- 
-diff -Naur a/cmake/modules/SetUpMacOS.cmake b/cmake/modules/SetUpMacOS.cmake
---- a/cmake/modules/SetUpMacOS.cmake	2013-11-19 16:49:10.000000000 +0100
-+++ b/cmake/modules/SetUpMacOS.cmake	2014-01-14 17:11:55.000000000 +0100
-@@ -8,7 +8,7 @@
+diff -Nurp a/cmake/modules/SetUpMacOS.cmake b/cmake/modules/SetUpMacOS.cmake
+--- a/cmake/modules/SetUpMacOS.cmake	2014-03-14 16:21:52.000000000 +0100
++++ b/cmake/modules/SetUpMacOS.cmake	2014-04-04 10:52:08.000000000 +0200
+@@ -8,7 +8,7 @@ set(CILIBS "-lm ${EXTRA_LDFLAGS} ${FINK_
  set(CMAKE_M_LIBS -lm)
  
  #---This is needed to help CMake to locate the X11 headers in the correct place and not under /usr/include
@@ -22,42 +22,98 @@ diff -Naur a/cmake/modules/SetUpMacOS.cmake b/cmake/modules/SetUpMacOS.cmake
  #---------------------------------------------------------------------------------------------------------
  
  if (CMAKE_SYSTEM_NAME MATCHES Darwin)
-@@ -35,8 +35,8 @@
+@@ -28,22 +28,22 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
      #TODO: check haveconfig and rpath -> set rpath true
      #TODO: check Thread, define link command
      #TODO: more stuff check configure script
 -    execute_process(COMMAND /usr/sbin/sysctl machdep.cpu.extfeatures OUTPUT_VARIABLE SYSCTL_OUTPUT)
 -    if(${SYSCTL_OUTPUT} MATCHES 64)
-+    #execute_process(COMMAND /usr/sbin/sysctl machdep.cpu.extfeatures OUTPUT_VARIABLE SYSCTL_OUTPUT)
-+    #if(${SYSCTL_OUTPUT} MATCHES 64)
++#    execute_process(COMMAND /usr/sbin/sysctl machdep.cpu.extfeatures OUTPUT_VARIABLE SYSCTL_OUTPUT)
++#    if(${SYSCTL_OUTPUT} MATCHES 64)
         MESSAGE(STATUS "Found a 64bit system") 
         set(ROOT_ARCHITECTURE macosx64)
         SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
-@@ -45,12 +45,12 @@
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
-        SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m64")
-        SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m64")
+-       SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS} -m64")
+-       SET(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -m64")
+-       SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
+-       SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m64")
+-       SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m64")
 -    else(${SYSCTL_OUTPUT} MATCHES 64)
 -       MESSAGE(STATUS "Found a 32bit system") 
 -       SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
 -       SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
 -       SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m32")
 -    endif(${SYSCTL_OUTPUT} MATCHES 64)
-+    #else(${SYSCTL_OUTPUT} MATCHES 64)
-+    #   MESSAGE(STATUS "Found a 32bit system") 
-+    #   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
-+    #   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
-+    #   SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m32")
-+    #endif(${SYSCTL_OUTPUT} MATCHES 64)
++       SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS} -m64 ")
++       SET(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -m64 ")
++       SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 ")
++       SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m64 ")
++       SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m64 ")
++#    else(${SYSCTL_OUTPUT} MATCHES 64)
++#       MESSAGE(STATUS "Found a 32bit system") 
++#       SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
++#       SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
++#       SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m32")
++#    endif(${SYSCTL_OUTPUT} MATCHES 64)
    endif()
    
-   if (CMAKE_COMPILER_IS_GNUCXX)
-@@ -126,7 +126,7 @@
+   if(MACOSX_VERSION VERSION_GREATER 10.6)
+@@ -62,8 +62,8 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+      message(STATUS "Found GNU compiler collection")
+      execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+ 
+-     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -W -Wall -Woverloaded-virtual -fsigned-char -fno-common")
+-     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pipe -W -Wall -fsigned-char -fno-common")
++     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -W -Wall -Woverloaded-virtual -fsigned-char -fno-common -mstackrealign")
++     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pipe -W -Wall -fsigned-char -fno-common -mstackrealign")
+      SET(CMAKE_Fortran_FLAGS "${CMAKE_FORTRAN_FLAGS} -std=legacy")
+      SET(CINT_CXX_DEFINITIONS "-DG__REGEXP -DG__UNIX -DG__SHAREDLIB -DG__ROOT -DG__REDIRECTIO -DG__OSFDLL -DG__STD_EXCEPTION")
+      SET(CINT_C_DEFINITIONS "-DG__REGEXP -DG__UNIX -DG__SHAREDLIB -DG__ROOT -DG__REDIRECTIO -DG__OSFDLL -DG__STD_EXCEPTION")
+@@ -75,14 +75,14 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+      set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -bind_at_load -m64")
+ 
+      # Select flags.
+-     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
+-     set(CMAKE_CXX_FLAGS_RELEASE        "-O2")
+-     set(CMAKE_CXX_FLAGS_DEBUG          "-g -O2 -fno-reorder-blocks -fno-schedule-insns -fno-inline")
++     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O0 -g")
++     set(CMAKE_CXX_FLAGS_RELEASE        "-O0")
++     set(CMAKE_CXX_FLAGS_DEBUG          "-g -O0 -fno-reorder-blocks -fno-schedule-insns -fno-inline")
+      set(CMAKE_CXX_FLAGS_DEBUGFULL      "-g3 -fno-inline")
+      set(CMAKE_CXX_FLAGS_PROFILE        "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+-     set(CMAKE_C_FLAGS_RELWITHDEBINFO   "-O2 -g")
+-     set(CMAKE_C_FLAGS_RELEASE          "-O2")
+-     set(CMAKE_C_FLAGS_DEBUG            "-g -O2 -fno-reorder-blocks -fno-schedule-insns -fno-inline")
++     set(CMAKE_C_FLAGS_RELWITHDEBINFO   "-O0 -g")
++     set(CMAKE_C_FLAGS_RELEASE          "-O0")
++     set(CMAKE_C_FLAGS_DEBUG            "-g -O0 -fno-reorder-blocks -fno-schedule-insns -fno-inline")
+      set(CMAKE_C_FLAGS_DEBUGFULL        "-g3 -fno-inline")
+      set(CMAKE_C_FLAGS_PROFILE          "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+    
+@@ -110,13 +110,13 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+      set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -bind_at_load -m64")
+ 
+      # Select flags.
+-     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
+-     set(CMAKE_CXX_FLAGS_RELEASE        "-O2")
++     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O0 -g")
++     set(CMAKE_CXX_FLAGS_RELEASE        "-O0")
+      set(CMAKE_CXX_FLAGS_DEBUG          "-g  -fno-inline")
+      set(CMAKE_CXX_FLAGS_DEBUGFULL      "-g3 -fno-inline")
+      set(CMAKE_CXX_FLAGS_PROFILE        "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+-     set(CMAKE_C_FLAGS_RELWITHDEBINFO   "-O2 -g")
+-     set(CMAKE_C_FLAGS_RELEASE          "-O2")
++     set(CMAKE_C_FLAGS_RELWITHDEBINFO   "-O0 -g")
++     set(CMAKE_C_FLAGS_RELEASE          "-O0")
+      set(CMAKE_C_FLAGS_DEBUG            "-g  -fno-inline")
+      set(CMAKE_C_FLAGS_DEBUGFULL        "-g3 -fno-inline")
+      set(CMAKE_C_FLAGS_PROFILE          "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+@@ -131,7 +131,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
    endif()
    
    #---Set Linker flags----------------------------------------------------------------------
 -  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath,@loader_path/../lib")
-+  #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath,@loader_path/../lib")
++#  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath,@loader_path/../lib")
  
    
  else (CMAKE_SYSTEM_NAME MATCHES Darwin)
