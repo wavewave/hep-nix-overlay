@@ -2,7 +2,7 @@
  
 let version="0.1";
 in pkgs.myEnvFun { 
-  name = "atom-${version}";
+  name = "Atom-${version}";
   buildInputs = with pkgs; [
     pythonFull
     Atom

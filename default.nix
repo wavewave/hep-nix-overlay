@@ -10,7 +10,7 @@ rec {
 			inherit YODA;
 		      };
 
-      AtomEnv       = callPackage ./packages/Atom/atomenv.nix {
+      AtomEnv       = callPackage ./packages/Atom/env.nix {
 			inherit pkgs;
 			inherit Atom; 
                         root5 = root5min;

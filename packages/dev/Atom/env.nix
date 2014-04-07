@@ -1,7 +1,7 @@
 { pkgs, AtomDev, root5 }:
  
 pkgs.myEnvFun { 
-  name = "atom-dev";
+  name = "Atom-dev";
   buildInputs = with pkgs; [
     pythonFull
     AtomDev

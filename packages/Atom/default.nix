@@ -7,7 +7,7 @@ let pythonWithCython = pkgs.pythonFull.override {
                        }; 
 in stdenv.mkDerivation rec { 
   name = "Atom-${version}"; 
-  version = "0.1x";
+  version = "0.1";
 
   src = fetchgit { 
     url = "/Users/iwkim/repo/srcc/Atom";
