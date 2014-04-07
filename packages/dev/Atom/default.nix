@@ -53,14 +53,16 @@ in stdenv.mkDerivation rec {
   preConfigure = '' 
     substituteInPlace bin/atomenv.sh --subst-var prefix
     substituteInPlace bin/atomenv.csh --subst-var prefix 
-    export DYLD_LIBRARY_PATH=${stdenv.gcc.gcc}/lib:$prefix/lib:${pkgs.readline}/lib:${boost}/lib:$DYLD_LIBRARY_PATH
-''; 
+    substituteInPlace bin/atom --replace /usr/bin/env ${pkgs.coreutils}/bin/env
+    substituteInPlace bin/atom-config.in --replace /usr/bin/env ${pkgs.coreutils}/bin/env
+    substituteInPlace bin/aida2root --replace /usr/bin/env ${pkgs.coreutils}/bin/env
+    ''; 
 
   cmakeFlags = if ( stdenv.isDarwin ) then
     ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-undefined,dynamic_lookup"  -DCMAKE_VERBOSE_MAKEFILE=ON -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=true''
                else ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_VERBOSE_MAKEFILE=ON -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=true'';
 
-  dontPatchShebangs = true; 
+  #dontPatchShebangs = true; 
  
   meta = { 
   };

@@ -25,9 +25,9 @@ stdenv.mkDerivation rec {
     #substituteInPlace cmake/modules/SearchInstalledSoftware.cmake --subst-var pythonnix
 '';
   cmakeFlags = if (stdenv.isDarwin) 
-               then "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dgviz:String=OFF -Drpath:String=ON -Dkrb5=OFF -Dmysql=OFF -Dldap=OFF -Dx11=OFF -Dfftw3=OFF -Dfitsio=OFF -Dssl=OFF -Dpython=OFF -Dxml=OFF -Doracle=OFF -Dsqlite=OFF -Dodbc=OFF -Ddcache=OFF -Dgfal=OFF -Dxrootd=OFF -Droofit=OFF -Dtmva=OFF -Dminuit2=OFF -Dreflex=ON -Dfortran=OFF  -Dmathmore=OFF -Dmonalisa=OFF -Dalien=OFF -DCMAKE_BUILD_TYPE=Debug" 
+               then "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dgviz:String=OFF -Drpath:String=ON -Dkrb5=OFF -Dmysql=OFF -Dldap=OFF -Dx11=ON -Dfftw3=OFF -Dfitsio=OFF -Dssl=OFF -Dpython=OFF -Dxml=OFF -Doracle=OFF -Dsqlite=OFF -Dodbc=OFF -Ddcache=OFF -Dgfal=OFF -Dxrootd=OFF -Droofit=OFF -Dtmva=OFF -Dminuit2=OFF -Dreflex=ON -Dfortran=OFF  -Dmathmore=OFF -Dmonalisa=OFF -Dalien=OFF -DCMAKE_BUILD_TYPE=Debug" 
 
-               else "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dgviz:String=OFF -Drpath:String=ON -Dkrb5=OFF -Dmysql=OFF -Dldap=OFF -Dx11=OFF -Dfftw3=OFF -Dfitsio=OFF -Dssl=OFF -Dpython=OFF -Dxml=OFF -Doracle=OFF -Dsqlite=OFF -Dodbc=OFF -Ddcache=OFF -Dgfal=OFF -Dxrootd=OFF -Droofit=OFF -Dtmva=OFF -Dminuit2=OFF -Dreflex=ON -Dfortran=OFF  -Dmathmore=OFF -Dmonalisa=OFF -Dalien=OFF";   
+               else "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dgviz:String=OFF -Drpath:String=ON -Dkrb5=OFF -Dmysql=OFF -Dldap=OFF -Dx11=ON -Dfftw3=OFF -Dfitsio=OFF -Dssl=OFF -Dpython=OFF -Dxml=OFF -Doracle=OFF -Dsqlite=OFF -Dodbc=OFF -Ddcache=OFF -Dgfal=OFF -Dxrootd=OFF -Droofit=OFF -Dtmva=OFF -Dminuit2=OFF -Dreflex=ON -Dfortran=OFF  -Dmathmore=OFF -Dmonalisa=OFF -Dalien=OFF";   
 
   #preBuild = "NIX_ENFORCE_PURITY=0";
 }
