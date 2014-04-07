@@ -12,7 +12,8 @@ rec {
 
       AtomEnv       = callPackage ./packages/Atom/atomenv.nix {
 			inherit pkgs;
-			inherit Atom root5;
+			inherit Atom; 
+                        root5 = root5min;
 		      };
 
       FastJet       = callPackage ./packages/FastJet {
@@ -103,12 +104,12 @@ rec {
 		     cabal = haskellPackages.cabal;
 		     inherit haskellPackages;
                      inherit LHCOAnalysis-type;
-		     #inherit hepNixPackages;
 		   } ;
 
       HROOT-core = callPackage ./packages/HROOT-core {
 		     cabal = haskellPackages.cabal; 
-		     inherit root5 fficxx-runtime HROOT-src-tree; 
+		     inherit fficxx-runtime HROOT-src-tree; 
+                     root5 = root5min;
 		   } ;
 
 
@@ -122,21 +123,25 @@ rec {
 
       HROOT-hist = callPackage ./packages/HROOT-hist {
 		     cabal = haskellPackages.cabal; 
-		     inherit root5 fficxx-runtime HROOT-src-tree HROOT-core; 
+		     inherit fficxx-runtime HROOT-src-tree HROOT-core; 
+                     root5 = root5min;
 		   };
       HROOT-graf = callPackage ./packages/HROOT-graf {
 		     cabal = haskellPackages.cabal;
-		     inherit root5 fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist; 
+		     inherit fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist; 
+                     root5 = root5min;
 		   } ;
 
       HROOT-io   = callPackage ./packages/HROOT-io   {
 		     cabal = haskellPackages.cabal; 
-		     inherit root5 fficxx-runtime HROOT-src-tree HROOT-core;
+		     inherit fficxx-runtime HROOT-src-tree HROOT-core;
+                     root5 = root5min;
 		   } ;
 
       HROOT-math = callPackage ./packages/HROOT-math {
 		     cabal = haskellPackages.cabal; 
-		     inherit root5 fficxx-runtime HROOT-src-tree HROOT-core;
+		     inherit fficxx-runtime HROOT-src-tree HROOT-core;
+                     root5 = root5min;
 		   } ;
 
       HROOT-src-tree = callPackage ./packages/HROOT-src-tree {
