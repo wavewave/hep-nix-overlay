@@ -3,7 +3,6 @@
 with pkgs; 
 rec { 
       Atom          = callPackage ./packages/Atom {
-                        #root5 = root5min;
                         inherit root5;
 			inherit HepMC FastJet cython0192; # Rivet ;
 			inherit (pkgs) gsl pkgconfig; 
@@ -14,7 +13,6 @@ rec {
       AtomEnv       = callPackage ./packages/Atom/env.nix {
 			inherit pkgs;
 			inherit Atom; 
-                        #root5 = root5min;
                         inherit root5;
 		      };
 
@@ -235,7 +233,6 @@ rec {
       # development
       dev = rec { 
               AtomDev        = callPackage ./packages/dev/Atom {
-		                 #inherit root5min 
                                  inherit root5 HepMC FastJet cython0192;
 			         inherit (pkgs) gsl pkgconfig; 
 			         inherit libyamlcppPIC;

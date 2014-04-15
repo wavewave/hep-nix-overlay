@@ -1,5 +1,5 @@
 { stdenv, cmake, git
-, root5min, HepMC, gsl, FastJet, pkgconfig
+, root5, HepMC, gsl, FastJet, pkgconfig
 , python, cython0192, libyamlcppPIC,  boost, YODA, gtest, pkgs
 }:
  
@@ -36,7 +36,7 @@ in stdenv.mkDerivation rec {
             ];
   postPatch = postPatchStr;
 
-  buildInputs = [ git cmake root5min HepMC gsl FastJet pkgconfig libyamlcppPIC 
+  buildInputs = [ git cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   #cython0192 
                   boost YODA gtest  
                   #pkgs.pythonFull
