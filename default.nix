@@ -3,7 +3,8 @@
 with pkgs; 
 rec { 
       Atom          = callPackage ./packages/Atom {
-                        root5 = root5min;
+                        #root5 = root5min;
+                        inherit root5;
 			inherit HepMC FastJet cython0192; # Rivet ;
 			inherit (pkgs) gsl pkgconfig; 
 			inherit libyamlcppPIC;
@@ -13,7 +14,8 @@ rec {
       AtomEnv       = callPackage ./packages/Atom/env.nix {
 			inherit pkgs;
 			inherit Atom; 
-                        root5 = root5min;
+                        #root5 = root5min;
+                        inherit root5;
 		      };
 
       FastJet       = callPackage ./packages/FastJet {
@@ -86,7 +88,10 @@ rec {
 			inherit root5;
 		      };
 
-      root5 = callPackage ./packages/root5 {} ;
+      root5 = callPackage ./packages/root5 {
+                stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
+                         in if stdenv.isDarwin then clang33Stdenv else stdenv;
+               } ;
 
       root5min = callPackage ./packages/root5/minimal.nix {                       
   #                 stdenv = clangStdenv; 
@@ -230,16 +235,17 @@ rec {
       # development
       dev = rec { 
               AtomDev        = callPackage ./packages/dev/Atom {
-		                 inherit root5min HepMC FastJet cython0192;
+		                 #inherit root5min 
+                                 inherit root5 HepMC FastJet cython0192;
 			         inherit (pkgs) gsl pkgconfig; 
 			         inherit libyamlcppPIC;
 		                 inherit  YODA;
                                };
               AtomDevEnv      = callPackage ./packages/dev/Atom/env.nix {
                                   inherit pkgs;
-                                  # inherit FastJet root5min HepMC libyamlcppPIC cython0192 YODA;
                                   inherit AtomDev;
-                                  root5=root5min; 
+                                  #root5=root5min; 
+                                  inherit root5;
                               };
             };
 
