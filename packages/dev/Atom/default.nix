@@ -27,7 +27,7 @@ in stdenv.mkDerivation rec {
   name = "Atom-dev"; 
   # src = ./.; 
   # src = /Users/iwkim/temp/testAtomDev/AtomNew;
-  src = ./.;
+  # src = ./.;
   patches = [ ../../Atom/findYamlCpp.patch 
               ../../Atom/findROOT.patch 
               ../../Atom/noDoxygen.patch 
