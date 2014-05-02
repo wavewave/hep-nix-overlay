@@ -101,6 +101,8 @@ rec {
                   inherit root5;
                 };
 
+      softsusy = callPackage ./packages/softsusy/default.nix { };
+
       # haskell packages
 
       HEPUtil = callPackage ./packages/HEPUtil { 
