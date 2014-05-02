@@ -101,7 +101,11 @@ rec {
                   inherit root5;
                 };
 
-      softsusy = callPackage ./packages/softsusy/default.nix { };
+      softsusy    = callPackage ./packages/softsusy/default.nix { };
+
+      softsusyEnv = callPackage ./packages/softsusy/env.nix { 
+                      inherit softsusy;
+                    };
 
       # haskell packages
 
