@@ -5,9 +5,9 @@ with { hs = haskellPackages; };
 cabal.mkDerivation (self: {
   pname = "conduit-util";
   version = "0.999";
-  src = fetchgit { url = "https://github.com/hep-platform/conduit-util.git"; 
-                   rev = "7b2457fcdb2ccb1e0360a3c68808043e337e7360";
-                   sha256 = "45b43bff12e8615e8f7dad253e1e6a2db8c833759b8970e833107222956b95ab";
+  src = fetchgit { url = "https://github.com/wavewave/conduit-util.git"; 
+                   rev = "29bf8a0a0857fbc5d620841f19d194dfc0fb97ab";
+                   sha256 = "4d9bee0c3885b219d4ddc5dafc7585c4de5f9146f4d65f1e23729dac0a353679";
                  };  
   isLibrary = true;
   isExecutable = false;
