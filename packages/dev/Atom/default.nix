@@ -45,7 +45,6 @@ in stdenv.mkDerivation rec {
                 ] ++ (if (!stdenv.isDarwin) then [stdenv.gcc.libc] else []);
   propagatedBuildInputs = [ pkgs.pythonPackages.readline ];
 
-
   pkgconfigDepends = [ libyamlcppPIC ] ;
   enableParallelBuilding = true; 
   doCheck = true;

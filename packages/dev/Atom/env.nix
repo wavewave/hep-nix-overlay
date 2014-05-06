@@ -28,7 +28,7 @@ pkgs.myEnvFun {
     source ${AtomDev}/bin/atomenv.sh
     source ${root5}/bin/thisroot.sh
     export PYTHONPATH=${YODA}/lib/python2.7/site-packages:${AtomDev}/lib/python2.7/site-packages:${root5}/lib:$PYTHONPATH
-    export LD_LIBRARY_PATH=
+    export LD_LIBRARY_PATH=${AtomDev}/lib:$LD_LIBRARY_PATH
   '';
   #shell = " ${pkgs.bashInteractive}/bin/bash --norc '$@' "; 
   shell = '' if [ $# -eq 0 ]; then ${pkgs.bashInteractive}/bin/bash --norc ; else eval "$1"; fi '' ;
