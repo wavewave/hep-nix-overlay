@@ -6,8 +6,8 @@ hs.cabal.mkDerivation (self: {
   pname = "hep-nix-overlay-tools";
   version = "0.0";
   src = fetchgit { url = "https://github.com/wavewave/hep-nix-overlay-tools.git"; 
-                   rev = "7ef761629dc497bfccef1ae3100e649ed40f647e";
-                   sha256 = "ec682eaa46fb1df88529edea053eca1dfa27930edfcfefa0a19e971027ac8c0c";
+                   rev = "f169317668a19463f55e942a4aa3cde50615acd1";
+                   sha256 = "edd04d3b942926d2d443fcd3426985ccc56b8d7d67c0eb139ee0254786d9dd1f";
                  };  
   isLibrary = false;
   isExecutable = true;
