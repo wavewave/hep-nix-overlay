@@ -235,6 +235,9 @@ rec {
 		       inherit haskellPackages;
 		     } ;
 
+      #tools
+      hep-nix-overlay-tools = callPackage ./packages/tools/hep-nix-overlay-tools { 
+                              };
 
       # development
       dev = rec { 
