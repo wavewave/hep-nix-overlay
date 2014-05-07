@@ -4,7 +4,7 @@ stdenv.mkDerivation rec {
   name = "MadGraph5_aMCatNLO"; 
   version = "2.1.1";
   src = fetchurl { 
-    url = "https://launchpad.net/mg5amcnlo/2.0/2.1.0/+download/MG5_aMC_v2.1.1.tar.gz"
+    url = "https://launchpad.net/mg5amcnlo/2.0/2.1.0/+download/MG5_aMC_v2.1.1.tar.gz";
     sha256 = "0ab0y89g8cip94bk8mqn0gyldpg162c918ypwn0sspsh6yr3wjsk";
   };
   buildInputs = [ ];
