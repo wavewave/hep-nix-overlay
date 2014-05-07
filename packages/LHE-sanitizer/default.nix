@@ -5,9 +5,9 @@ with { hs = haskellPackages; };
 cabal.mkDerivation (self: {
   pname = "LHE-sanitizer";
   version = "0.999";
-  src = fetchgit { url = "https://github.com/hep-platform/LHE-sanitizer.git"; 
-                   rev = "5e2902f067c24740a6e342221eeb6a7a4558cc6d";
-                   sha256 = "ee230e3d8202689c4294bdbf2750fdd26216cad26a1143eed503e7163d75a32e";
+  src = fetchgit { url = "https://github.com/wavewave/LHE-sanitizer.git"; 
+                   rev = "b0a778d560b42255dbf0b4ed46168d864d322101";
+                   sha256 = "aa361e90709b27d76fdcd80cbfaacd24f0b49721a2f737ed5e73005ba106cf72";
                  };  
   isLibrary = true;
   isExecutable = false;
