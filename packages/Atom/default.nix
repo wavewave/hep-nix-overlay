@@ -7,16 +7,17 @@ let pythonWithCython = pkgs.pythonFull.override {
                        }; 
 in stdenv.mkDerivation rec { 
   name = "Atom-${version}"; 
-  version = "0.1";
+  version = "0.9";
 
   src = fetchgit { 
-    url = "/Users/iwkim/repo/srcc/Atom";
-          # "/afs/cern.ch/user/i/ikim/repo/srcc/Atom"; 
+    url = "/afs/cern.ch/user/i/ikim/repo/srcc/Atom";
+          # "/Users/iwkim/repo/srcc/Atom";
+          #  "/afs/cern.ch/user/i/ikim/repo/srcc/Atom"; 
           
-    rev = "7f1b6997cda658f4b7e0f6bb03b9c23a5820aa1b";
-    sha256 = "1e260f14266a36b0c2f2f9529d1d21932e764052ee623fffb5434b14084fee32";
+    rev = "2513750e37a2638d9b5008977a15176af1b91049";
+    sha256 = "b93ccc4f9c304f2983f6d0c1f65757fcda13318589fda3d8e8d316aa8596b402";
   };
-  patches = [ ./findYamlCpp.patch ./findROOT.patch ./noDoxygen.patch ./absolutePathInAtomenv.patch ]; 
+  patches = [ ./findYamlCpp.patch ./findROOT.patch ./noDoxygen.patch ./absolutePathInAtomenv.patch ./TestsCMakeEnv.patch ]; 
 
   buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   pythonWithCython boost YODA gtest
@@ -29,12 +30,15 @@ in stdenv.mkDerivation rec {
  
     substituteInPlace bin/atomenv.sh --subst-var prefix
     substituteInPlace bin/atomenv.csh --subst-var prefix 
+    substituteInPlace bin/atom --replace /usr/bin/env ${pkgs.coreutils}/bin/env
+    substituteInPlace bin/atom-config.in --replace /usr/bin/env ${pkgs.coreutils}/bin/env
+    substituteInPlace bin/aida2root --replace /usr/bin/env ${pkgs.coreutils}/bin/env
 
 ''; 
 
   cmakeFlags = if ( stdenv.isDarwin ) then
-    ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-undefined,dynamic_lookup"  -DCMAKE_VERBOSE_MAKEFILE=ON -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF ''
-               else ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_VERBOSE_MAKEFILE=ON -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF '';
+    ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-undefined,dynamic_lookup"  -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=true''
+               else ''-DCMAKE_CXX_FLAGS=-fPIC  -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=true'';
  
   meta = { 
   };

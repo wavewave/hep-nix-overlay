@@ -16,6 +16,13 @@ rec {
                         inherit root5;
 		      };
 
+      AtomEnvMin    = callPackage ./packages/Atom/envMin.nix {
+			inherit pkgs;
+			inherit Atom; 
+                        inherit root5;
+		      };
+
+
       FastJet       = callPackage ./packages/FastJet {
 		      };
  

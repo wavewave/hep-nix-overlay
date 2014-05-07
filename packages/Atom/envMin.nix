@@ -1,14 +1,13 @@
 { pkgs, Atom, root5 }:
- 
+
 pkgs.myEnvFun { 
-  name = "Atom-${Atom.version}";
+  name = "Atom-${Atom.version}-min";
   buildInputs = with pkgs; [
     pythonFull
     Atom
     root5
     boost
     stdenv
-    pythonPackages.ipython
   ]; 
   
   extraCmds = with pkgs; if(stdenv.isDarwin) then ''
