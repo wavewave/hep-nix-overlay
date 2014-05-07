@@ -5,9 +5,9 @@ with { hs = haskellPackages; };
 cabal.mkDerivation (self: {
   pname = "LHEParser";
   version = "0.999";
-  src = fetchgit { url = "https://github.com/hep-platform/LHEParser.git"; 
-                   rev = "5f0347655de02e84f60ab7ff5ed2824a43c88eb9";
-                   sha256 = "4b85c8cac8218d0834b048c823c3c4244de3d70f9650e0253b723fa9a8bc0c70";
+  src = fetchgit { url = "https://github.com/wavewave/LHEParser.git"; 
+                   rev = "aff783cfd0ece0e826ef2e90f68da4c1aa06fe9b";
+                   sha256 = "0e658e34fdf1ff8541c6fced4d5c8d5a0b7b068b886cad7a2ef1641b4f21baa6";
                  };  
   isLibrary = true;
   isExecutable = false;
