@@ -11,12 +11,12 @@ in stdenv.mkDerivation rec {
 
   src = fetchgit { 
     url = "/Users/iwkim/repo/srcc/Atom";
-          #  "/afs/cern.ch/user/i/ikim/repo/srcc/Atom"; 
+          # "/afs/cern.ch/user/i/ikim/repo/srcc/Atom"; 
           
-    rev = "2513750e37a2638d9b5008977a15176af1b91049";
-    sha256 = "b93ccc4f9c304f2983f6d0c1f65757fcda13318589fda3d8e8d316aa8596b402";
+    rev = "8618848c93aec62ffb83168501b183c49d41cbac";
+    sha256 = "fe58207ed933d69443774af6d1d5c20cfbafb7116ac60f64c932eaee56c936d1";
   };
-  patches = [ ./findYamlCpp.patch ./findROOT.patch ./noDoxygen.patch ./absolutePathInAtomenv.patch ./TestsCMakeEnv.patch ]; 
+  patches = [ ./findYamlCpp.patch ./findROOT.patch ./absolutePathInAtomenv.patch ./TestsCMakeEnv.patch ]; 
 
   buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   pythonWithCython boost YODA gtest
@@ -36,8 +36,8 @@ in stdenv.mkDerivation rec {
 ''; 
 
   cmakeFlags = if ( stdenv.isDarwin ) then
-    ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-undefined,dynamic_lookup"  -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=true''
-               else ''-DCMAKE_CXX_FLAGS=-fPIC  -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=true'';
+    ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-undefined,dynamic_lookup"  -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=true -DBUILD_DOCUMENTATION=OFF'' 
+               else ''-DCMAKE_CXX_FLAGS=-fPIC  -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=true -DBUILD_DOCUMENTATION=OFF'';
  
   meta = { 
   };
