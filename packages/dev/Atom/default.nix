@@ -3,38 +3,34 @@
 , python, cython0192, libyamlcppPIC,  boost, YODA, gtest, pkgs
 }:
  
-let patchedFiles = [ "CMakeLists.txt"
-                     "CMakeModules/FindCython.cmake"
-                     "CMakeModules/FindYamlCpp.cmake"
-                     "CMakeModules/FindROOT.cmake"
-                     "CMakeModules/UseCython.cmake"
-                     "master/CMakeModules/FindCython.cmake"
-                     "master/CMakeModules/FindROOT.cmake"
-                     "master/CMakeModules/FindYamlCpp.cmake"
-                     "master/CMakeModules/UseCython.cmake"
-                     "bin/atomenv.csh"
-                     "bin/atomenv.sh"
-                   ];
-    toGitAssumeUnchangedCommand = s: "git update-index --assume-unchanged ${s}";
-    doGitAssumeUnchanged = stdenv.lib.concatStringsSep ";" (map toGitAssumeUnchangedCommand patchedFiles);
+let #patchedFiles = [ "CMakeLists.txt"
+    #                 "CMakeModules/FindCython.cmake"
+    #                 "CMakeModules/FindYamlCpp.cmake"
+    #                 "CMakeModules/FindROOT.cmake"
+    #                 "CMakeModules/UseCython.cmake"
+    #                 "master/CMakeModules/FindCython.cmake"
+    #                 "master/CMakeModules/FindROOT.cmake"
+    #                 "master/CMakeModules/FindYamlCpp.cmake"
+    #                 "master/CMakeModules/UseCython.cmake"
+    #                 "bin/atomenv.csh"
+    #                 "bin/atomenv.sh"
+    #               ];
+    #toGitAssumeUnchangedCommand = s: "git update-index --assume-unchanged ${s}";
+    #doGitAssumeUnchanged = stdenv.lib.concatStringsSep ";" (map toGitAssumeUnchangedCommand patchedFiles);
 
-    postPatchStr = doGitAssumeUnchanged;
+    # postPatchStr = doGitAssumeUnchanged;
     pythonWithCython = pkgs.pythonFull.override { 
                          extraLibs = [ cython0192 ]; 
                        }; 
     
 in stdenv.mkDerivation rec { 
   name = "Atom-dev"; 
-  # src = ./.; 
-  # src = /Users/iwkim/temp/testAtomDev/AtomNew;
-  # src = ./.;
   patches = [ ../../Atom/findYamlCpp.patch 
               ../../Atom/findROOT.patch 
-              ../../Atom/noDoxygen.patch 
               ../../Atom/absolutePathInAtomenv.patch 
               ../../Atom/TestsCMakeEnv.patch
             ];
-  postPatch = postPatchStr;
+  #postPatch = postPatchStr;
 
   buildInputs = [ git cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   #cython0192 
@@ -43,7 +39,7 @@ in stdenv.mkDerivation rec {
                   #python
                   pythonWithCython 
                 ] ++ (if (!stdenv.isDarwin) then [stdenv.gcc.libc] else []);
-  propagatedBuildInputs = [ pkgs.pythonPackages.readline ];
+  # propagatedBuildInputs = [ pkgs.pythonPackages.readline ];
 
   pkgconfigDepends = [ libyamlcppPIC ] ;
   enableParallelBuilding = true; 
