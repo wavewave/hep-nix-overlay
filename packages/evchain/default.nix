@@ -7,9 +7,9 @@ with { hs = haskellPackages; };
 cabal.mkDerivation (self: {
   pname = "evchain";
   version = "0.999";
-  src = fetchgit { url = "https://github.com/hep-platform/evchain.git"; 
-                   rev = "58ac84179954d6f2e8576d5671c36ef2c588b102";
-                   sha256 = "12ee5f0cd86d0be070dd5824a68e018631e56fccd08fefe828dbbf8d6a5e2a05";
+  src = fetchgit { url = "https://github.com/wavewave/evchain.git"; 
+                   rev = "b0f9c3f4c29ef8fe7f4b0b5bf0ce055380a6fdc0";
+                   sha256 = "3a47ce8e0de202746dc3e49c77721b6237ce3d41c232f8a1aad3df53e62fef7d";
                  };  
   isLibrary = true;
   isExecutable = true;
