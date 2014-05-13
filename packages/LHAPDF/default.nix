@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
   enableParallelBuilding = true;
   patches = [./use_cxx.patch];
  
-  buildInputs = if (stdenv.isDarwin) then [ gfortran ] else [ gfortran python swig ];
+  buildInputs = if (stdenv.isDarwin) then [ gfortran python ] else [ gfortran python swig ];
    
   # configureFlags = "--without-HepMC";
 }
