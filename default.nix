@@ -42,6 +42,10 @@ rec {
 			inherit FastJet;
 		      };     
 
+      HERWIGppEnv   = callPackage ./packages/HERWIGpp/env.nix {
+			inherit HERWIGpp;
+		      };     
+
       HepMC         = callPackage ./packages/HepMC { };
 
       LHAPDF        = callPackage ./packages/LHAPDF { };
