@@ -58,7 +58,7 @@ rec {
 		      };
 
       ThePEG        = callPackage ./packages/ThePEG { 
-			inherit HepMC LHAPDF Rivet FastJet libyamlcppPIC;
+			inherit HepMC LHAPDF FastJet libyamlcppPIC;
 		      };
 
       PYTHIA8       = callPackage ./packages/PYTHIA8 { 
