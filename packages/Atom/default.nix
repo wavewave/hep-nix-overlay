@@ -13,10 +13,10 @@ in stdenv.mkDerivation rec {
     url = "/Users/iwkim/repo/srcc/Atom";
           # "/afs/cern.ch/user/i/ikim/repo/srcc/Atom"; 
           
-    rev = "8618848c93aec62ffb83168501b183c49d41cbac";
-    sha256 = "fe58207ed933d69443774af6d1d5c20cfbafb7116ac60f64c932eaee56c936d1";
+    rev = "1743a6ceb67548a588ea90474b2c534a7dac0222";
+    sha256 = "5e1c8a0e9a10bbbeb465f758c8d2851b6a9c74b4e5384270c5541226a18e028d";
   };
-  patches = [ ./findYamlCpp.patch ./findROOT.patch ./absolutePathInAtomenv.patch ./TestsCMakeEnv.patch ]; 
+  patches = [ ./findYamlCpp.patch ./findROOT.patch ./absolutePathInAtomenv.patch ]; 
 
   buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   pythonWithCython boost YODA gtest
