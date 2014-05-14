@@ -9,6 +9,7 @@ in pkgs.myEnvFun rec {
  
   buildInputs = with pkgs; [
     pythonMG5aMC
+    pkgs.gfortran
     stdenv
   ];
   
