@@ -13,8 +13,8 @@ in stdenv.mkDerivation rec {
     url = "/Users/iwkim/repo/srcc/Atom";
           # "/afs/cern.ch/user/i/ikim/repo/srcc/Atom"; 
           
-    rev = "1743a6ceb67548a588ea90474b2c534a7dac0222";
-    sha256 = "5e1c8a0e9a10bbbeb465f758c8d2851b6a9c74b4e5384270c5541226a18e028d";
+    rev = "4e0b5974cf9ebf9763725c0a1bd63673bb33d618";
+    sha256 = "16db3c6f2d181fe36e98b7965631aa8058a101542ec611772d1f463260c3b68b";
   };
   patches = [ ./findYamlCpp.patch ./findROOT.patch ./absolutePathInAtomenv.patch ]; 
 
