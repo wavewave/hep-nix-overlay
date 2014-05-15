@@ -50,7 +50,9 @@ rec {
 
       LHAPDF        = callPackage ./packages/LHAPDF { };
   
-      MadGraph5_aMCatNLO = callPackage ./packages/MadGraph5_aMCatNLO { };
+      MadGraph5_aMCatNLO = callPackage ./packages/MadGraph5_aMCatNLO { 
+                             inherit pythia-pgs;
+                           };
 
       MadGraph5_aMCatNLOEnv = callPackage ./packages/MadGraph5_aMCatNLO/env.nix {  
                                 inherit MadGraph5_aMCatNLO FastJet;
@@ -96,6 +98,9 @@ rec {
 			inherit pythonPackages;
 			inherit root5;
 		      };
+
+      pythia-pgs    = callPackage ./packages/pythia-pgs {
+                      };
 
       root5 = callPackage ./packages/root5 {
                 stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;

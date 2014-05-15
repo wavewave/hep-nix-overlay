@@ -1,0 +1,39 @@
+diff -Nurp a/input/mg5_configuration.txt b/input/mg5_configuration.txt
+--- a/input/mg5_configuration.txt	2014-04-01 09:44:14.000000000 +0200
++++ b/input/mg5_configuration.txt	2014-05-15 22:59:20.263728145 +0200
+@@ -28,7 +28,7 @@
+ #! Prefered Fortran Compiler
+ #! If None: try to find g77 or gfortran on the system
+ #!
+-# fortran_compiler = None
++fortran_compiler = gfortran
+ 
+ #! Prefered Text Editor
+ #!  Default: use the shell default Editor
+@@ -46,7 +46,7 @@
+ 
+ #! Time allowed to answer question (if no answer takes default value)
+ #!  0: No time limit
+-# timeout = 60
++timeout = 0
+ 
+ #! Pythia8 path.
+ #!  Defines the path to the pythia8 directory.
+@@ -67,7 +67,7 @@
+ #! Control when MG5 checks if he is up-to-date.
+ #! Enter the number of day between two check (0 means never)
+ #! A question is always asked before any update
+-# auto_update = 7
++auto_update = 0
+ 
+ ################################################################################
+ #  INFO FOR MADEVENT / aMC@NLO 
+@@ -112,7 +112,7 @@
+ 
+ #! Pythia-PGS Package
+ #!  relative path start from main directory
+-# pythia-pgs_path = ./pythia-pgs
++pythia-pgs_path = @pythiapgs@
+ 
+ #! Delphes Package
+ #!  relative path start from main directory

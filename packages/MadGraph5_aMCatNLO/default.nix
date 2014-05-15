@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, coreutils, perl, python }:
+{ stdenv, fetchurl, coreutils, perl, python, pythia-pgs }:
  
 stdenv.mkDerivation rec { 
   name = "MadGraph5_aMCatNLO"; 
@@ -9,7 +9,14 @@ stdenv.mkDerivation rec {
   };
   buildInputs = [ ];
 
-  #phases = [ buildPhase distPhase ];
+  patches = [ ./configuration_fix.patch ];
+  
+  pythiapgs="${pythia-pgs}/share/pythia-pgs";
+  
+  configurePhase = ''
+    substituteInPlace input/mg5_configuration.txt --subst-var pythiapgs
+  '';
+
   buildPhase = ''
     find . -type f -name \* | xargs sed -i "s,/usr/bin/env,${coreutils}/bin/env,"
     find . -type f -name \* | xargs sed -i "s,/usr/bin/env,${coreutils}/bin/env,"
