@@ -2,7 +2,7 @@
 
 with pkgs; 
 rec { 
-      Atom          = callPackage ./packages/Atom {
+      Atom          = callPackage ./pkgs/Atom {
                         inherit root5;
 			inherit HepMC FastJet cython0192; # Rivet ;
 			inherit (pkgs) gsl pkgconfig; 
@@ -10,135 +10,135 @@ rec {
 			inherit YODA;
 		      };
 
-      AtomEnv       = callPackage ./packages/Atom/env.nix {
+      AtomEnv       = callPackage ./pkgs/Atom/env.nix {
 			inherit pkgs;
 			inherit Atom; 
                         inherit root5;
 		      };
 
-      AtomEnvMin    = callPackage ./packages/Atom/envMin.nix {
+      AtomEnvMin    = callPackage ./pkgs/Atom/envMin.nix {
 			inherit pkgs;
 			inherit Atom; 
                         inherit root5;
 		      };
 
 
-      FastJet       = callPackage ./packages/FastJet {
+      FastJet       = callPackage ./pkgs/FastJet {
 		      };
  
-      FastJetEnv    = callPackage ./packages/FastJet/FastJetEnv.nix { 
+      FastJetEnv    = callPackage ./pkgs/FastJet/FastJetEnv.nix { 
                         inherit FastJet;
                       };
 
-      Fastlim       = callPackage ./packages/Fastlim { 
+      Fastlim       = callPackage ./pkgs/Fastlim { 
                     };
     
-      FastlimEnv    = callPackage ./packages/Fastlim/FastlimEnv.nix { 
+      FastlimEnv    = callPackage ./pkgs/Fastlim/FastlimEnv.nix { 
                       inherit Fastlim;
                     };
 
-      HERWIGpp      = callPackage ./packages/HERWIGpp {
+      HERWIGpp      = callPackage ./pkgs/HERWIGpp {
 			inherit ThePEG;
 			inherit FastJet;
 		      };     
 
-      HERWIGppEnv   = callPackage ./packages/HERWIGpp/env.nix {
+      HERWIGppEnv   = callPackage ./pkgs/HERWIGpp/env.nix {
 			inherit HERWIGpp;
 		      };     
 
-      HepMC         = callPackage ./packages/HepMC { };
+      HepMC         = callPackage ./pkgs/HepMC { };
 
-      LHAPDF        = callPackage ./packages/LHAPDF { };
+      LHAPDF        = callPackage ./pkgs/LHAPDF { };
   
-      MadGraph5_aMCatNLO = callPackage ./packages/MadGraph5_aMCatNLO { 
+      MadGraph5_aMCatNLO = callPackage ./pkgs/MadGraph5_aMCatNLO { 
                              inherit pythia-pgs;
                            };
 
-      MadGraph5_aMCatNLOEnv = callPackage ./packages/MadGraph5_aMCatNLO/env.nix {  
+      MadGraph5_aMCatNLOEnv = callPackage ./pkgs/MadGraph5_aMCatNLO/env.nix {  
                                 inherit MadGraph5_aMCatNLO FastJet;
                               };
 
-      Rivet         = callPackage ./packages/Rivet {
+      Rivet         = callPackage ./pkgs/Rivet {
 			inherit HepMC FastJet;
 			inherit libyamlcppPIC ; 
 		      };
 
-      ThePEG        = callPackage ./packages/ThePEG { 
+      ThePEG        = callPackage ./pkgs/ThePEG { 
 			inherit HepMC LHAPDF FastJet libyamlcppPIC;
 		      };
 
-      PYTHIA8       = callPackage ./packages/PYTHIA8 { 
+      PYTHIA8       = callPackage ./pkgs/PYTHIA8 { 
 		      };
 
-      SHERPA        = callPackage ./packages/SHERPA { 
+      SHERPA        = callPackage ./pkgs/SHERPA { 
 		      };
 
-      YODA          = callPackage ./packages/YODA {
+      YODA          = callPackage ./pkgs/YODA {
 		      };
 
-      cython0192    = callPackage ./packages/future/cython/0.19.2.nix { 
+      cython0192    = callPackage ./pkgs/future/cython/0.19.2.nix { 
 		      };
 
-      convertStdHep = callPackage ./packages/convertStdHep {
+      convertStdHep = callPackage ./pkgs/convertStdHep {
 			inherit HepMC;
 		      };
 
-      libyamlcpp025 = callPackage ./packages/legacy/libyaml-cpp/0.2.5.nix { 
+      libyamlcpp025 = callPackage ./pkgs/legacy/libyaml-cpp/0.2.5.nix { 
 		      };
 
-      libyamlcppPIC = callPackage ./packages/deriv/libyamlcppPIC { 
+      libyamlcppPIC = callPackage ./pkgs/deriv/libyamlcppPIC { 
 		      };
 
-      professor     = callPackage ./packages/professor {
+      professor     = callPackage ./pkgs/professor {
 			inherit pythonPackages;
 			inherit pyminuit2;
 		      };
 
-      pyminuit2     = callPackage ./packages/pyminuit2 {
+      pyminuit2     = callPackage ./pkgs/pyminuit2 {
 			inherit pythonPackages;
 			inherit root5;
 		      };
 
-      pythia-pgs    = callPackage ./packages/pythia-pgs {
+      pythia-pgs    = callPackage ./pkgs/pythia-pgs {
                       };
 
-      root5 = callPackage ./packages/root5 {
+      root5 = callPackage ./pkgs/root5 {
                 stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
                          in if stdenv.isDarwin then clang33Stdenv else stdenv;
                } ;
 
-      root5min = callPackage ./packages/root5/minimal.nix {                       
+      root5min = callPackage ./pkgs/root5/minimal.nix {                       
   #                 stdenv = clangStdenv; 
                     stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
                              in if stdenv.isDarwin then clang33Stdenv else stdenv;
                  };
 
-      rootEnv = callPackage ./packages/root5/rootEnv.nix {
+      rootEnv = callPackage ./pkgs/root5/rootEnv.nix {
                   inherit root5;
                 };
 
-      softsusy    = callPackage ./packages/softsusy/default.nix { };
+      softsusy    = callPackage ./pkgs/softsusy/default.nix { };
 
-      softsusyEnv = callPackage ./packages/softsusy/env.nix { 
+      softsusyEnv = callPackage ./pkgs/softsusy/env.nix { 
                       inherit softsusy;
                     };
 
       # haskell packages
 
-      HEPUtil = callPackage ./packages/HEPUtil { 
+      HEPUtil = callPackage ./pkgs/HEPUtil { 
 		     cabal = haskellPackages.cabal;
 		     inherit haskellPackages;
                      inherit LHCOAnalysis-type;
 		   } ;
 
-      HROOT-core = callPackage ./packages/HROOT-core {
+      HROOT-core = callPackage ./pkgs/HROOT-core {
 		     cabal = haskellPackages.cabal; 
 		     inherit fficxx-runtime HROOT-src-tree; 
                      root5 = root5min;
 		   } ;
 
 
-      HROOT-generate = callPackage ./packages/HROOT-generate {
+      HROOT-generate = callPackage ./pkgs/HROOT-generate {
 			 cabal = haskellPackages.cabal; 
 			 HStringTemplate = haskellPackages.HStringTemplate;
 			 configurator = haskellPackages.configurator;
@@ -146,57 +146,57 @@ rec {
 			 inherit fficxx;
 		       } ;
 
-      HROOT-hist = callPackage ./packages/HROOT-hist {
+      HROOT-hist = callPackage ./pkgs/HROOT-hist {
 		     cabal = haskellPackages.cabal; 
 		     inherit fficxx-runtime HROOT-src-tree HROOT-core; 
                      root5 = root5min;
 		   };
-      HROOT-graf = callPackage ./packages/HROOT-graf {
+      HROOT-graf = callPackage ./pkgs/HROOT-graf {
 		     cabal = haskellPackages.cabal;
 		     inherit fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist; 
                      root5 = root5min;
 		   } ;
 
-      HROOT-io   = callPackage ./packages/HROOT-io   {
+      HROOT-io   = callPackage ./pkgs/HROOT-io   {
 		     cabal = haskellPackages.cabal; 
 		     inherit fficxx-runtime HROOT-src-tree HROOT-core;
                      root5 = root5min;
 		   } ;
 
-      HROOT-math = callPackage ./packages/HROOT-math {
+      HROOT-math = callPackage ./pkgs/HROOT-math {
 		     cabal = haskellPackages.cabal; 
 		     inherit fficxx-runtime HROOT-src-tree HROOT-core;
                      root5 = root5min;
 		   } ;
 
-      HROOT-src-tree = callPackage ./packages/HROOT-src-tree {
+      HROOT-src-tree = callPackage ./pkgs/HROOT-src-tree {
 			 inherit HROOT-generate;
 		       } ;
 
-      LHCOAnalysis-type = callPackage ./packages/LHCOAnalysis-type { 
+      LHCOAnalysis-type = callPackage ./pkgs/LHCOAnalysis-type { 
 		     cabal = haskellPackages.cabal;
 		     inherit haskellPackages; 
 		   } ;
 
-      LHE-sanitizer = callPackage ./packages/LHE-sanitizer { 
+      LHE-sanitizer = callPackage ./pkgs/LHE-sanitizer { 
 		       cabal = haskellPackages.cabal;
 		       inherit haskellPackages;
                        inherit HEPUtil conduit-util LHEParser;
 		     } ;
 
-      LHEParser = callPackage ./packages/LHEParser { 
+      LHEParser = callPackage ./pkgs/LHEParser { 
 		       cabal = haskellPackages.cabal;
 		       inherit haskellPackages;
                        inherit HEPUtil conduit-util;
 		     } ;
 
-      conduit-util = callPackage ./packages/conduit-util { 
+      conduit-util = callPackage ./pkgs/conduit-util { 
 		       cabal = haskellPackages.cabal;
 		       inherit haskellPackages;
 		       inherit HEPUtil;
 		     } ;
        
-      fficxx = callPackage ./packages/fficxx { 
+      fficxx = callPackage ./pkgs/fficxx { 
 		 cabal = haskellPackages.cabal; 
 		 HStringTemplate = haskellPackages.HStringTemplate;
 		 either = haskellPackages.either; 
@@ -206,16 +206,16 @@ rec {
 		 split = haskellPackages.split;
 	       } ;     
 
-      fficxx-runtime = callPackage ./packages/fficxx-runtime { 
+      fficxx-runtime = callPackage ./pkgs/fficxx-runtime { 
 			 cabal = haskellPackages.cabal; 
 		       } ;     
 
-      devadmin = callPackage ./packages/devadmin { 
+      devadmin = callPackage ./pkgs/devadmin { 
 		       cabal = haskellPackages.cabal;
 		       inherit haskellPackages;
 		     } ;
 
-      evchain = callPackage ./packages/evchain { 
+      evchain = callPackage ./pkgs/evchain { 
 			      cabal = haskellPackages.cabal;
 			      inherit haskellPackages;
                               inherit webdav-manager HEPUtil LHEParser;
@@ -223,47 +223,47 @@ rec {
                               inherit madgraph-auto pipeline-eventgen;
 			    } ;
 
-      evchainEnv = callPackage ./packages/evchain/env.nix {
+      evchainEnv = callPackage ./pkgs/evchain/env.nix {
                      inherit evchain MadGraph5_aMCatNLO;
                    };
 
-      madgraph-auto = callPackage ./packages/madgraph-auto { 
+      madgraph-auto = callPackage ./pkgs/madgraph-auto { 
 			cabal = haskellPackages.cabal;
 			inherit haskellPackages;
                         inherit LHE-sanitizer webdav-manager devadmin;
 		      } ;
 
-      madgraph-auto-model = callPackage ./packages/madgraph-auto-model { 
+      madgraph-auto-model = callPackage ./pkgs/madgraph-auto-model { 
 			      cabal = haskellPackages.cabal;
 			      inherit haskellPackages;
                               inherit madgraph-auto HEPUtil devadmin;
 			    } ;
 
-      pipeline-eventgen = callPackage ./packages/pipeline-eventgen { 
+      pipeline-eventgen = callPackage ./pkgs/pipeline-eventgen { 
 			     cabal = haskellPackages.cabal;
 			     inherit haskellPackages;
                              inherit webdav-manager HEPUtil LHEParser;
                              inherit madgraph-auto madgraph-auto-model;
 			  } ;
 
-      webdav-manager = callPackage ./packages/webdav-manager { 
+      webdav-manager = callPackage ./pkgs/webdav-manager { 
 		       cabal = haskellPackages.cabal;
 		       inherit haskellPackages;
 		     } ;
 
       #tools
-      hep-nix-overlay-tools = callPackage ./packages/tools/hep-nix-overlay-tools { 
+      hep-nix-overlay-tools = callPackage ./pkgs/tools/hep-nix-overlay-tools { 
                               };
 
       # development
       dev = rec { 
-              AtomDev        = callPackage ./packages/dev/Atom {
+              AtomDev        = callPackage ./pkgs/dev/Atom {
                                  inherit root5 HepMC FastJet cython0192;
 			         inherit (pkgs) gsl pkgconfig; 
 			         inherit libyamlcppPIC;
 		                 inherit  YODA;
                                };
-              AtomDevEnv      = callPackage ./packages/dev/Atom/env.nix {
+              AtomDevEnv      = callPackage ./pkgs/dev/Atom/env.nix {
                                   inherit pkgs;
                                   inherit AtomDev;
                                   #root5=root5min; 
