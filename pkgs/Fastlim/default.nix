@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, python }:
+{ stdenv, pkgs, fetchurl, python }:
 
 stdenv.mkDerivation rec { 
   name = "Fastlim-${version}"; 
@@ -12,11 +12,11 @@ stdenv.mkDerivation rec {
 
   buildPhase = '' 
     for i in *.py; do 
-      substituteInPlace $i --replace "/usr/bin/env python" "${python}/bin/python"
+      substituteInPlace $i --replace "/usr/bin/env python" "${pkgs.coreutils}/bin/env python"
     done
     pushd interpolation
     for i in *.py; do 
-      substituteInPlace $i --replace "/usr/bin/env python" "${python}/bin/python"
+      substituteInPlace $i --replace "/usr/bin/env python" "${pkgs.coreutils}/bin/env python"
     done 
     popd    
   '';
