@@ -131,12 +131,18 @@ rec {
                      inherit LHCOAnalysis-type;
 		   } ;
 
+      HROOT    = callPackage ./pkgs/HROOT {
+		     cabal = haskellPackages.cabal; 
+		     inherit fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist HROOT-graf HROOT-math HROOT-io HROOT-tree; 
+                     inherit root5;
+		   } ;
+
+
       HROOT-core = callPackage ./pkgs/HROOT-core {
 		     cabal = haskellPackages.cabal; 
 		     inherit fficxx-runtime HROOT-src-tree; 
-                     root5 = root5min;
+                     inherit root5;
 		   } ;
-
 
       HROOT-generate = callPackage ./pkgs/HROOT-generate {
 			 cabal = haskellPackages.cabal; 
@@ -149,25 +155,32 @@ rec {
       HROOT-hist = callPackage ./pkgs/HROOT-hist {
 		     cabal = haskellPackages.cabal; 
 		     inherit fficxx-runtime HROOT-src-tree HROOT-core; 
-                     root5 = root5min;
+                     inherit root5;
 		   };
       HROOT-graf = callPackage ./pkgs/HROOT-graf {
 		     cabal = haskellPackages.cabal;
 		     inherit fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist; 
-                     root5 = root5min;
+                     inherit root5;
 		   } ;
 
       HROOT-io   = callPackage ./pkgs/HROOT-io   {
 		     cabal = haskellPackages.cabal; 
 		     inherit fficxx-runtime HROOT-src-tree HROOT-core;
-                     root5 = root5min;
+                     inherit root5;
 		   } ;
 
       HROOT-math = callPackage ./pkgs/HROOT-math {
 		     cabal = haskellPackages.cabal; 
 		     inherit fficxx-runtime HROOT-src-tree HROOT-core;
-                     root5 = root5min;
+                     inherit root5;
 		   } ;
+
+      HROOT-tree = callPackage ./pkgs/HROOT-tree {
+		     cabal = haskellPackages.cabal; 
+		     inherit fficxx-runtime HROOT-src-tree HROOT-core;
+                     inherit root5;
+		   } ;
+
 
       HROOT-src-tree = callPackage ./pkgs/HROOT-src-tree {
 			 inherit HROOT-generate;

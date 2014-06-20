@@ -10,6 +10,12 @@ HROOT-hist {
   installbase="@workspace@/HROOT/HROOT-hist"
 }
 
+HROOT-tree { 
+  scriptbase=""
+  workingdir="@workspace@/working/tree"
+  installbase="@workspace@/HROOT/HROOT-tree"
+}
+
 HROOT-graf { 
   scriptbase=""
   workingdir="@workspace@/working/graf"
