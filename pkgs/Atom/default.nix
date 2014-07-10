@@ -13,10 +13,10 @@ in stdenv.mkDerivation rec {
     url = "/Users/iwkim/repo/srcc/Atom";
           # "/afs/cern.ch/user/i/ikim/repo/srcc/Atom"; 
           
-    rev = "507bb01e46afb79da7246ae40fd8bd2a7f66de93";
-    sha256 = "97149e20d1cc6432204467be2fbfe6123e3c9656588fdca7611d4ea5452c9c2b";
+    rev = "4728f481d08bfeba3729c57735605bf426662304";
+    sha256 = "f418704ec93a2a463408e4a56054238e13312739918986798b68d20e72471ea7";
   };
-  patches = [ ./findYamlCpp.patch ./findROOT.patch ./absolutePathInAtomenv.patch ]; 
+  patches = []; 
 
   buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   pythonWithCython boost YODA gtest
@@ -36,8 +36,8 @@ in stdenv.mkDerivation rec {
 ''; 
 
   cmakeFlags = if ( stdenv.isDarwin ) then
-    ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-undefined,dynamic_lookup"  -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=true -DBUILD_DOCUMENTATION=OFF'' 
-               else ''-DCMAKE_CXX_FLAGS=-fPIC  -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=true -DBUILD_DOCUMENTATION=OFF'';
+    ''-DCMAKE_CXX_FLAGS=-fPIC  -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-undefined,dynamic_lookup"  -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=false -DBUILD_DOCUMENTATION=OFF'' 
+               else ''-DCMAKE_CXX_FLAGS=-fPIC  -DYamlCpp_STATIC_LIBRARY=TRUE -DYamlCpp_DIR=${libyamlcppPIC} -DBoost_DIR=${boost} -DBoost_NO_SYSTEM_PATHS=true  -DHEPMC_DIR=${HepMC} -DHEPMC_ROOT_DIR=${HepMC} -DUSE_BOOST_FILESYSTEM=OFF -DENABLE_TESTS=false -DBUILD_DOCUMENTATION=OFF'';
  
   meta = { 
   };
