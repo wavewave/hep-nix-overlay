@@ -10,7 +10,8 @@ in stdenv.mkDerivation rec {
   version = "0.9";
 
   src = fetchgit { 
-    url = "/Users/iwkim/repo/srcc/Atom";
+    url = "http://ianwookim.org/git";
+          # "/Users/iwkim/repo/srcc/Atom";
           # "/afs/cern.ch/user/i/ikim/repo/srcc/Atom"; 
           
     rev = "4728f481d08bfeba3729c57735605bf426662304";
