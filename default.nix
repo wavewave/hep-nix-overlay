@@ -21,6 +21,7 @@ rec {
                         inherit pkgs;
                         inherit Atom;
                         inherit root5;
+                        inherit HepMC YODA;
               };
 
 
