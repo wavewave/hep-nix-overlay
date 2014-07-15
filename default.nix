@@ -14,14 +14,14 @@ rec {
                         inherit pkgs;
                         inherit Atom;
                         inherit root5;
-                        inherit HepMC YODA;
+                        inherit HepMC YODA FastJet;
                       };
 
       AtomEnvMin    = callPackage ./pkgs/Atom/envMin.nix {
                         inherit pkgs;
                         inherit Atom;
                         inherit root5;
-                        inherit HepMC YODA;
+                        inherit HepMC YODA FastJet;
               };
 
 

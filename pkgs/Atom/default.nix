@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, pkgs, cmake, root5, HepMC, gsl, FastJet, pkgconfig
+{ stdenv, fetchurl, pkgs, cmake, root5, HepMC, gsl, FastJet, pkgconfig
 , python, cython0192, libyamlcppPIC,  boost, YODA, gtest
 }:
  
@@ -9,13 +9,9 @@ in stdenv.mkDerivation rec {
   name = "Atom-${version}"; 
   version = "0.9";
 
-  src = fetchgit { 
-    url = "http://ianwookim.org/git";
-          # "/Users/iwkim/repo/srcc/Atom";
-          # "/afs/cern.ch/user/i/ikim/repo/srcc/Atom"; 
-          
-    rev = "4728f481d08bfeba3729c57735605bf426662304";
-    sha256 = "f418704ec93a2a463408e4a56054238e13312739918986798b68d20e72471ea7";
+  src = fetchurl { 
+    url = "http://ianwookim.org/public/atom/Atom-0.9.1-20140715.tar.gz";
+    sha256 = "1qa15fgzw49w7np1r1kgi72g0jaah7ny1g00iwcp9l1c355hbvwa";
   };
   patches = []; 
 
