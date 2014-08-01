@@ -27,6 +27,7 @@ cabal.mkDerivation (self: {
                    hs.text
                  ];
   doCheck = false;
+  jailbreak = true;
   meta = {
     homepage = "";
     description = "Full Orchestration of development environment";

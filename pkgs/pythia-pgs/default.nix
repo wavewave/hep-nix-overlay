@@ -7,7 +7,7 @@ stdenv.mkDerivation rec {
   version = "2.3.0";
   src = fetchurl { 
     url = " http://madgraph.hep.uiuc.edu/Downloads/pythia-pgs_V2.3.0.tar.gz";
-    sha256 = "1rlngg5p25nmcnnc414c2j8hm9lnzahbwdmrj4idzf1k6ddlp2pj";
+    sha256 = "1sswjfzz22r6byai76pl11lmpql1wyzskgbvysd7lkrb4i8d3gmh";
   };
   buildInputs = [ gfortran ];
 
