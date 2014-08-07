@@ -30,7 +30,6 @@ pkgs.myEnvFun {
     export PYTHONPATH=${YODA}/lib/python2.7/site-packages:${AtomDev}/lib/python2.7/site-packages:${root5}/lib:$PYTHONPATH
     export LD_LIBRARY_PATH=${AtomDev}/lib:$LD_LIBRARY_PATH
   '';
-  shell = '' if [ $# -eq 0 ]; then ${pkgs.bashInteractive}/bin/bash --norc ; else eval "$1"; fi '' ;
 
 }
 
