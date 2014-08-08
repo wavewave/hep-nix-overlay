@@ -280,6 +280,10 @@ rec {
                              inherit madgraph-auto madgraph-auto-model;
                           } ;
 
+      pipeline-eventgenEnv = callPackage ./pkgs/pipeline-eventgen/env.nix {
+                               inherit pipeline-eventgen;
+                             } ;
+
       webdav-manager = callPackage ./pkgs/webdav-manager {
                        cabal = haskellPackages.cabal;
                        inherit haskellPackages;
