@@ -6,8 +6,8 @@ cabal.mkDerivation (self: {
   pname = "pipeline-eventgen";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/pipeline-eventgen.git"; 
-                   rev = "2107baac8b44e0c17b57df157bf5666dcf163afc";
-                   sha256 = "8bcf502573449c757bc71c2d0ef3b4663e3cbe2430c7cb97eb7e5a7f58e65b46";
+                   rev = "d0e9215b95e823ea79e8e6d1e0a740cf535c55e8";
+                   sha256 = "c22d29e11806c792f65a63c2491d20fdfa0f7ff3c57758fdd07efcd2e24be9e2";
                  };  
   isLibrary = true;
   isExecutable = true;
