@@ -6,8 +6,8 @@ cabal.mkDerivation (self: {
   pname = "conduit-util";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/conduit-util.git"; 
-                   rev = "29bf8a0a0857fbc5d620841f19d194dfc0fb97ab";
-                   sha256 = "4d9bee0c3885b219d4ddc5dafc7585c4de5f9146f4d65f1e23729dac0a353679";
+                   rev = "83d4cff79855d9bae6ef97e8ac16f4e99a9dce1c";
+                   sha256 = "49844e06b933b098af8e7a3ef69bc902333c2eef0fa041e779926be698828bd8";
                  };  
   isLibrary = true;
   isExecutable = false;

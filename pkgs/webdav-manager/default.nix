@@ -5,9 +5,9 @@ with { hs = haskellPackages; };
 cabal.mkDerivation (self: {
   pname = "webdav-manager";
   version = "0.999";
-  src = fetchgit { url = "https://github.com/hep-platform/webdav-manager.git"; 
-                   rev = "2da2df30cdf3652682f5e965d8922770e68700bc";
-                   sha256 = "81aa244ffd4f785852acc2ce8714f9466053ba44d104132baa5470e8c1e39c7b";
+  src = fetchgit { url = "https://github.com/wavewave/webdav-manager.git"; 
+                   rev = "4e8886b4a0c990b73377558a991f155f48be1184";
+                   sha256 = "6aff40298641b25712a3043bf0c13f2cdc9d02d216ea7ab6c176527331936aad";
                  };  
   isLibrary = true;
   isExecutable = false;

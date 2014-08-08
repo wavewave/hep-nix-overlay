@@ -5,9 +5,9 @@ with { hs = haskellPackages; };
 cabal.mkDerivation (self: {
   pname = "madgraph-auto-model";
   version = "0.999";
-  src = fetchgit { url = "https://github.com/hep-platform/madgraph-auto-model.git"; 
-                   rev = "91d7b38c70dd2e1d6610188dc0cf28dce50f6069";
-                   sha256 = "cb1c1199cadaedafb99d4cbd3c9526ae9203b742dde35056cb61c6b81d69de55";
+  src = fetchgit { url = "https://github.com/wavewave/madgraph-auto-model.git"; 
+                   rev = "68396f41b0d453eb6e9b5ce6046fac4f8a48861c";
+                   sha256 = "51f24ce59e481f3ad7c016292b8e2fca0896f9ab1a9380d452019f0bfa19b14b";
                  };  
   isLibrary = true;
   isExecutable = false;

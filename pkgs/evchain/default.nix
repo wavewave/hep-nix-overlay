@@ -1,4 +1,4 @@
-{ cabal, lib, gfortran, fetchgit, haskellPackages
+{ cabal, gfortran, fetchgit, haskellPackages
 , webdav-manager, HEPUtil, LHEParser, LHE-sanitizer
 , conduit-util, madgraph-auto, pipeline-eventgen }:
 

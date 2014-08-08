@@ -5,9 +5,9 @@ with { hs = haskellPackages; };
 cabal.mkDerivation (self: {
   pname = "pipeline-eventgen";
   version = "0.999";
-  src = fetchgit { url = "https://github.com/hep-platform/pipeline-eventgen.git"; 
-                   rev = "8d839e82a3c0780eee97b953711075223244ef65";
-                   sha256 = "b9bfd439a28cd2008d43341716f705a73cb9bcabd0330296abc2eb04d9ebc8f4";
+  src = fetchgit { url = "https://github.com/wavewave/pipeline-eventgen.git"; 
+                   rev = "2107baac8b44e0c17b57df157bf5666dcf163afc";
+                   sha256 = "8bcf502573449c757bc71c2d0ef3b4663e3cbe2430c7cb97eb7e5a7f58e65b46";
                  };  
   isLibrary = true;
   isExecutable = true;

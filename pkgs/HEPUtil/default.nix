@@ -5,9 +5,9 @@ with { hs = haskellPackages; };
 cabal.mkDerivation (self: {
   pname = "HEPUtil";
   version = "0.999";
-  src = fetchgit { url = "https://github.com/hep-platform/HEPUtil.git"; 
-                   rev = "98b6bd6309a9a2a42eda03bc0211e3b0cb40cd51";
-                   sha256 = "b8fe3b50e4295b280d938ea54c90c716d5e7d9d6f81bfbda8aa68cd0a6acd4d6";
+  src = fetchgit { url = "https://github.com/wavewave/HEPUtil.git"; 
+                   rev = "bc16e245bf6e7d74ec18d59eff24db1d188234b0";
+                   sha256 = "0a3fe7fcbdfbb789cade4d9ea62828e6ad8883388911a405b7a69e39569abc7b";
                  };  
   isLibrary = true;
   isExecutable = false;
@@ -19,6 +19,7 @@ cabal.mkDerivation (self: {
                    hs.either
                    hs.transformers
                    hs.hmatrix 
+                   hs.ghcPaths
                  ];
   doCheck = false;
   jailbreak = true;
