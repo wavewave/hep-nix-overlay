@@ -6,8 +6,8 @@ cabal.mkDerivation (self: {
   pname = "jobqueue-client";
   version = "0.0";
   src = fetchgit { url = "https://github.com/wavewave/jobqueue-server.git";
-                   rev = "d52dc8fde20364857ae50058c13d9d37e376039f";
-                   sha256 = "eea317d72e807fe59938ca015c3a130a29fddadf2a131958a09acc114e718b51"; 
+                   rev = "e46c4431cdab69c6e090b1d7a56d36e652423585";
+                   sha256 = "b889f90ee4eb5f92698553d1b0ebdad8d12946717bf5d0adb893d81a038f0451"; 
                  };
  
   sourceRoot = "git-export/oldcode/jobqueue-client";
