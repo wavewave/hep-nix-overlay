@@ -245,20 +245,25 @@ rec {
       jobqueue-client = callPackage ./pkgs/jobqueue-client {
                           cabal = haskellPackages.cabal;
                           inherit haskellPackages;
+                          inherit jobqueue-server-src;
                           inherit jobqueue-common madgraph-auto madgraph-auto-model pipeline-eventgen webdav-manager;
                         };
 
       jobqueue-common = callPackage ./pkgs/jobqueue-common {
                           cabal = haskellPackages.cabal;
                           inherit haskellPackages;
+                          inherit jobqueue-server-src;
                           inherit madgraph-auto madgraph-auto-model pipeline-eventgen webdav-manager;
                         };
 
       jobqueue-server = callPackage ./pkgs/jobqueue-server {
                           cabal = haskellPackages.cabal;
                           inherit haskellPackages;
+                          inherit jobqueue-server-src;
                           inherit jobqueue-common madgraph-auto madgraph-auto-model pipeline-eventgen webdav-manager;
                         };
+
+      jobqueue-server-src = callPackage ./pkgs/jobqueue-server/src.nix { };
 
 
       madgraph-auto = callPackage ./pkgs/madgraph-auto {
