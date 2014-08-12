@@ -1,6 +1,6 @@
 { fetchgit }:
 
 fetchgit { url = "https://github.com/wavewave/jobqueue-server.git";
-           rev = "d6f69543ef9763eb6e811b513c311e52896783b9";
-           sha256 = "1829c4747c9588ca9d16820c931830ecb1d3e937e958b84ce1f999096539d0c8"; 
+           rev = "80fec68f199af4f8bc0bc03845a860f64e0fd935";
+           sha256 = "9313709c9059094844eab99a5ee7d4568c5614a8b5bed531fce4064419498546";
          }
