@@ -13,9 +13,9 @@ pkgs.myEnvFun {
     root5
     boost
     stdenv
-    pythonPackages.ipython
+    #pythonPackages.ipython
     pythonPackages.recursivePthLoader
-    pythonPackages.virtualenv
+    #pythonPackages.virtualenv
   ]; 
   
   extraCmds = with pkgs; if(stdenv.isDarwin) then ''
