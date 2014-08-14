@@ -3,7 +3,7 @@
 with pkgs; 
 
 stdenv.mkDerivation rec { 
-  name = "pythia-pgs"; 
+  name = "pythia-pgs-${version}"; 
   version = "2.4.0";
   src = fetchurl { 
     url = " http://madgraph.hep.uiuc.edu/Downloads/pythia-pgs_V2.4.0.tar.gz";

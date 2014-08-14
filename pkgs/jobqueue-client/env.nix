@@ -24,7 +24,7 @@ in pkgs.myEnvFun rec {
       tar xvzf ${MadGraph5_aMCatNLO}/share/MadGraph5_aMCatNLO-${mad5ver}/MadGraph5_aMCatNLO-${mad5ver}.tar.gz
       mkdir mc
       mkdir sandbox
-      makeenv="export MG5_PATH='\$PWD/MG5_aMC_v2_1_2'; export MG5_SANDBOXPATH='\$PWD/sandbox'; export MG5_MCPATH='\$PWD/mc'"
+      makeenv="export MG5_PATH='\$PWD/MG5_aMC_v2_1_2'; export MG5_SANDBOXPATH='\$PWD/sandbox'; export MG5_MCPATH='\$PWD/mc' ; export MG5_PYTHIA6PGSPATH=${pythia-pgs}/share/pythia-pgs"
       eval "\$makeenv"
 
       cp "${jobqueue-client}/share/${stdenv.system}-${pkgs.haskellPackages.ghc.ghc.name}/${jobqueue-client.pname}-${jobqueue-client.version}/template/config.txt.sample" config.txt
@@ -37,6 +37,7 @@ in pkgs.myEnvFun rec {
       eval 'sed -i -e s#@MG5_MCPATH@#"\$(echo \$MG5_MCPATH)"#g config.txt'
       eval 'sed -i -e s#@MG5_SANDBOXPATH@#"\$(echo \$MG5_SANDBOXPATH)"#g config.txt'
       eval 'sed -i -e s#@MG5_PATH@#"\$(echo \$MG5_PATH)"#g config.txt'
+      eval 'sed -i -e s#@MG5_PYTHIA6PGSPATH@#"\$(echo \$MG5_PYTHIA6PGSPATH)"#g config.txt'
 
 
     }
