@@ -104,6 +104,10 @@ rec {
       pythia-pgs    = callPackage ./pkgs/pythia-pgs {
                       };
 
+      pythia-pgsEnv = callPackage ./pkgs/pythia-pgs/env.nix {
+                         inherit pythia-pgs;
+                      };
+
       root5 = callPackage ./pkgs/root5 {
                 stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
                          in if stdenv.isDarwin then clang33Stdenv else stdenv;
@@ -249,6 +253,11 @@ rec {
                           inherit jobqueue-common madgraph-auto madgraph-auto-model pipeline-eventgen webdav-manager;
                         };
 
+      jobqueue-clientEnv = callPackage ./pkgs/jobqueue-client/env.nix {
+                             inherit jobqueue-client pythia-pgs MadGraph5_aMCatNLO;
+                           };
+
+
       jobqueue-common = callPackage ./pkgs/jobqueue-common {
                           cabal = haskellPackages.cabal;
                           inherit haskellPackages;
@@ -297,6 +306,11 @@ rec {
       #tools
       hep-nix-overlay-tools = callPackage ./pkgs/tools/hep-nix-overlay-tools {
                               };
+
+      #hep-nix-overlay-toolsEnv = callPackage ./pkgs/tools/hep-nix-overlay-tools/env.nix {
+      #                             inherit hep-nix-overlay-tools;
+      #                           };
+
 
       # development
       dev = rec {

@@ -1,24 +1,23 @@
-{ pkgs, MadGraph5_aMCatNLO, FastJet }:
+{ pkgs, MadGraph5_aMCatNLO }:
 
 let version = MadGraph5_aMCatNLO.version;
-    pythonMG5aMC = pkgs.pythonFull.override { 
-      #extraLibs = with pkgs.pythonPackages; [ numpy scipy ];
-    };
+    pythonMG5aMC = pkgs.pythonFull; 
 in pkgs.myEnvFun rec { 
   name = "MadGraph5_aMCatNLO-${version}";
- 
+
   buildInputs = with pkgs; [
     pythonMG5aMC
     pkgs.gfortran
+    pkgs.ghostscript
     stdenv
   ];
   
   extraCmds = with pkgs; ''
     export PYTHONPATH=
     export LD_LIBRARY_PATH=
+    export MADGRAPH5PATH=${MadGraph5_aMCatNLO}
     unpack () { 
       tar xvzf ${MadGraph5_aMCatNLO}/share/MadGraph5_aMCatNLO-${version}/MadGraph5_aMCatNLO-${version}.tar.gz; 
-      #chmod -R u+w fastlim-1.0; 
     }
     export -f unpack 
   '';

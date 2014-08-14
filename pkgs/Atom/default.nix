@@ -24,8 +24,8 @@ in stdenv.mkDerivation rec {
 
   preConfigure = '' 
  
-    substituteInPlace bin/atomenv.sh --subst-var prefix
-    substituteInPlace bin/atomenv.csh --subst-var prefix 
+    # substituteInPlace bin/atomenv.sh --subst-var prefix
+    # substituteInPlace bin/atomenv.csh --subst-var prefix 
     substituteInPlace bin/atom --replace /usr/bin/env ${pkgs.coreutils}/bin/env
     substituteInPlace bin/atom-config.in --replace /usr/bin/env ${pkgs.coreutils}/bin/env
     substituteInPlace bin/aida2root --replace /usr/bin/env ${pkgs.coreutils}/bin/env
@@ -41,6 +41,3 @@ in stdenv.mkDerivation rec {
 
 }
 
-  # Necessary to find libdl (for linux)
-  # dlpath = if ( !stdenv.isDarwin ) then "${stdenv.gcc.libc}" else "";
-    # substituteInPlace CMakeModules/FindROOT.cmake --subst-var dlpath 

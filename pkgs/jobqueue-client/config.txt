@@ -1,0 +1,10 @@
+computerName = @computerName@
+privateKeyFile = @privateKeyFile@
+passwordStore = @passwordStore@
+sandboxdir = "/home/wavewave/temp/madgraph/sandbox"
+mg5base = "/home/wavewave/temp/madgraph/MG5_aMC_v2_1_2"
+mcrundir = "/home/wavewave/temp/madgraph/mc"
+webdavroot = "http://top.physics.lsa.umich.edu:10080/webdav/"
+pythia8dir = "/tmp/pipeline/test4/pythia8165"
+pythia8toHEPEVT = "/tmp/pipeline/test4/sandbox/pythia8toHEPEVT/pythia8toHEPEVT"
+hepevt2stdhep = "/tmp/pipeline/test4/sandbox/hepevt2stdhep/hepevt2stdhep"
