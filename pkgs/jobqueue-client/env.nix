@@ -31,6 +31,9 @@ in pkgs.myEnvFun rec {
 
       chmod u+w config.txt
 
+      eval 'sed -i -e s#@computerName@#"\$(echo \$1)"#g config.txt'
+      eval 'sed -i -e s#@privateKeyFile@#"\$(echo \$2)"#g config.txt'
+      eval 'sed -i -e s#@passwordStore@#"\$(echo \$3)"#g config.txt'
       eval 'sed -i -e s#@MG5_MCPATH@#"\$(echo \$MG5_MCPATH)"#g config.txt'
       eval 'sed -i -e s#@MG5_SANDBOXPATH@#"\$(echo \$MG5_SANDBOXPATH)"#g config.txt'
       eval 'sed -i -e s#@MG5_PATH@#"\$(echo \$MG5_PATH)"#g config.txt'
