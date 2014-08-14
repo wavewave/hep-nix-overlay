@@ -1,4 +1,4 @@
-{ pkgs, MadGraph5_aMCatNLO }:
+{ pkgs, MadGraph5_aMCatNLO, PYTHIA8-src }:
 
 let version = MadGraph5_aMCatNLO.version;
     pythonMG5aMC = pkgs.pythonFull; 
@@ -17,7 +17,8 @@ in pkgs.myEnvFun rec {
     export LD_LIBRARY_PATH=
     export MADGRAPH5PATH=${MadGraph5_aMCatNLO}
     unpack () { 
-      tar xvzf ${MadGraph5_aMCatNLO}/share/MadGraph5_aMCatNLO-${version}/MadGraph5_aMCatNLO-${version}.tar.gz; 
+      tar xvzf ${MadGraph5_aMCatNLO}/share/MadGraph5_aMCatNLO-${version}/MadGraph5_aMCatNLO-${version}.tar.gz
+      tar xvzf ${PYTHIA8-src}
     }
     export -f unpack 
   '';

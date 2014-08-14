@@ -53,11 +53,11 @@ rec {
       LHAPDF        = callPackage ./pkgs/LHAPDF { };
 
       MadGraph5_aMCatNLO = callPackage ./pkgs/MadGraph5_aMCatNLO {
-                             inherit pythia-pgs;
+                             inherit pythia-pgs; # PYTHIA8-src-unpacked;
                            };
 
       MadGraph5_aMCatNLOEnv = callPackage ./pkgs/MadGraph5_aMCatNLO/env.nix {
-                                inherit MadGraph5_aMCatNLO FastJet;
+                                inherit MadGraph5_aMCatNLO PYTHIA8-src;
                               };
 
       Rivet         = callPackage ./pkgs/Rivet {
@@ -65,18 +65,24 @@ rec {
                         inherit libyamlcppPIC ;
                       };
 
+      PYTHIA8-src   = callPackage ./pkgs/PYTHIA8/src.nix { };
+
+      #PYTHIA8-src-unpacked = callPackage ./pkgs/PYTHIA8/src-unpacked.nix {
+      #                         inherit PYTHIA8-src;
+      #                       };
+
+
+      PYTHIA8       = callPackage ./pkgs/PYTHIA8 {
+                        inherit PYTHIA8-src;
+                      };
+
+      SHERPA        = callPackage ./pkgs/SHERPA { };
+
       ThePEG        = callPackage ./pkgs/ThePEG {
                         inherit HepMC LHAPDF FastJet libyamlcppPIC;
                       };
 
-      PYTHIA8       = callPackage ./pkgs/PYTHIA8 {
-                      };
-
-      SHERPA        = callPackage ./pkgs/SHERPA {
-                      };
-
-      YODA          = callPackage ./pkgs/YODA {
-                      };
+      YODA          = callPackage ./pkgs/YODA { };
 
       cython0192    = callPackage ./pkgs/future/cython/0.19.2.nix {
                       };
