@@ -8,8 +8,8 @@ cabal.mkDerivation (self: {
   pname = "evchain";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/evchain.git"; 
-                   rev = "b0f9c3f4c29ef8fe7f4b0b5bf0ce055380a6fdc0";
-                   sha256 = "3a47ce8e0de202746dc3e49c77721b6237ce3d41c232f8a1aad3df53e62fef7d";
+                   rev = "17622a13db90dfe1c73f586765348af52498fd40";
+                   sha256 = "f278fcad39e0f23c09237cd96e0b864523db4fa0ca0a303fe3fe462d4a483124";
                  };  
   isLibrary = true;
   isExecutable = true;

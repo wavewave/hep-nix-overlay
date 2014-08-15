@@ -7,7 +7,7 @@ stdenv.mkDerivation rec {
     url = "http://lcgapp.cern.ch/project/simu/HepMC/download/HepMC-2.06.08.tar.gz";
     sha256 = "1km8m0xkx6igz2rp5yvm5sjnczny8r5vd2xqvl3my10a7rww3rlb";
   };
-  nativeBuildInputs = [ m4 autoconf automake libtool ]; # texLive texLiveExtra doxygen ];
+  nativeBuildInputs = [ m4 autoconf automake libtool ]; 
   patches = [ ./no-doc-gen.patch ];
   configureFlags = "--with-momentum=GEV --with-length=MM --enable-static";
   preConfigure = ''

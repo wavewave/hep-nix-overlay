@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, coreutils, perl, python, pythia-pgs }:
+{ stdenv, fetchurl, coreutils, perl, python, pythia-pgs, PYTHIA8 }:
  
 stdenv.mkDerivation rec { 
   name = "MadGraph5_aMCatNLO"; 
@@ -13,11 +13,11 @@ stdenv.mkDerivation rec {
   patches = [ ./configuration_fix.patch ];
   
   pythiapgs="${pythia-pgs}/share/pythia-pgs";
-  #pythia8="${PYTHIA8-src-unpacked}";
+  pythia8="${PYTHIA8}"; # PYTHIA8-src-unpacked
   
   configurePhase = ''
     substituteInPlace input/mg5_configuration.txt --subst-var pythiapgs
-    #substituteInPlace input/mg5_configuration.txt --subst-var pythia8
+    substituteInPlace input/mg5_configuration.txt --subst-var pythia8
   '';
 
   buildPhase = ''

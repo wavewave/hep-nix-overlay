@@ -53,11 +53,11 @@ rec {
       LHAPDF        = callPackage ./pkgs/LHAPDF { };
 
       MadGraph5_aMCatNLO = callPackage ./pkgs/MadGraph5_aMCatNLO {
-                             inherit pythia-pgs; # PYTHIA8-src-unpacked;
+                             inherit pythia-pgs PYTHIA8 ; # PYTHIA8-src-unpacked;
                            };
 
       MadGraph5_aMCatNLOEnv = callPackage ./pkgs/MadGraph5_aMCatNLO/env.nix {
-                                inherit MadGraph5_aMCatNLO PYTHIA8-src;
+                                inherit MadGraph5_aMCatNLO ; # PYTHIA8-src;
                               };
 
       Rivet         = callPackage ./pkgs/Rivet {
@@ -73,7 +73,7 @@ rec {
 
 
       PYTHIA8       = callPackage ./pkgs/PYTHIA8 {
-                        inherit PYTHIA8-src;
+                        inherit PYTHIA8-src HepMC;
                       };
 
       SHERPA        = callPackage ./pkgs/SHERPA { };
