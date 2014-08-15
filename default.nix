@@ -198,6 +198,13 @@ rec {
                          inherit HROOT-generate;
                        } ;
 
+      LHCOAnalysis = callPackage ./pkgs/LHCOAnalysis {
+                     cabal = haskellPackages.cabal;
+                     inherit haskellPackages;
+                     inherit LHCOAnalysis-type;
+                   } ;
+
+
       LHCOAnalysis-type = callPackage ./pkgs/LHCOAnalysis-type {
                      cabal = haskellPackages.cabal;
                      inherit haskellPackages;
