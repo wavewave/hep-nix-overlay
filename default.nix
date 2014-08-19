@@ -115,14 +115,14 @@ rec {
                       };
 
       root5 = callPackage ./pkgs/root5 {
-                stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
-                         in if stdenv.isDarwin then clang33Stdenv else stdenv;
+                #stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
+                #         in if stdenv.isDarwin then clang33Stdenv else stdenv;
                } ;
 
       root5min = callPackage ./pkgs/root5/minimal.nix {
   #                 stdenv = clangStdenv;
-                    stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
-                             in if stdenv.isDarwin then clang33Stdenv else stdenv;
+ #                   stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
+ #                            in if stdenv.isDarwin then clang33Stdenv else stdenv;
                  };
 
       rootEnv = callPackage ./pkgs/root5/rootEnv.nix {
