@@ -12,7 +12,9 @@ stdenv.mkDerivation rec {
   };
   enableParallelBuilding = true; 
 
-  patches = [ ./find-dynamic-gsl.patch ];
+  patches = if (stdenv.isDarwin ) 
+            then [ ./gsldylib.patch ]
+            else [ ./find-dynamic-gsl.patch ];
   buildInputs = [ gsl zlib HepMC LHAPDF FastJet libyamlcppPIC ];
 #Rivet
   configureFlags = "--with-zlib=${zlib} --with-gsl=${gsl} --with-lhapdf=${LHAPDF} --with-hepmc=${HepMC}  --with-fastjet=${FastJet} " ;  
