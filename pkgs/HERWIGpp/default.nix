@@ -9,5 +9,8 @@ stdenv.mkDerivation rec {
   };
   enableParallelBuilding = true; 
   buildInputs = [ gfortran gsl ThePEG boost FastJet ];
-  configureFlags = "--with-thepeg=${ThePEG} --with-fastjet=${FastJet} ";
+  
+  configureFlags = if stdenv.isDarwin
+                   then "--with-thepeg=${ThePEG} --with-fastjet=${FastJet} CC=${stdenv.gcc}/bin/cc CXX=${stdenv.gcc}/bin/c++ "
+                   else "--with-thepeg=${ThePEG} --with-fastjet=${FastJet}"; 
 }
