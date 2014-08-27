@@ -133,6 +133,8 @@ rec {
                   inherit root5;
                 };
 
+      SPheno      = callPackage ./pkgs/SPheno/default.nix { };
+
       softsusy    = callPackage ./pkgs/softsusy/default.nix { };
 
       softsusyEnv = callPackage ./pkgs/softsusy/env.nix {
