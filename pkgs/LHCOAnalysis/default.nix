@@ -6,13 +6,13 @@ cabal.mkDerivation (self: {
   pname = "LHCOAnalysis";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/LHCOAnalysis.git"; 
-                   rev = "ec6ec1ff8f8bf07e23bc926792ce90642071973c";
-                   sha256 = "9943d8fb02748b099b282fd72cb1ee4441511610f0e9815f82391cff068f6697";
+                   rev = "358935cc82def17ce3769c566fd9207be769bd1e";
+                   sha256 = "f217929f0c9a257741c345fd99aebf2cd8df5e4b126bbbea77da14259d018317";
                  };  
   isLibrary = true;
   isExecutable = false;
   buildDepends = [ mtl bytestringLexing split 
-                   LHCOAnalysis-type
+                   LHCOAnalysis-type text attoparsec
                  ];
   doCheck = false;
   meta = {

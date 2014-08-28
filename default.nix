@@ -84,11 +84,13 @@ rec {
 
       YODA          = callPackage ./pkgs/YODA { };
 
-      cython0192    = callPackage ./pkgs/future/cython/0.19.2.nix {
-                      };
+      cernlib       = callPackage ./pkgs/cernlib { };
 
       convertStdHep = callPackage ./pkgs/convertStdHep {
                         inherit HepMC;
+                      };
+
+      cython0192    = callPackage ./pkgs/future/cython/0.19.2.nix {
                       };
 
       libyamlcpp025 = callPackage ./pkgs/legacy/libyaml-cpp/0.2.5.nix {

@@ -1,0 +1,60 @@
+diff -rupN a/src/config/site.def b/src/config/site.def
+--- a/src/config/site.def	2002-04-26 16:46:04.000000000 +0200
++++ b/src/config/site.def	2014-08-25 18:58:13.587484654 +0200
+@@ -110,7 +110,7 @@ XCOMM site:  $XConsortium: site.sample,v
+ /* gmake does like ConstructMFLAGS to be YES(?) */
+ #undef MakeCmd
+ #ifndef WIN32
+-# define MakeCmd gmake
++# define MakeCmd make
+ #else
+ # define MakeCmd make
+ #endif
+diff -rupN a/src/graflib/dzdoc/doc/history/Makefile.in b/src/graflib/dzdoc/doc/history/Makefile.in
+--- a/src/graflib/dzdoc/doc/history/Makefile.in	1996-03-04 17:12:53.000000000 +0100
++++ b/src/graflib/dzdoc/doc/history/Makefile.in	2014-08-25 18:56:03.641028639 +0200
+@@ -11,7 +11,7 @@
+ #
+ #
+ 
+-MAKE = gmake
++MAKE = make
+ SHELL = /bin/sh
+ srcdir = @srcdir@
+ VPATH = @srcdir@
+diff -rupN a/src/packlib/hepdb/obsolete/cdp3/Makefile.in b/src/packlib/hepdb/obsolete/cdp3/Makefile.in
+--- a/src/packlib/hepdb/obsolete/cdp3/Makefile.in	1996-02-28 17:24:07.000000000 +0100
++++ b/src/packlib/hepdb/obsolete/cdp3/Makefile.in	2014-08-25 18:57:32.668341019 +0200
+@@ -11,7 +11,7 @@
+ #
+ #
+ 
+-MAKE = gmake
++MAKE = make
+ SHELL = /bin/sh
+ srcdir = @srcdir@
+ VPATH = @srcdir@
+diff -rupN a/src/packlib/kernlib/umon/obsolete/umsrvibm/Makefile.in b/src/packlib/kernlib/umon/obsolete/umsrvibm/Makefile.in
+--- a/src/packlib/kernlib/umon/obsolete/umsrvibm/Makefile.in	1996-02-15 18:47:36.000000000 +0100
++++ b/src/packlib/kernlib/umon/obsolete/umsrvibm/Makefile.in	2014-08-25 18:56:50.293192321 +0200
+@@ -11,7 +11,7 @@
+ #
+ #
+ 
+-MAKE = gmake
++MAKE = make
+ SHELL = /bin/sh
+ srcdir = @srcdir@
+ VPATH = @srcdir@
+diff -rupN a/src/packlib/kernlib/umon/obsolete/umuipibm/Makefile.in b/src/packlib/kernlib/umon/obsolete/umuipibm/Makefile.in
+--- a/src/packlib/kernlib/umon/obsolete/umuipibm/Makefile.in	1996-02-15 18:47:35.000000000 +0100
++++ b/src/packlib/kernlib/umon/obsolete/umuipibm/Makefile.in	2014-08-25 18:57:07.861253961 +0200
+@@ -11,7 +11,7 @@
+ #
+ #
+ 
+-MAKE = gmake
++MAKE = make
+ SHELL = /bin/sh
+ srcdir = @srcdir@
+ VPATH = @srcdir@
