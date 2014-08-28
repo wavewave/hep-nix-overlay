@@ -40,6 +40,8 @@ rec {
                     };
 
       HERWIGpp      = callPackage ./pkgs/HERWIGpp {
+                        stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
+                                 in if stdenv.isDarwin then clang33Stdenv else stdenv;
                         inherit ThePEG;
                         inherit FastJet;
                       };
@@ -79,6 +81,8 @@ rec {
       SHERPA        = callPackage ./pkgs/SHERPA { };
 
       ThePEG        = callPackage ./pkgs/ThePEG {
+                        stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
+                                 in if stdenv.isDarwin then clang33Stdenv else stdenv;
                         inherit HepMC LHAPDF FastJet libyamlcppPIC;
                       };
 
@@ -117,19 +121,21 @@ rec {
                       };
 
       root5 = callPackage ./pkgs/root5 {
-                stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
-                         in if stdenv.isDarwin then clang33Stdenv else stdenv;
+                #stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
+                #         in if stdenv.isDarwin then clang33Stdenv else stdenv;
                } ;
 
       root5min = callPackage ./pkgs/root5/minimal.nix {
   #                 stdenv = clangStdenv;
-                    stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
-                             in if stdenv.isDarwin then clang33Stdenv else stdenv;
+ #                   stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
+ #                            in if stdenv.isDarwin then clang33Stdenv else stdenv;
                  };
 
       rootEnv = callPackage ./pkgs/root5/rootEnv.nix {
                   inherit root5;
                 };
+
+      SPheno      = callPackage ./pkgs/SPheno/default.nix { };
 
       softsusy    = callPackage ./pkgs/softsusy/default.nix { };
 
