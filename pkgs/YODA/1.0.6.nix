@@ -2,15 +2,19 @@
  
 stdenv.mkDerivation rec { 
   name = "YODA-${version}"; 
-  version = "1.1.0";
+  version = "1.0.6";
 
   src = fetchurl { 
-    url = "http://www.hepforge.org/archive/yoda/YODA-1.1.0.tar.gz";
-    sha256 = "0f0q1bys6fk1bhajq2n4h41p1hclcackmarb717z20km2z9g0m6h";
+    url = "http://www.hepforge.org/archive/yoda/YODA-1.0.6.tar.gz";
+    #md5 = "0b3315b7ebfcfdcd0f2b973bca426d68";
+    sha256 = "0543zgnqv75ff5npz25djwrjpc0vzkghhgs0x21kmhwlk8mpc1m2";
   };
+  #patches = [ ]; 
 
   buildInputs = [ boost python ];
   enableParallelBuilding = true; 
+
+  #preConfigure = "" ; 
 
   configureFlags = "--with-boost=${boost}";
 

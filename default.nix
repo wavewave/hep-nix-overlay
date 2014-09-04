@@ -24,16 +24,17 @@ rec {
                         inherit HepMC YODA FastJet;
               };
 
-
-      FastJet       = callPackage ./pkgs/FastJet {
+      Delphes       = callPackage ./pkgs/Delphes { 
+                        inherit root5;
                       };
+
+      FastJet       = callPackage ./pkgs/FastJet { };
 
       FastJetEnv    = callPackage ./pkgs/FastJet/FastJetEnv.nix {
                         inherit FastJet;
                       };
 
-      Fastlim       = callPackage ./pkgs/Fastlim {
-                    };
+      Fastlim       = callPackage ./pkgs/Fastlim { };
 
       FastlimEnv    = callPackage ./pkgs/Fastlim/FastlimEnv.nix {
                       inherit Fastlim;
