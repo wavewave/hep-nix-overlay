@@ -1,0 +1,878 @@
+diff -rupN a/mcfio/src/mcf_evt_xdr.c b/mcfio/src/mcf_evt_xdr.c
+--- a/mcfio/src/mcf_evt_xdr.c	2006-11-15 00:46:07.000000000 +0100
++++ b/mcfio/src/mcf_evt_xdr.c	2014-09-10 11:25:14.259267834 +0200
+@@ -256,8 +256,9 @@ bool_t xdr_mcfast_eventtable(XDR *xdrs,
+ /*  Translate a mcf EventTable block.  This subroutine will allocate
+ 	the memory needed if the stream is DECODE */
+         
+-    int i, *idat;
+-    unsigned int nn, nnold, *uidat;
++    int i, itmp, *idat;
++    unsigned int nn, nnold, uitmp, *uidat;
++    off_t otmp, *odat;
+     char **ctmp;
+     mcfxdrEventTable *mcftmp;
+     
+@@ -267,7 +268,7 @@ bool_t xdr_mcfast_eventtable(XDR *xdrs,
+       *ntot = sizeof(mcfxdrEventTable) + 4 * sizeof(int)* mcftmp->dim
+               + sizeof(unsigned int)* mcftmp->dim - 2 * sizeof(int)
+               - 4 * sizeof(int *) - sizeof(u_int *);
+-       strcpy(*version, "1.00");
++       strcpy(*version, "2.00");
+      }  else if (xdrs->x_op == XDR_FREE) {
+           mcfioC_Free_EventTable(mcf);
+           return 1;
+@@ -291,10 +292,11 @@ bool_t xdr_mcfast_eventtable(XDR *xdrs,
+         if((xdrs->x_op == XDR_DECODE) && (mcftmp->evtnums != NULL))
+              nnold = mcftmp->previousnumevts;
+           else nnold = 0;
+-        idat = &mcftmp->nextLocator;
+-        uidat = (u_int *) &mcftmp->numevts;  
+-        if ((xdr_int(xdrs,idat) && xdr_u_int(xdrs,uidat )) == FALSE)
+-                  return FALSE; 
++        itmp = mcftmp->nextLocator;
++        uitmp = mcftmp->numevts;
++        if ((xdr_int(xdrs,&itmp) && xdr_u_int(xdrs,&uitmp)) == FALSE) return FALSE;
++        mcftmp->nextLocator = itmp;
++        mcftmp->numevts = uitmp; 
+         if(xdrs->x_op == XDR_DECODE) {
+            if ((mcftmp->evtnums == NULL) || (mcftmp->numevts > nnold)) {
+            if (mcftmp->evtnums != NULL) {
+@@ -310,7 +312,7 @@ bool_t xdr_mcfast_eventtable(XDR *xdrs,
+            mcftmp->runnums = (int *) malloc(sizeof(int) * mcftmp->dim);
+            mcftmp->trigMasks = (int *) malloc(sizeof(int) * mcftmp->dim);
+            mcftmp->ptrEvents = 
+-            (unsigned int *) malloc(sizeof(unsigned int) * mcftmp->dim);
++            (off_t *) calloc(mcftmp->dim, sizeof(off_t));
+             mcftmp->previousnumevts = mcftmp->dim;
+            }
+         }
+@@ -331,9 +333,59 @@ bool_t xdr_mcfast_eventtable(XDR *xdrs,
+ 	if (xdr_array(xdrs, (char **) &idat, &nn, 
+ 	              mcftmp->dim, sizeof(int), xdr_int) == FALSE) 
+ 	              return FALSE;
+-        uidat = mcftmp->ptrEvents;
+-	if (xdr_array(xdrs, (char **) &uidat, &nn, 
+-	              mcftmp->dim, sizeof(int), xdr_u_int) == FALSE) 
++        odat = mcftmp->ptrEvents;
++	if (xdr_array(xdrs, (char **) &odat, &nn, 
++	              mcftmp->dim, sizeof(off_t), xdr_u_int) == FALSE) 
++	              return FALSE;
++      } else if (strcmp(*version, "2.00") == 0) {
++     	      
++        if((xdrs->x_op == XDR_DECODE) && (mcftmp->evtnums != NULL))
++             nnold = mcftmp->previousnumevts;
++          else nnold = 0;
++        otmp = mcftmp->nextLocator;
++        uitmp = mcftmp->numevts;
++         if ((xdr_hyper(xdrs,&otmp) && xdr_u_int(xdrs,&uitmp)) == FALSE) return FALSE;
++        mcftmp->nextLocator = otmp;
++        mcftmp->numevts = uitmp; 
++        if(xdrs->x_op == XDR_DECODE) {
++           if ((mcftmp->evtnums == NULL) || (mcftmp->numevts > nnold)) {
++           if (mcftmp->evtnums != NULL) {
++            /*
++            ** I don't trust realloc.. just alloc again.. 
++            */
++            free(mcftmp->evtnums); free(mcftmp->storenums); 
++            free(mcftmp->runnums); free(mcftmp->trigMasks);
++            free(mcftmp->ptrEvents);
++            }  
++           mcftmp->evtnums = (int *) malloc(sizeof(int) * mcftmp->dim);
++           mcftmp->storenums = (int *) malloc(sizeof(int) * mcftmp->dim);
++           mcftmp->runnums = (int *) malloc(sizeof(int) * mcftmp->dim);
++           mcftmp->trigMasks = (int *) malloc(sizeof(int) * mcftmp->dim);
++           mcftmp->ptrEvents = 
++            (off_t *) calloc(mcftmp->dim, sizeof(off_t));
++            mcftmp->previousnumevts = mcftmp->dim;
++           }
++        }
++        if (xdrs->x_op == XDR_ENCODE) nn = mcftmp->dim;
++        idat = mcftmp->evtnums;
++	if (xdr_array(xdrs, (char **) &idat, &nn, 
++	              mcftmp->dim, sizeof(int), xdr_int) == FALSE) 
++	              return FALSE;
++        idat = mcftmp->storenums;
++	if (xdr_array(xdrs, (char **) &idat, &nn, 
++	              mcftmp->dim, sizeof(int), xdr_int) == FALSE) 
++	              return FALSE;
++        idat = mcftmp->runnums;
++	if (xdr_array(xdrs, (char **) &idat, &nn, 
++	              mcftmp->dim, sizeof(int), xdr_int) == FALSE) 
++	              return FALSE;
++        idat = mcftmp->trigMasks;
++	if (xdr_array(xdrs, (char **) &idat, &nn, 
++	              mcftmp->dim, sizeof(int), xdr_int) == FALSE) 
++	              return FALSE;
++        odat = mcftmp->ptrEvents;
++	if (xdr_array(xdrs, (char **) &odat, &nn, 
++	              mcftmp->dim, sizeof(off_t), xdr_hyper) == FALSE) 
+ 	              return FALSE;
+      } else return FALSE; /* Future version encoded here. */
+      return TRUE;
+@@ -397,7 +449,8 @@ bool_t xdr_mcfast_eventheader(XDR *xdrs,
+ 	the memory needed if the stream is DECODE */
+         
+     int i, *itmp;
+-    unsigned int nn, nnold, nNTuOld, *uitmp;
++    unsigned int nn, nnold, nNTuOld;
++    off_t *otmp;
+     char **ctmp;
+     mcfxdrEventHeader *mcftmp;
+     
+@@ -408,7 +461,7 @@ bool_t xdr_mcfast_eventheader(XDR *xdrs,
+               + sizeof(unsigned int)* mcftmp->nBlocks
+               + sizeof(int ) * mcftmp->nBlocks 
+               - sizeof(int *)  - sizeof(u_int *) ;
+-       strcpy(*version, "2.00");
++       strcpy(*version, "3.00");
+      }  else if (xdrs->x_op == XDR_FREE) {
+           mcfioC_Free_EventHeader(mcf);
+           return 1;
+@@ -451,7 +504,7 @@ bool_t xdr_mcfast_eventheader(XDR *xdrs,
+            mcftmp->blockIds =
+              (int *) malloc(sizeof(unsigned int) * mcftmp->dimBlocks);
+            mcftmp->ptrBlocks =
+-             (unsigned int *) malloc(sizeof(unsigned int) * mcftmp->dimBlocks);
++             (off_t *) calloc(mcftmp->dimBlocks, sizeof(off_t));
+            }
+         }
+         if (xdrs->x_op == XDR_ENCODE)  nn = mcftmp->dimBlocks;
+@@ -459,9 +512,9 @@ bool_t xdr_mcfast_eventheader(XDR *xdrs,
+ 	if (xdr_array(xdrs, (char **) &itmp, &nn, 
+ 	              mcftmp->dimBlocks, sizeof(int), xdr_int) == FALSE) 
+ 	              return FALSE;
+-	uitmp = mcftmp->ptrBlocks;              
+-	if (xdr_array(xdrs, (char **) &uitmp, &nn, 
+-	              mcftmp->dimBlocks, sizeof(u_int), xdr_u_int) == FALSE) 
++	otmp = mcftmp->ptrBlocks;              
++	if (xdr_array(xdrs, (char **) &otmp, &nn, 
++	              mcftmp->dimBlocks, sizeof(off_t), xdr_u_int) == FALSE) 
+ 	              return FALSE;
+      } else if (strcmp(*version, "2.00") == 0) {
+         if (xdrs->x_op == XDR_DECODE) {
+@@ -487,7 +540,66 @@ bool_t xdr_mcfast_eventheader(XDR *xdrs,
+            mcftmp->blockIds =
+              (int *) malloc(sizeof(unsigned int) * mcftmp->dimBlocks);
+            mcftmp->ptrBlocks =
+-             (unsigned int *) malloc(sizeof(unsigned int) * mcftmp->dimBlocks);
++             (off_t *) calloc(mcftmp->dimBlocks, sizeof(off_t));
++           }
++           if ((mcftmp->nTupleIds == NULL) || (mcftmp->dimNTuples > nNTuOld)) {
++           if (mcftmp->nTupleIds != NULL) { 
++               free(mcftmp->nTupleIds);
++               free(mcftmp->ptrNTuples);
++           }     
++           mcftmp->nTupleIds =
++             (int *) malloc(sizeof(unsigned int) * mcftmp->dimNTuples);
++           mcftmp->ptrNTuples =
++             (off_t *) calloc(mcftmp->dimNTuples, sizeof(off_t));
++           }
++        }
++        if (mcftmp->dimBlocks > 0) {
++            if (xdrs->x_op == XDR_ENCODE)  nn = mcftmp->dimBlocks;
++            itmp = mcftmp->blockIds;
++	    if (xdr_array(xdrs, (char **) &itmp, &nn, 
++	              mcftmp->dimBlocks, sizeof(int), xdr_int) == FALSE) 
++	              return FALSE;
++	    otmp = mcftmp->ptrBlocks;              
++	    if (xdr_array(xdrs, (char **) &otmp, &nn, 
++	              mcftmp->dimBlocks, sizeof(off_t), xdr_u_int) == FALSE) 
++	              return FALSE;
++        }
++        if (mcftmp->dimNTuples > 0) {
++            if (xdrs->x_op == XDR_ENCODE)  nn = mcftmp->dimNTuples;
++            itmp = mcftmp->nTupleIds;
++	    if (xdr_array(xdrs, (char **) &itmp, &nn, 
++	              mcftmp->dimNTuples, sizeof(int), xdr_int) == FALSE) 
++	              return FALSE;
++	    otmp = mcftmp->ptrNTuples;              
++	    if (xdr_array(xdrs, (char **) &otmp, &nn, 
++	              mcftmp->dimNTuples, sizeof(off_t), xdr_u_int) == FALSE) 
++	              return FALSE;
++	}              
++     } else if (strcmp(*version, "3.00") == 0) {
++        if (xdrs->x_op == XDR_DECODE) {
++           nnold = 0;
++           if (mcftmp->blockIds != NULL)  nnold = mcftmp->dimBlocks;
++           nNTuOld = 0;
++           if (mcftmp->nTupleIds != NULL)  nNTuOld = mcftmp->dimNTuples;
++        }  
++        if ((xdr_int(xdrs,&(mcftmp->evtnum)) &&
++             xdr_int(xdrs,&(mcftmp->storenum)) &&
++             xdr_int(xdrs,&(mcftmp->runnum)) &&
++             xdr_int(xdrs,&(mcftmp->trigMask)) &&
++             xdr_u_int(xdrs,&(mcftmp->nBlocks)) &&
++             xdr_u_int(xdrs,&(mcftmp->dimBlocks)) &&
++             xdr_u_int(xdrs,&(mcftmp->nNTuples)) &&
++             xdr_u_int(xdrs,&(mcftmp->dimNTuples))) == FALSE) return FALSE;
++        if(xdrs->x_op == XDR_DECODE) {
++           if ((mcftmp->blockIds == NULL) || (mcftmp->dimBlocks > nnold)) {
++           if (mcftmp->blockIds != NULL) { 
++               free(mcftmp->blockIds);
++               free(mcftmp->ptrBlocks);
++           }     
++           mcftmp->blockIds =
++             (int *) malloc(sizeof(unsigned int) * mcftmp->dimBlocks);
++           mcftmp->ptrBlocks =
++             (off_t *) calloc(mcftmp->dimBlocks, sizeof(off_t));
+            }
+            if ((mcftmp->nTupleIds == NULL) || (mcftmp->dimNTuples > nNTuOld)) {
+            if (mcftmp->nTupleIds != NULL) { 
+@@ -497,7 +609,7 @@ bool_t xdr_mcfast_eventheader(XDR *xdrs,
+            mcftmp->nTupleIds =
+              (int *) malloc(sizeof(unsigned int) * mcftmp->dimNTuples);
+            mcftmp->ptrNTuples =
+-             (unsigned int *) malloc(sizeof(unsigned int) * mcftmp->dimNTuples);
++             (off_t *) calloc(mcftmp->dimNTuples, sizeof(off_t));
+            }
+         }
+         if (mcftmp->dimBlocks > 0) {
+@@ -506,9 +618,9 @@ bool_t xdr_mcfast_eventheader(XDR *xdrs,
+ 	    if (xdr_array(xdrs, (char **) &itmp, &nn, 
+ 	              mcftmp->dimBlocks, sizeof(int), xdr_int) == FALSE) 
+ 	              return FALSE;
+-	    uitmp = mcftmp->ptrBlocks;              
+-	    if (xdr_array(xdrs, (char **) &uitmp, &nn, 
+-	              mcftmp->dimBlocks, sizeof(u_int), xdr_u_int) == FALSE) 
++	    otmp = mcftmp->ptrBlocks;              
++	    if (xdr_array(xdrs, (char **) &otmp, &nn, 
++	              mcftmp->dimBlocks, sizeof(off_t), xdr_hyper) == FALSE) 
+ 	              return FALSE;
+         }
+         if (mcftmp->dimNTuples > 0) {
+@@ -517,9 +629,9 @@ bool_t xdr_mcfast_eventheader(XDR *xdrs,
+ 	    if (xdr_array(xdrs, (char **) &itmp, &nn, 
+ 	              mcftmp->dimNTuples, sizeof(int), xdr_int) == FALSE) 
+ 	              return FALSE;
+-	    uitmp = mcftmp->ptrNTuples;              
+-	    if (xdr_array(xdrs, (char **) &uitmp, &nn, 
+-	              mcftmp->dimNTuples, sizeof(u_int), xdr_u_int) == FALSE) 
++	    otmp = mcftmp->ptrNTuples;              
++	    if (xdr_array(xdrs, (char **) &otmp, &nn, 
++	              mcftmp->dimNTuples, sizeof(off_t), xdr_hyper) == FALSE) 
+ 	              return FALSE;
+ 	}              
+      } else 
+diff -rupN a/mcfio/src/mcfio_Block.c b/mcfio/src/mcfio_Block.c
+--- a/mcfio/src/mcfio_Block.c	2006-11-15 00:46:07.000000000 +0100
++++ b/mcfio/src/mcfio_Block.c	2014-09-10 11:25:14.259267834 +0200
+@@ -62,7 +62,7 @@ int mcfioC_Block(int stream, int blkid,
+ { 
+   int i, j, jstr, idtmp, ntot, nbuff;
+   bool_t ok;
+-  u_int p1;
++  off_t p1;
+   mcfStream *str;
+    
+   if (McfStreamPtrList == NULL) { 
+@@ -95,7 +95,7 @@ int mcfioC_Block(int stream, int blkid,
+  " mcfio_Block: Unable to find block i.d. %d in Stream %d \n", blkid, stream);
+           return -1;  
+       }
+-      if (xdr_setpos(str->xdr,str->ehead->ptrBlocks[j]) == FALSE) {
++      if (fseeko(str->filePtr,str->ehead->ptrBlocks[j],SEEK_SET) != 0) {
+         fprintf(stderr,
+          " mcfio_Block: Unable to position stream at block %d \n", blkid);
+           return -1;  
+@@ -128,7 +128,7 @@ int mcfioC_Block(int stream, int blkid,
+              str->buffer2 = NULL;
+              str->bufferSize = str->maxlrec * nbuff;
+              xdrmem_create(str->xdr, str->buffer, str->bufferSize, XDR_ENCODE);
+-             if (xdr_setpos(str->xdr, str->currentPos) == FALSE) {
++             if (fseeko(str->filePtr,str->currentPos,SEEK_SET) != 0) {
+                  fprintf(stderr,
+              " mcfio_Block:\n\
+  Unable to position stream %d at block %d after realocation.\n", stream, blkid);
+@@ -143,7 +143,7 @@ int mcfioC_Block(int stream, int blkid,
+         fprintf(stderr,
+          " mcfio_Block: Unable to encode or decode block I.D. %d \n", blkid);
+          j = str->ehead->nBlocks;
+-         if (xdr_setpos(str->xdr,p1) == FALSE) 
++         if (fseeko(str->filePtr,p1,SEEK_SET) != 0) 
+            fprintf(stderr,
+          " mcfio_Block: Unable to position stream at block %d \n", blkid);
+          return -1;
+@@ -159,7 +159,7 @@ int mcfioC_Block(int stream, int blkid,
+       str->ehead->ptrBlocks[str->ehead->nBlocks] = p1;
+       str->ehead->nBlocks++; 
+     }
+-    str->currentPos = xdr_getpos(str->xdr);    
++    str->currentPos = ftello(str->filePtr);    
+     str->numWordsC += (ntot/4);
+     str->numWordsT += ((str->currentPos-p1)/4);
+     return 1;
+@@ -169,7 +169,7 @@ int mcfioC_NTuple(int stream, int nTuple
+ { 
+   int i, j, jstr, idtmp, ntot, nbuff;
+   bool_t ok;
+-  u_int p1;
++  off_t p1;
+   mcfStream *str;
+   nTuDDL *ddl;
+   descrGenNtuple *dNTu;
+@@ -215,7 +215,7 @@ int mcfioC_NTuple(int stream, int nTuple
+           nTupleId, stream);
+           return -1;  
+       }
+-      if (xdr_setpos(str->xdr,str->ehead->ptrNTuples[j]) == FALSE) {
++      if (fseeko(str->filePtr,str->ehead->ptrNTuples[j],SEEK_SET) != 0) {
+         fprintf(stderr,
+          " mcfio_NTuple: Unable to position stream at NTuple %d \n", nTupleId);
+           return -1;  
+@@ -254,7 +254,7 @@ int mcfioC_NTuple(int stream, int nTuple
+              str->buffer2 = NULL;
+              str->bufferSize = str->maxlrec * nbuff;
+              xdrmem_create(str->xdr, str->buffer, str->bufferSize, XDR_ENCODE);
+-             if (xdr_setpos(str->xdr, str->currentPos) == FALSE) {
++             if (fseeko(str->filePtr,str->currentPos,SEEK_SET) != 0) {
+                  fprintf(stderr,
+              " mcfio_NTuple:\n\
+  Unable to position stream %d at Ntuple %d after realocation.\n",
+@@ -271,7 +271,7 @@ int mcfioC_NTuple(int stream, int nTuple
+          " mcfio_NTuple: Unable to encode or decode NTuple I.D. %d \n",
+              nTupleId);
+          j = str->ehead->nNTuples;
+-         if (xdr_setpos(str->xdr,p1) == FALSE) 
++         if (fseeko(str->filePtr,p1,SEEK_SET) != 0) 
+            fprintf(stderr,
+          " mcfio_NTuple: Unable to position stream at NTuple %d \n", nTupleId);
+          return -1;
+@@ -281,7 +281,7 @@ int mcfioC_NTuple(int stream, int nTuple
+       str->ehead->ptrNTuples[str->ehead->nNTuples] = p1;
+       str->ehead->nNTuples++; 
+     }
+-    str->currentPos = xdr_getpos(str->xdr);    
++    str->currentPos = ftello(str->filePtr);
+     str->numWordsC += (ntot/4);
+     str->numWordsT += ((str->currentPos-p1)/4);
+     return 1;
+@@ -310,7 +310,7 @@ int mcfioC_NTupleMult(int stream, int nT
+   for(i=0, j=-1; i<str->ehead->nNTuples; i++) {
+            if (str->ehead->nTupleIds[i] == ddl->seqNTuId) j = i;
+    }
+-  if (xdr_setpos(str->xdr,str->ehead->ptrNTuples[j]) == FALSE) {
++  if (fseeko(str->filePtr,str->ehead->ptrNTuples[j],SEEK_SET) != 0) {
+         fprintf(stderr,
+     " mcfio_NTupleMult: Unable to position stream at NTuple %d \n", nTupleId);
+           return -1;  
+@@ -325,7 +325,7 @@ int mcfioC_NTupleMult(int stream, int nT
+          " mcfio_NTuple: Unable to encode or decode NTuple I.D. %d \n",
+              nTupleId);
+          j = str->ehead->nNTuples;
+-         if (xdr_setpos(str->xdr, str->currentPos) == FALSE) 
++         if (fseeko(str->filePtr,str->currentPos,SEEK_SET) != 0) 
+            fprintf(stderr,
+          " mcfio_NTuple: Unable to position stream at NTuple %d \n", nTupleId);
+          return -1;
+@@ -365,7 +365,7 @@ int mcfioC_NTupleVar(int stream, int nTu
+   for(i=0, j=-1; i<str->ehead->nNTuples; i++) {
+            if (str->ehead->nTupleIds[i] == ddl->seqNTuId) j = i;
+    }
+-  if (xdr_setpos(str->xdr,str->ehead->ptrNTuples[j]) == FALSE) {
++  if (fseeko(str->filePtr,str->ehead->ptrNTuples[j],SEEK_SET) != 0) {
+         fprintf(stderr,
+     " mcfio_NTupleVar: Unable to position stream at NTuple %d \n", nTupleId);
+           return -1;  
+@@ -380,7 +380,7 @@ int mcfioC_NTupleVar(int stream, int nTu
+          " mcfio_NTuple: Unable to encode or decode NTuple I.D. %d \n",
+              nTupleId);
+          j = str->ehead->nNTuples;
+-         if (xdr_setpos(str->xdr, str->currentPos) == FALSE) 
++         if (fseeko(str->filePtr,str->currentPos,SEEK_SET) != 0) 
+            fprintf(stderr,
+          " mcfio_NTuple: Unable to position stream at NTuple %d \n", nTupleId);
+          return -1;
+@@ -413,7 +413,7 @@ int mcfioC_NTupleSubVar(int stream, int
+   for(i=0, j=-1; i<str->ehead->nNTuples; i++) {
+            if (str->ehead->nTupleIds[i] == ddl->seqNTuId) j = i;
+    }
+-  if (xdr_setpos(str->xdr,str->ehead->ptrNTuples[j]) == FALSE) {
++  if (fseeko(str->filePtr,str->ehead->ptrNTuples[j],SEEK_SET) != 0) {
+         fprintf(stderr,
+     " mcfio_NTupleVar: Unable to position stream at NTuple %d \n", nTupleId);
+           return -1;  
+@@ -428,7 +428,7 @@ int mcfioC_NTupleSubVar(int stream, int
+          " mcfio_NTuple: Unable to encode or decode NTuple I.D. %d \n",
+              nTupleId);
+          j = str->ehead->nNTuples;
+-         if (xdr_setpos(str->xdr, str->currentPos) == FALSE) 
++         if (fseeko(str->filePtr,str->currentPos,SEEK_SET) != 0) 
+            fprintf(stderr,
+          " mcfio_NTuple: Unable to position stream at NTuple %d \n", nTupleId);
+          return -1;
+@@ -461,7 +461,7 @@ int mcfioC_NTupleSubStruct(int stream, i
+   for(i=0, j=-1; i<str->ehead->nNTuples; i++) {
+            if (str->ehead->nTupleIds[i] == ddl->seqNTuId) j = i;
+    }
+-  if (xdr_setpos(str->xdr,str->ehead->ptrNTuples[j]) == FALSE) {
++  if (fseeko(str->filePtr,str->ehead->ptrNTuples[j],SEEK_SET) != 0) {
+         fprintf(stderr,
+     " mcfio_NTupleVar: Unable to position stream at NTuple %d \n", nTupleId);
+           return -1;  
+@@ -476,7 +476,7 @@ int mcfioC_NTupleSubStruct(int stream, i
+          " mcfio_NTuple: Unable to encode or decode NTuple I.D. %d \n",
+              nTupleId);
+          j = str->ehead->nNTuples;
+-         if (xdr_setpos(str->xdr, str->currentPos) == FALSE) 
++         if (fseeko(str->filePtr,str->currentPos,SEEK_SET) != 0) 
+            fprintf(stderr,
+          " mcfio_NTuple: Unable to position stream at NTuple %d \n", nTupleId);
+          return -1;
+diff -rupN a/mcfio/src/mcfio_Direct.c b/mcfio/src/mcfio_Direct.c
+--- a/mcfio/src/mcfio_Direct.c	2006-11-15 00:46:07.000000000 +0100
++++ b/mcfio/src/mcfio_Direct.c	2014-09-10 11:25:14.259267834 +0200
+@@ -93,7 +93,7 @@ static int openReadDirect(char *filename
+ {
+    int i, j, jstr, idtmp, ntot, ll1, jdRef, oldNumOfNTuples;
+    int iff;
+-   u_int p1, p2;
++   off_t p1, p2;
+    FILE *ff;
+    mcfStream *str;
+    nTuDDL *ddl, *ddlRef;
+@@ -197,7 +197,7 @@ static int openReadDirect(char *filename
+    str->table = NULL;
+    str->buffer = NULL;
+    str->buffer2 = NULL;
+-   p1 = xdr_getpos(str->xdr);
++   p1 = ftello(str->filePtr);
+    str->firstPos = p1;
+    str->status = MCFIO_BOF;
+    str->fhead = NULL;
+@@ -220,7 +220,7 @@ static int openReadDirect(char *filename
+        mcfioC_Close(jstr+1);
+        return -1;
+    }    
+-   p2 = xdr_getpos(str->xdr);
++   p2 = ftello(str->filePtr);
+    str->numWordsC += (ntot/4);
+    /*
+    ** Check if new these Ntuple template are not reference, if so,
+@@ -288,7 +288,7 @@ int mcfioC_OpenWriteDirect(char *filenam
+ */
+ {
+    int i, jstr, idtmp, ntot;
+-   u_int p1, p2;
++   off_t p1, p2;
+    FILE *ff;
+    mcfStream *str;
+    
+@@ -361,7 +361,7 @@ int mcfioC_OpenWriteDirect(char *filenam
+    str->buffer = NULL;
+    str->buffer2 = NULL;
+    xdrstdio_create(str->xdr, ff, XDR_ENCODE);
+-   p1 = xdr_getpos(str->xdr);
++   p1 = ftello(str->filePtr);
+    str->firstPos = p1;
+    str->currentPos = p1;
+    str->status = MCFIO_BOF;
+@@ -409,7 +409,7 @@ int mcfioC_OpenWriteDirect(char *filenam
+    str->table->runnums = (int *) malloc(sizeof(int) * str->fhead->dimTable);
+    str->table->trigMasks = (int *) malloc(sizeof(int) * str->fhead->dimTable);
+    str->table->ptrEvents = 
+-         (u_int *) malloc(sizeof(int) * str->fhead->dimTable);
++         (off_t *) calloc(str->fhead->dimTable, sizeof(off_t));
+    /*
+    ** Write the first dummy table 
+    */
+@@ -430,7 +430,7 @@ int mcfioC_OpenWriteDirect(char *filenam
+       str->ehead->blockIds = 
+           (int *) malloc(sizeof(int) * str->fhead->nBlocks);
+       str->ehead->ptrBlocks =
+-         (u_int *) malloc(sizeof(int) * str->fhead->nBlocks);
++         (off_t *) calloc(str->fhead->nBlocks, sizeof(off_t));
+    } else {
+        str->ehead->blockIds = NULL;
+        str->ehead->ptrBlocks = NULL; 
+@@ -454,7 +454,7 @@ int mcfioC_NextEvent(int stream)
+ */
+ {
+    int i, jstr, idtmp, ntot, nn1;
+-   u_int p_evt, p1, p2, *p_ptr;
++   off_t p_evt, p2;
+    mcfStream *str;
+    
+   if (McfStreamPtrList == NULL) { 
+@@ -490,7 +490,7 @@ int mcfioC_NextEvent(int stream)
+  " mcfio_NextEvent: XDR Error decoding the EventTable \n"); 
+  		            return -1;
+  		    }
+-                    p2 = xdr_getpos(str->xdr);
++                    p2 = ftello(str->filePtr);
+                     str->numWordsC += (ntot/4);
+                     str->numWordsT += ((p2-str->currentPos)/4);
+                     str->currentPos = p2;
+@@ -525,7 +525,7 @@ int mcfioC_NextEvent(int stream)
+  " mcfio_NextEvent: Corrupted Event Table \n"); 
+  		            return -1;
+                 }
+-                if (xdr_setpos(str->xdr, str->table->nextLocator) == FALSE) {
++                if (fseeko(str->filePtr,str->table->nextLocator,SEEK_SET) != 0) {
+                            fprintf(stderr,
+  " mcfio_NextEvent: Error Repositioning stream \n"); 
+  		            return -1;
+@@ -536,7 +536,7 @@ int mcfioC_NextEvent(int stream)
+  " mcfio_NextEvent: XDR Error decoding the EventTable \n"); 
+  		            return -1;
+  		    }
+-                    p2 = xdr_getpos(str->xdr);
++                    p2 = ftello(str->filePtr);
+                     str->numWordsC += (ntot/4);
+                     str->numWordsT += ((p2-str->currentPos)/4);
+                     str->currentPos = p2;
+@@ -547,10 +547,10 @@ int mcfioC_NextEvent(int stream)
+        /* 
+        ** we should be pointing to a good event header here. 
+        */
+-       if (xdr_setpos(str->xdr, p_evt) == FALSE) return -1;
++       if (fseeko(str->filePtr,p_evt,SEEK_SET) != 0) return -1;
+        if( xdr_mcfast_eventheader(str->xdr, &idtmp,
+ 	&ntot, McfGenericVersion, &(str->ehead)) == FALSE) return -1;
+-        str->currentPos = xdr_getpos(str->xdr);
++        str->currentPos = ftello(str->filePtr);
+         str->numWordsC += (ntot/4);
+         str->numWordsT += ((str->currentPos - p_evt)/4);
+         if (str->table != NULL) str->table->ievt ++;              
+@@ -574,7 +574,7 @@ int mcfioC_NextEvent(int stream)
+       /*
+       ** The Event table is now full. Flush it. Then initiate a new table. 
+       */ 
+-       str->table->nextLocator = xdr_getpos(str->xdr);
++       str->table->nextLocator = ftello(str->filePtr);
+        if (mcfioC_Wrttable(str, FLUSH) == FALSE) return -1;
+        if (mcfioC_Wrttable(str, INITIATE) == FALSE) return -1;
+      }
+@@ -591,7 +591,7 @@ int mcfioC_SpecificEvent(int stream, int
+                              int istore, int irun, int itrig)
+ {
+    int i, jstr, idtmp, ntot, ok, nn1;
+-   u_int p_evt, p1, p2, *p_ptr;
++   off_t p1, p2;
+    mcfStream *str;
+    
+   if (McfStreamPtrList == NULL) { 
+@@ -612,7 +612,7 @@ int mcfioC_SpecificEvent(int stream, int
+  or Memory Mapped \n"); 
+      return -1;
+      }
+-  if (xdr_setpos(str->xdr, str->fhead->firstTable) == FALSE ) {
++  if (fseeko(str->filePtr,str->fhead->firstTable,SEEK_SET) != 0) {
+        fprintf(stderr,
+  " mcfio_SpecificEvent:  Could not reposition Direct Access Stream %d \n",
+          (jstr+1)) ;
+@@ -623,7 +623,7 @@ int mcfioC_SpecificEvent(int stream, int
+    ok = mcfioC_nextspecevt(str, ievt, istore, irun, itrig);
+    if (ok == FALSE) {
+       mcfioC_RewindDirect(jstr);
+-      if (xdr_setpos(str->xdr, str->fhead->firstTable) == FALSE ) {
++      if (fseeko(str->filePtr,str->fhead->firstTable,SEEK_SET) != 0) {
+            fprintf(stderr,
+      " mcfio_SpecificEvent:  Could not reposition Direct Access Stream %d \n",
+          (jstr+1)) ;
+@@ -640,7 +640,7 @@ int mcfioC_NextSpecificEvent(int stream,
+                              int istore, int irun, int itrig)
+ {
+    int i, jstr, idtmp, ntot, ok, nn1;
+-   u_int p_evt, p1, p2, *p_ptr;
++   off_t p1, p2;
+    mcfStream *str;
+    
+   if (McfStreamPtrList == NULL) { 
+@@ -675,7 +675,8 @@ void mcfioC_CloseDirect(int jstr)
+ */
+ {
+    int i, idtmp, ntot;
+-   u_int p1, p2, *p_ptr;
++   u_int *p_ptr;
++   off_t p1, p2;
+    FILE *ff;
+    mcfStream *str;
+    nTuDDL *ddl;
+@@ -727,7 +728,7 @@ void mcfioC_RewindDirect(int jstr)
+     mcfStream *str;
+     
+     str =  McfStreamPtrList[jstr];
+-    if (xdr_setpos(str->xdr, str->fhead->firstTable) == FALSE )
++    if (fseeko(str->filePtr,str->fhead->firstTable,SEEK_SET) != 0)
+        fprintf(stderr,
+        " mcfio_Rewind:  Could not reposition Direct Access Stream %d \n",
+          (jstr+1)) ;
+@@ -754,7 +755,7 @@ int  mcfioC_Wrtfhead(mcfStream *str, int
+ */
+ {
+    int idtmp, ntot;
+-   u_int p1, p0;
++   off_t p1, p0;
+    int k;
+     time_t clock;
+    
+@@ -762,7 +763,7 @@ int  mcfioC_Wrtfhead(mcfStream *str, int
+    if (mode == FLUSH) {
+      time(&clock);
+      strcpy(str->fhead->closingDate, ctime(&clock));
+-     if(xdr_setpos(str->xdr,str->firstPos) == FALSE) return FALSE; 
++     if(fseeko(str->filePtr,str->firstPos,SEEK_SET) != 0) return FALSE; 
+      if (xdr_mcfast_fileheader(str->xdr, &idtmp,
+           &ntot, McfGenericVersion, &(str->fhead), str->id) == FALSE) {
+        fprintf (stderr, 
+@@ -790,7 +791,7 @@ int  mcfioC_Wrtfhead(mcfStream *str, int
+                "mcfio_OpenWriteDirect: Unable to encode fileheader \n");
+        return FALSE;
+       } 
+-      p1 = xdr_getpos(str->xdr);
++      p1 = ftello(str->filePtr);
+       str->numWordsC += (ntot/4);
+       str->numWordsT += ((p1-p0)/4);
+       str->currentPos = p1;
+@@ -815,7 +816,7 @@ int  mcfioC_WrtEvt(mcfStream *str, int m
+ */
+ {
+    int i, idtmp, ntot;
+-   u_int p1, p0;
++   off_t p1, p0;
+    
+    idtmp = EVENTHEADER;
+    if (mode == FLUSH) {
+@@ -825,14 +826,14 @@ int  mcfioC_WrtEvt(mcfStream *str, int m
+     str->table->trigMasks[str->table->numevts] = str->ehead->trigMask;
+     str->table->ptrEvents[str->table->numevts] = str->evtPos;
+     p0 = str->currentPos;
+-    if(xdr_setpos(str->xdr,str->evtPos) == FALSE) return FALSE; 
++    if(fseeko(str->filePtr,str->evtPos,SEEK_SET) != 0) return FALSE; 
+     p1 = str->evtPos;
+     if(xdr_mcfast_eventheader(str->xdr, &idtmp,
+             &ntot, McfGenericVersion, &(str->ehead)) == FALSE) return FALSE;
+-    str->currentPos = xdr_getpos(str->xdr); 
++    str->currentPos = ftello(str->filePtr); 
+     str->numWordsC += (ntot/4);
+     str->numWordsT += ((str->currentPos-p1)/4);
+-    if(xdr_setpos(str->xdr,p0) == FALSE) return FALSE;
++    if(fseeko(str->filePtr,p0,SEEK_SET) != 0) return FALSE;
+     str->currentPos = p0;
+     str->ehead->nBlocks = 0;
+     str->ehead->nNTuples = 0;
+@@ -840,11 +841,11 @@ int  mcfioC_WrtEvt(mcfStream *str, int m
+    } else if (mode == INITIATE) {
+     str->ehead->nBlocks = 0; /*do not initialize nNTuples, already done */
+     str->ehead->evtnum = -1;
+-    str->evtPos = xdr_getpos(str->xdr);
++    str->evtPos = ftello(str->filePtr);
+     
+     if(xdr_mcfast_eventheader(str->xdr, &idtmp,
+             &ntot, McfGenericVersion, &(str->ehead)) == FALSE) return FALSE;
+-    str->currentPos = xdr_getpos(str->xdr);
++    str->currentPos = ftello(str->filePtr);
+     return TRUE;
+    } else {
+      fprintf(stderr," mcfioC_WrtEvt: Internal error, lost mode \n");
+@@ -863,32 +864,32 @@ int  mcfioC_Wrttable(mcfStream *str, int
+ */
+ {
+    int idtmp, ntot;
+-   u_int p1, p0;
++   off_t p1, p0;
+    
+    idtmp = EVENTTABLE;
+    str->table->dim = str->fhead->dimTable;
+    if (mode == FLUSH) {
+     p0 = str->currentPos;
+-    if(xdr_setpos(str->xdr,str->tablePos) == FALSE) return FALSE; 
++    if(fseeko(str->filePtr,str->tablePos,SEEK_SET) != 0) return FALSE; 
+     p1 = str->tablePos;
+     str->table->numevts++;
+     if(xdr_mcfast_eventtable(str->xdr, &idtmp,
+             &ntot, McfGenericVersion, &(str->table)) == FALSE) return FALSE;
+-    str->currentPos = xdr_getpos(str->xdr); 
++    str->currentPos = ftello(str->filePtr); 
+     str->numWordsC += (ntot/4);
+     str->numWordsT += ((str->currentPos-p1)/4);
+-    if(xdr_setpos(str->xdr,p0) == FALSE) return FALSE;
++    if(fseeko(str->filePtr,p0,SEEK_SET) != 0) return FALSE;
+     str->currentPos = p0;
+     str->tablePos = -1;
+     str->table->nextLocator = -1;
+     str->table->numevts=-1;
+     return TRUE;
+    } else if (mode == INITIATE) {
+-    str->tablePos = xdr_getpos(str->xdr);
++    str->tablePos = ftello(str->filePtr);
+     str->table->nextLocator = -1;
+     if(xdr_mcfast_eventtable(str->xdr, &idtmp,
+             &ntot, McfGenericVersion, &(str->table)) == FALSE) return FALSE;
+-    str->currentPos = xdr_getpos(str->xdr);
++    str->currentPos = ftello(str->filePtr);
+     return TRUE;
+    } else {
+      fprintf(stderr," mcfioC_Wrttable: Internal error, lost mode \n");
+@@ -905,18 +906,18 @@ static int mcfioC_gofornextevent(mcfStre
+ ** the current event. 
+ */
+ {
+-   u_int p1, p2;
++   off_t p1, p2;
+    int id, ntot, go;
+    
+    go = TRUE;
+    
+    while (go == TRUE) {
+-     p1 = xdr_getpos(str->xdr);
++     p1 = ftello(str->filePtr);
+      if (xdr_mcfast_headerBlock(str->xdr, &id, &ntot, McfGenericVersion)
+             == FALSE)  return NOTHING;
+      if ((id == EVENTTABLE) || (id == EVENTHEADER)) {
+          str->currentPos = p1;
+-         if(xdr_setpos(str->xdr, p1) == FALSE) return NOTHING;
++         if(fseeko(str->filePtr,p1,SEEK_SET) != 0) return NOTHING;
+          return id;
+      }
+    }
+@@ -931,8 +932,8 @@ static int  mcfioC_nextspecevt(mcfStream
+ */  
+ {
+    int i, jstr, j, idtmp, ntot, found;
+-   u_int p_evt, p1, p2, *p_ptr;
+-   
++   off_t p_evt, p2;
++
+    if ((str->table == NULL) || 
+          ((str->table != NULL)&& (str->table->evtnums == NULL))) { 
+                 idtmp = mcfioC_gofornextevent(str);
+@@ -947,7 +948,7 @@ static int  mcfioC_nextspecevt(mcfStream
+  " mcfio_SpecificEvent: XDR Error decoding the EventTable \n"); 
+  		            return FALSE;
+  		    }
+-                    p2 = xdr_getpos(str->xdr);
++                    p2 = ftello(str->filePtr);
+                     str->numWordsC += (ntot/4);
+                     str->numWordsT += ((p2-str->currentPos)/4);
+                     str->currentPos = p2;
+@@ -992,8 +993,8 @@ static int  mcfioC_nextspecevt(mcfStream
+  " mcfio_NextEvent: Next EventTable corrupted, abandoning search \n"); 
+  		            return FALSE;
+               }
+-              if (xdr_setpos(str->xdr, str->table->nextLocator)
+-                      == FALSE) { fprintf(stderr,
++              if (fseeko(str->filePtr,str->table->nextLocator,SEEK_SET)
++                      != 0) { fprintf(stderr,
+  " mcfio_NextEvent: XDR Error repositioning to the next EventTable \n"); 
+  		            return FALSE;
+               } else  {
+@@ -1004,7 +1005,7 @@ static int  mcfioC_nextspecevt(mcfStream
+  		            return FALSE;
+  		    }
+  	       }
+-               p2 = xdr_getpos(str->xdr);
++               p2 = ftello(str->filePtr);
+                str->numWordsC += (ntot/4);
+                str->numWordsT += ((p2-str->currentPos)/4);
+                str->currentPos = p2;
+@@ -1016,10 +1017,10 @@ static int  mcfioC_nextspecevt(mcfStream
+        /* 
+        ** we should be pointing to a good event header here. 
+        */
+-       if (xdr_setpos(str->xdr, p_evt) == FALSE) return FALSE;
++       if (fseeko(str->filePtr,p_evt,SEEK_SET) != 0) return FALSE;
+        if( xdr_mcfast_eventheader(str->xdr, &idtmp,
+ 	&ntot, McfGenericVersion, &(str->ehead)) == FALSE) return FALSE;
+-        str->currentPos = xdr_getpos(str->xdr);
++        str->currentPos = ftello(str->filePtr);
+         str->numWordsC += (ntot/4);
+         str->numWordsT += ((str->currentPos - p_evt)/4);
+         return MCFIO_RUNNING;
+diff -rupN a/mcfio/src/mcfio_Util1.c b/mcfio/src/mcfio_Util1.c
+--- a/mcfio/src/mcfio_Util1.c	2006-11-15 00:46:07.000000000 +0100
++++ b/mcfio/src/mcfio_Util1.c	2014-09-10 11:25:14.259267834 +0200
+@@ -823,7 +823,7 @@ void mcfioC_InfoBlockChar(int stream, in
+      
+     switch (key) {
+       case MCFIO_VERSION:
+-       tt = xdr_setpos(str->xdr, pos); 
++       tt = fseeko(str->filePtr,pos,SEEK_SET); 
+        tt = xdr_mcfast_generic(str->xdr, &itmp, &nn, &vv, &data);
+        xdr_free(xdr_string, data); 
+        strcpy(answer, vv);
+diff -rupN a/mcfio/src/mcf_NTuIOFiles.c b/mcfio/src/mcf_NTuIOFiles.c
+--- a/mcfio/src/mcf_NTuIOFiles.c	2006-11-15 00:46:07.000000000 +0100
++++ b/mcfio/src/mcf_NTuIOFiles.c	2014-09-10 11:25:14.259267834 +0200
+@@ -164,7 +164,7 @@ int mcfioC_EndDeclNTuples(int stream)
+ */
+ {
+    int i, j, jstr, idtmp, ntot;
+-   u_int p1, p2;
++   off_t p1, p2;
+    FILE *ff;
+    mcfStream *str;
+    
+@@ -206,7 +206,7 @@ int mcfioC_EndDeclNTuples(int stream)
+      return -1;
+    }
+    xdrstdio_create(str->xdr, ff, XDR_ENCODE);
+-   p1 = xdr_getpos(str->xdr);
++   p1 = ftello(str->filePtr);
+    str->firstPos = p1;
+    str->currentPos = p1;
+    /*
+diff -rupN a/mcfio/src/mcf_xdr.h b/mcfio/src/mcf_xdr.h
+--- a/mcfio/src/mcf_xdr.h	2006-11-15 00:46:07.000000000 +0100
++++ b/mcfio/src/mcf_xdr.h	2014-09-10 11:25:18.322283337 +0200
+@@ -59,7 +59,7 @@ typedef struct _mcfxdrFileHeader{
+ 	char closingDate[30];
+ 	unsigned int numevts_expect;    /* The number of event expected */
+ 	unsigned int numevts;    /* The number of evts really written on tape */
+-	unsigned int firstTable; /* The XDR locator for the first table */
++	off_t firstTable; /* The XDR locator for the first table */
+ 	unsigned int dimTable; /* The number of events listed in the fixed-sized 
+ 	                           event table */
+ 	unsigned int nBlocks;		
+@@ -80,7 +80,7 @@ typedef struct _mcfxdrEventTable{
+ 				the id and version, and this word */
+ 	char version[MCF_XDR_VERSION_LENGTH+1];
+ 	                 /* The version of this particular block */
+-	int nextLocator; /*The Locator for the next Event Table. */
++	off_t nextLocator; /* The Locator for the next Event Table. */
+ 	int previousnumevts; /* The size of the previous Table */
+         int numevts;	/* The number of events in this chunk */
+         unsigned int dim; /* The dimension of the arrays listed below */
+@@ -89,7 +89,7 @@ typedef struct _mcfxdrEventTable{
+ 	int *storenums; /* The list of Store number within a Run */
+ 	int *runnums;   /* The list of run numbers */
+ 	int *trigMasks; /* The list of user-defined Trigger masks */
+-	unsigned int *ptrEvents;
++	off_t *ptrEvents;
+ 			/* The list of XDR pointers for these events */ 
+ } mcfxdrEventTable;
+ 
+@@ -117,7 +117,7 @@ typedef struct _mcfxdrEventHeader{
+ 	unsigned int nBlocks;  /* The number of Blocks  */
+ 	unsigned int dimBlocks; /* The dimension of the two following arrays */
+ 	int *blockIds;     /* The list of Block identifiers */
+-	unsigned int *ptrBlocks;
++	off_t *ptrBlocks;
+ 			/* The list of XDR pointers for these blocks */ 
+ 	unsigned int nNTuples;
+ 	                /* The number of Ntuples defined for this event */
+@@ -125,7 +125,7 @@ typedef struct _mcfxdrEventHeader{
+ 	unsigned int dimNTuples; /* The dimension of the two following arrays */
+ 	int *nTupleIds; /* The list of Ntuple identifiers, pointing to the 
+ 				global list array */                				
+-	unsigned int *ptrNTuples;
++	off_t *ptrNTuples;
+ 			/* The list of XDR pointers for these NTuples */ 
+ 	
+ } mcfxdrEventHeader;
+@@ -141,10 +141,10 @@ typedef struct _mcfStream{
+ 	int numWordsT;  /* The number of words read or written, Total */
+ 	mcfxdrFileHeader *fhead; /* The File header */
+ 	mcfxdrEventHeader *ehead; /* The current Event Header */  
+-	unsigned int currentPos; /* The XDR current position */
+-	unsigned int evtPos;     /* The XDR position for the begingin of evt */
+-	unsigned int tablePos;   /* The XDR position for the table */
+-	unsigned int firstPos;   /* The XDR position just before file header */
++	off_t currentPos; /* The XDR current position */
++	off_t evtPos;     /* The XDR position for the begingin of evt */
++	off_t tablePos;   /* The XDR position for the table */
++	off_t firstPos;   /* The XDR position just before file header */
+ 	XDR *xdr;       /* The XDR stream */
+ 	char *filename; /* Filename */
+ 	FILE *filePtr;  /* The file pointer */
