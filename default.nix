@@ -24,6 +24,14 @@ rec {
                         inherit HepMC YODA FastJet;
               };
 
+      CheckMATE     = callPackage ./pkgs/CheckMATE { 
+                        inherit root5;
+                      };
+
+      CheckMATEEnv  = callPackage ./pkgs/CheckMATE/env.nix { 
+                        inherit CheckMATE;
+                      };
+
       Delphes       = callPackage ./pkgs/Delphes { 
                         inherit root5;
                       };
