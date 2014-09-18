@@ -94,6 +94,8 @@ rec {
                         inherit PYTHIA8-src HepMC;
                       };
 
+      ROOT6         = callPackage ./pkgs/ROOT6 { };
+
       SHERPA        = callPackage ./pkgs/SHERPA { };
 
       ThePEG        = callPackage ./pkgs/ThePEG {
