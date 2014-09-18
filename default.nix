@@ -96,6 +96,11 @@ rec {
 
       ROOT6         = callPackage ./pkgs/ROOT6 { };
 
+      ROOT6Env      = callPackage ./pkgs/ROOT6/env.nix { 
+                        inherit ROOT6; 
+                      };
+
+
       SHERPA        = callPackage ./pkgs/SHERPA { };
 
       ThePEG        = callPackage ./pkgs/ThePEG {

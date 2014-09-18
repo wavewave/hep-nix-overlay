@@ -1,21 +1,12 @@
-{ pkgs, root5 }:
+{ pkgs, ROOT6 }:
 
-let version = "34.12";
-    pythonWithReadline = pkgs.pythonFull.override { 
-                           extraLibs = [ pkgs.pythonPackages.readline ]; 
-                         }; 
-
+let version = ROOT6.version;
 in pkgs.myEnvFun rec { 
-  name = "root5-${version}";
+  name = "ROOT6-${version}";
 
-  buildInputs = with pkgs; [
-    # pythonFull 
-    pythonWithReadline
-    root5
-    stdenv
-  ];
+  buildInputs = with pkgs; [ ROOT6 pythonFull ];
   
   extraCmds = ''
-    source ${root5}/bin/thisroot.sh
+    source ${ROOT6}/bin/thisroot.sh
   '';
 }
