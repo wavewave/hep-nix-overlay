@@ -9,6 +9,8 @@ in pkgs.myEnvFun rec {
   extraCmds = with pkgs; ''
     export PYTHIA8LOCATION=${PYTHIA8}
     export FASTJETLOCATION=${FastJet}
+    export PYTHIA8=${PYTHIA8}
+    export PYTHIA8DATA=${PYTHIA8}/xmldoc
     unpack () { 
       mkdir pythia8examples
       cp -a ${pythia8srcunpacked}/examples pythia8examples     
