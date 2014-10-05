@@ -7,5 +7,8 @@ stdenv.mkDerivation rec {
   buildInputs = [ HepMC ];
   enableParallelBuilding = true; 
   
-  configureFlags = "--with-hepmc=${HepMC} --with-hepmcversion=${HepMC.version}"; # "--with-thepeg=${ThePEG} --with-fastjet=${FastJet} ";
+  configureFlags = "--with-hepmc=${HepMC} --with-hepmcversion=${HepMC.version}"; 
 }
+
+
+# "--with-thepeg=${ThePEG} --with-fastjet=${FastJet} ";

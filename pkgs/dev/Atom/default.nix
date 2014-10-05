@@ -20,6 +20,8 @@ in stdenv.mkDerivation rec {
   enableParallelBuilding = true; 
   doCheck = true;
 
+  #builder = ./builder.sh; 
+
   preConfigure = '' 
     # substituteInPlace bin/atomenv.sh --subst-var prefix
     # substituteInPlace bin/atomenv.csh --subst-var prefix 

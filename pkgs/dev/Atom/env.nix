@@ -1,4 +1,7 @@
-{ pkgs, AtomDev, root5, YODA }:
+{ pkgs
+, AtomDev
+, root5
+, YODA }:
 
 
 let pythonFullWithYODA = pkgs.pythonFull.override { 

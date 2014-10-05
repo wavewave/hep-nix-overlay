@@ -24,6 +24,7 @@ rec {
                         inherit HepMC YODA FastJet;
               };
 
+
       CheckMATE     = callPackage ./pkgs/CheckMATE { 
                         inherit root5;
                       };
@@ -92,6 +93,10 @@ rec {
 
       PYTHIA8       = callPackage ./pkgs/PYTHIA8 {
                         inherit PYTHIA8-src HepMC;
+                      };
+
+      PYTHIA8Env    = callPackage ./pkgs/PYTHIA8/env.nix {
+                        inherit PYTHIA8 FastJet;
                       };
 
       ROOT6         = callPackage ./pkgs/ROOT6 { };
@@ -371,6 +376,16 @@ rec {
                                   inherit root5;
                                   inherit YODA;
                                 };
+
+              AtomDevEnvHaskell=callPackage ./pkgs/dev/Atom/envHaskell.nix {
+                                  inherit pkgs;
+                                  inherit AtomDev;
+                                  inherit root5;
+                                  inherit YODA;
+                                };
+
+
+
               root5minDev     = callPackage ./pkgs/dev/root5/minimal.nix {
                                    #stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
                                    #in if stdenv.isDarwin then clang33Stdenv else stdenv;
