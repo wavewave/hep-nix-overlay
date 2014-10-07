@@ -1,3 +1,4 @@
+
 { pkgs } :
 
 with pkgs;
@@ -107,6 +108,8 @@ rec {
       SHERPA        = callPackage ./pkgs/SHERPA { };
 
       SUSY-HIT      = callPackage ./pkgs/SUSY-HIT { };
+
+      SUSY-HITEnv   = callPackage ./pkgs/SUSY-HIT/env.nix { inherit SUSY-HIT; };
 
       ThePEG        = callPackage ./pkgs/ThePEG {
                         stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
