@@ -1,14 +1,16 @@
-{ pkgs, PYTHIA8, FastJet }: 
+{ pkgs, PYTHIA8, FastJet, LHAPDF }: 
 
 let pythia8srcunpacked = import ./src-unpacked.nix { PYTHIA8-src = PYTHIA8.src; stdenv = pkgs.stdenv; };
     version = PYTHIA8.version;
 in pkgs.myEnvFun rec { 
   name = "PYTHIA8-${version}";
-  buildInputs = with pkgs; [ PYTHIA8 ];
+  buildInputs = with pkgs; [ PYTHIA8 FastJet LHAPDF pkgs.gfortran ];
 
   extraCmds = with pkgs; ''
     export PYTHIA8LOCATION=${PYTHIA8}
     export FASTJETLOCATION=${FastJet}
+    export LHAPDFLOCATION=${LHAPDF}
+    export LHAPDFLIBNAME="-lLHAPDF"
     export PYTHIA8=${PYTHIA8}
     export PYTHIA8DATA=${PYTHIA8}/xmldoc
     unpack () { 
@@ -23,4 +25,6 @@ in pkgs.myEnvFun rec {
 
 #      echo "${pythia8srcunpacked}"
 # writeScript
+    #export LD_LIBRARY_PATH=${LHAPDF}/lib
+    #export DYLD_LIBRARY_PATH=${LHAPDF}/lib
 

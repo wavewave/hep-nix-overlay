@@ -92,11 +92,11 @@ rec {
 
 
       PYTHIA8       = callPackage ./pkgs/PYTHIA8 {
-                        inherit PYTHIA8-src HepMC;
+                        inherit PYTHIA8-src HepMC LHAPDF;
                       };
 
       PYTHIA8Env    = callPackage ./pkgs/PYTHIA8/env.nix {
-                        inherit PYTHIA8 FastJet;
+                        inherit PYTHIA8 FastJet LHAPDF;
                       };
 
       ROOT6         = callPackage ./pkgs/ROOT6 { };
