@@ -1,4 +1,4 @@
-{ stdenv, pkgs, fetchurl }:
+{ pkgs, fetchurl }:
  
 
 pkgs.stdenv.mkDerivation rec { 
