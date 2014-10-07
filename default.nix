@@ -25,15 +25,15 @@ rec {
               };
 
 
-      CheckMATE     = callPackage ./pkgs/CheckMATE { 
+      CheckMATE     = callPackage ./pkgs/CheckMATE {
                         inherit root5;
                       };
 
-      CheckMATEEnv  = callPackage ./pkgs/CheckMATE/env.nix { 
+      CheckMATEEnv  = callPackage ./pkgs/CheckMATE/env.nix {
                         inherit CheckMATE;
                       };
 
-      Delphes       = callPackage ./pkgs/Delphes { 
+      Delphes       = callPackage ./pkgs/Delphes {
                         inherit root5;
                       };
 
@@ -69,7 +69,7 @@ rec {
       MadAnalysis5Env  = callPackage ./pkgs/MadAnalysis5/env.nix {
                            inherit MadAnalysis5 root5 FastJet Delphes;
                          };
-                     
+
 
       MadGraph5_aMCatNLO = callPackage ./pkgs/MadGraph5_aMCatNLO {
                              inherit pythia-pgs PYTHIA8 ; # PYTHIA8-src-unpacked;
@@ -90,7 +90,6 @@ rec {
       #                         inherit PYTHIA8-src;
       #                       };
 
-
       PYTHIA8       = callPackage ./pkgs/PYTHIA8 {
                         inherit PYTHIA8-src HepMC;
                       };
@@ -101,12 +100,13 @@ rec {
 
       ROOT6         = callPackage ./pkgs/ROOT6 { };
 
-      ROOT6Env      = callPackage ./pkgs/ROOT6/env.nix { 
-                        inherit ROOT6; 
+      ROOT6Env      = callPackage ./pkgs/ROOT6/env.nix {
+                        inherit ROOT6;
                       };
 
-
       SHERPA        = callPackage ./pkgs/SHERPA { };
+
+      SUSY-HIT      = callPackage ./pkgs/SUSY-HIT { };
 
       ThePEG        = callPackage ./pkgs/ThePEG {
                         stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
