@@ -1,4 +1,4 @@
-{stdenv, fetchurl, cmake, boostHeaders}:
+{stdenv, fetchurl, cmake, boost}:
 
 stdenv.mkDerivation {
   name = "libyaml-cpp-0.5.1-PIC";
@@ -8,7 +8,7 @@ stdenv.mkDerivation {
     sha256 = "01kg0h8ksp162kdhyzn67vnlxpj5zjbks84sh50pv61xni990z1y";
   };
 
-  buildInputs = [ cmake boostHeaders ];
+  buildInputs = [ cmake boost ];
 
   cmakeFlags = "-DCMAKE_CXX_FLAGS=-fPIC"; 
 
