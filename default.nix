@@ -1,4 +1,3 @@
-
 { pkgs } :
 
 with pkgs;
@@ -63,6 +62,10 @@ rec {
 
       HepMC         = callPackage ./pkgs/HepMC { };
 
+      LanHEP        = callPackage ./pkgs/LanHEP { };
+
+      LanHEPEnv     = callPackage ./pkgs/LanHEP/env.nix { inherit LanHEP; };
+
       LHAPDF        = callPackage ./pkgs/LHAPDF { };
 
       MadAnalysis5  = callPackage ./pkgs/MadAnalysis5 { };
@@ -70,7 +73,6 @@ rec {
       MadAnalysis5Env  = callPackage ./pkgs/MadAnalysis5/env.nix {
                            inherit MadAnalysis5 root5 FastJet Delphes;
                          };
-
 
       MadGraph5_aMCatNLO = callPackage ./pkgs/MadGraph5_aMCatNLO {
                              inherit pythia-pgs PYTHIA8 ; # PYTHIA8-src-unpacked;
