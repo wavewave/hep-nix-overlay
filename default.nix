@@ -109,6 +109,8 @@ rec {
 
       SHERPA        = callPackage ./pkgs/SHERPA { };
 
+      SPheno        = callPackage ./pkgs/SPheno { };
+
       SUSY-HIT      = callPackage ./pkgs/SUSY-HIT { };
 
       SUSY-HITEnv   = callPackage ./pkgs/SUSY-HIT/env.nix { inherit SUSY-HIT; };
@@ -167,8 +169,6 @@ rec {
       rootEnv = callPackage ./pkgs/root5/rootEnv.nix {
                   inherit root5;
                 };
-
-      SPheno      = callPackage ./pkgs/SPheno/default.nix { };
 
       softsusy    = callPackage ./pkgs/softsusy/default.nix { };
 
