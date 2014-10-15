@@ -49,6 +49,8 @@ rec {
                       inherit Fastlim;
                     };
 
+      FeynHiggs     = callPackage ./pkgs/FeynHiggs { };
+
       HERWIGpp      = callPackage ./pkgs/HERWIGpp {
                         stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
                                  in if stdenv.isDarwin then clang33Stdenv else stdenv;
@@ -109,6 +111,8 @@ rec {
 
       SHERPA        = callPackage ./pkgs/SHERPA { };
 
+      SPheno        = callPackage ./pkgs/SPheno { };
+
       SUSY-HIT      = callPackage ./pkgs/SUSY-HIT { };
 
       SUSY-HITEnv   = callPackage ./pkgs/SUSY-HIT/env.nix { inherit SUSY-HIT; };
@@ -167,8 +171,6 @@ rec {
       rootEnv = callPackage ./pkgs/root5/rootEnv.nix {
                   inherit root5;
                 };
-
-      SPheno      = callPackage ./pkgs/SPheno/default.nix { };
 
       softsusy    = callPackage ./pkgs/softsusy/default.nix { };
 
