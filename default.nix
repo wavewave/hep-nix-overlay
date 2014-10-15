@@ -49,6 +49,8 @@ rec {
                       inherit Fastlim;
                     };
 
+      FeynHiggs     = callPackage ./pkgs/FeynHiggs { };
+
       HERWIGpp      = callPackage ./pkgs/HERWIGpp {
                         stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
                                  in if stdenv.isDarwin then clang33Stdenv else stdenv;
