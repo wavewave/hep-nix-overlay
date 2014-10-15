@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
     substituteInPlace configure --replace /bin/sh ${pkgs.bash}/bin/bash
   '';
 
-  configureFlags = if stdenv.isDarwin then "--64" else "";
+  configureFlags = "--64"; # if stdenv.isDarwin then "--64" else "";
 
   meta = {
   };
