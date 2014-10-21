@@ -22,8 +22,9 @@ rec {
                         inherit Atom;
                         inherit root5;
                         inherit HepMC YODA FastJet;
-              };
+                      };
 
+      CalcHEP       = callPackage ./pkgs/CalcHEP { };
 
       CheckMATE     = callPackage ./pkgs/CheckMATE {
                         inherit root5;
