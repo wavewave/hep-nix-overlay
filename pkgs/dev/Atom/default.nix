@@ -13,7 +13,7 @@ in stdenv.mkDerivation rec {
 
   buildInputs = [ git cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   boost YODA gtest  
-                  pythonWithCython 
+                  pythonWithCython pkgs.eigen
                 ] ++ (if (!stdenv.isDarwin) then [stdenv.gcc.libc] else []);
 
   pkgconfigDepends = [ libyamlcppPIC ] ;
