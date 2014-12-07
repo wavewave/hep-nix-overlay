@@ -26,6 +26,8 @@ rec {
 
       CalcHEP       = callPackage ./pkgs/CalcHEP { };
 
+      CHAPLIN       = callPackage ./pkgs/CHAPLIN { };
+
       CheckMATE     = callPackage ./pkgs/CheckMATE {
                         inherit root5;
                       };
