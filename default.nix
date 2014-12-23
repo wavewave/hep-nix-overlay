@@ -36,6 +36,8 @@ rec {
                         inherit CheckMATE;
                       };
 
+      ColorFull     = callPackage ./pkgs/ColorFull { };
+
       Delphes       = callPackage ./pkgs/Delphes {
                         inherit root5;
                       };
