@@ -1,0 +1,9 @@
+{
+  packageOverrides = pkgs: rec { 
+    hepNixOverlay = 
+      let self = pkgs.callPackage /Users/ikim/repo/src/hep-nix-overlay {};
+      in pkgs.recurseIntoAttrs self;
+  };
+}
+
+

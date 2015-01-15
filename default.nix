@@ -22,22 +22,37 @@ rec {
                         inherit Atom;
                         inherit root5;
                         inherit HepMC YODA FastJet;
-              };
-
-
-      FastJet       = callPackage ./pkgs/FastJet {
                       };
+
+      CalcHEP       = callPackage ./pkgs/CalcHEP { };
+
+      CHAPLIN       = callPackage ./pkgs/CHAPLIN { };
+
+      CheckMATE     = callPackage ./pkgs/CheckMATE {
+                        inherit root5;
+                      };
+
+      CheckMATEEnv  = callPackage ./pkgs/CheckMATE/env.nix {
+                        inherit CheckMATE;
+                      };
+
+      Delphes       = callPackage ./pkgs/Delphes {
+                        inherit root5;
+                      };
+
+      FastJet       = callPackage ./pkgs/FastJet { };
 
       FastJetEnv    = callPackage ./pkgs/FastJet/FastJetEnv.nix {
                         inherit FastJet;
                       };
 
-      Fastlim       = callPackage ./pkgs/Fastlim {
-                    };
+      Fastlim       = callPackage ./pkgs/Fastlim { };
 
       FastlimEnv    = callPackage ./pkgs/Fastlim/FastlimEnv.nix {
                       inherit Fastlim;
                     };
+
+      FeynHiggs     = callPackage ./pkgs/FeynHiggs { };
 
       HERWIGpp      = callPackage ./pkgs/HERWIGpp {
                         stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
@@ -52,7 +67,17 @@ rec {
 
       HepMC         = callPackage ./pkgs/HepMC { };
 
+      LanHEP        = callPackage ./pkgs/LanHEP { };
+
+      LanHEPEnv     = callPackage ./pkgs/LanHEP/env.nix { inherit LanHEP; };
+
       LHAPDF        = callPackage ./pkgs/LHAPDF { };
+
+      MadAnalysis5  = callPackage ./pkgs/MadAnalysis5 { };
+
+      MadAnalysis5Env  = callPackage ./pkgs/MadAnalysis5/env.nix {
+                           inherit MadAnalysis5 root5 FastJet Delphes;
+                         };
 
       MadGraph5_aMCatNLO = callPackage ./pkgs/MadGraph5_aMCatNLO {
                              inherit pythia-pgs PYTHIA8 ; # PYTHIA8-src-unpacked;
@@ -73,12 +98,27 @@ rec {
       #                         inherit PYTHIA8-src;
       #                       };
 
-
       PYTHIA8       = callPackage ./pkgs/PYTHIA8 {
-                        inherit PYTHIA8-src HepMC;
+                        inherit PYTHIA8-src HepMC LHAPDF;
+                      };
+
+      PYTHIA8Env    = callPackage ./pkgs/PYTHIA8/env.nix {
+                        inherit PYTHIA8 FastJet LHAPDF;
+                      };
+
+      ROOT6         = callPackage ./pkgs/ROOT6 { };
+
+      ROOT6Env      = callPackage ./pkgs/ROOT6/env.nix {
+                        inherit ROOT6;
                       };
 
       SHERPA        = callPackage ./pkgs/SHERPA { };
+
+      SPheno        = callPackage ./pkgs/SPheno { };
+
+      SUSY-HIT      = callPackage ./pkgs/SUSY-HIT { };
+
+      SUSY-HITEnv   = callPackage ./pkgs/SUSY-HIT/env.nix { inherit SUSY-HIT; };
 
       ThePEG        = callPackage ./pkgs/ThePEG {
                         stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
@@ -88,11 +128,13 @@ rec {
 
       YODA          = callPackage ./pkgs/YODA { };
 
-      cython0192    = callPackage ./pkgs/future/cython/0.19.2.nix {
-                      };
+      cernlib       = callPackage ./pkgs/cernlib { };
 
       convertStdHep = callPackage ./pkgs/convertStdHep {
                         inherit HepMC;
+                      };
+
+      cython0192    = callPackage ./pkgs/future/cython/0.19.2.nix {
                       };
 
       libyamlcpp025 = callPackage ./pkgs/legacy/libyaml-cpp/0.2.5.nix {
@@ -132,8 +174,6 @@ rec {
       rootEnv = callPackage ./pkgs/root5/rootEnv.nix {
                   inherit root5;
                 };
-
-      SPheno      = callPackage ./pkgs/SPheno/default.nix { };
 
       softsusy    = callPackage ./pkgs/softsusy/default.nix { };
 
@@ -346,6 +386,16 @@ rec {
                                   inherit root5;
                                   inherit YODA;
                                 };
+
+              AtomDevEnvHaskell=callPackage ./pkgs/dev/Atom/envHaskell.nix {
+                                  inherit pkgs;
+                                  inherit AtomDev;
+                                  inherit root5;
+                                  inherit YODA;
+                                };
+
+
+
               root5minDev     = callPackage ./pkgs/dev/root5/minimal.nix {
                                    #stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
                                    #in if stdenv.isDarwin then clang33Stdenv else stdenv;

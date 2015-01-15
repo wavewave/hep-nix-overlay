@@ -1,11 +1,18 @@
-{ stdenv, PYTHIA8-src, HepMC }:
+{ pkgs, PYTHIA8-src, HepMC, LHAPDF }:
  
-stdenv.mkDerivation rec { 
+pkgs.stdenv.mkDerivation rec { 
   name = "PYTHIA8-${version}"; 
   version = "180";
   src = PYTHIA8-src;
-  buildInputs = [ HepMC ];
+  buildInputs = [ HepMC LHAPDF ];
   enableParallelBuilding = true; 
-  
-  configureFlags = "--with-hepmc=${HepMC} --with-hepmcversion=${HepMC.version}"; # "--with-thepeg=${ThePEG} --with-fastjet=${FastJet} ";
+   
+  preConfigure = ''
+    substituteInPlace configure --replace /bin/sh ${pkgs.bash}/bin/bash
+  '';
+
+  configureFlags = "--with-hepmc=${HepMC} --with-hepmcversion=${HepMC.version}"; 
 }
+
+
+# "--with-thepeg=${ThePEG} --with-fastjet=${FastJet} ";

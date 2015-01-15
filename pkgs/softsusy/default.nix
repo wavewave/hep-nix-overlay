@@ -9,5 +9,4 @@ stdenv.mkDerivation rec {
   };
   buildInputs = [ pkgs.gfortran ];
   enableParallelBuilding = true; 
-  #configureFlags = "--enable-allcxxplugins " ; 
 }

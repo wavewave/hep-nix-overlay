@@ -6,8 +6,8 @@ cabal.mkDerivation (self: {
   pname = "LHCOAnalysis-type";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/LHCOAnalysis-type.git"; 
-                   rev = "e6d29d10fe28bfd5e1091f30d09b8e5aaf3e3233";
-                   sha256 = "18b39ceaf1260e07536f1fbc93d9c81003bbc121199130a2a5954f10a43c6813";
+                   rev = "fdd533dd273db372070f55214e269a92d8ad7cf3";
+                   sha256 = "9947d6ebbdaadd852172f1b106983b4a6cc11e9e47bba64201314479058fb0a4";
                  };  
   isLibrary = true;
   isExecutable = false;

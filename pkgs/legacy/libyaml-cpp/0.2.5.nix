@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, cmake, boostHeaders }:
+{ stdenv, fetchurl, cmake, boost }:
  
 stdenv.mkDerivation { 
   name = "libyaml-cpp-0.2.5"; 
@@ -7,7 +7,7 @@ stdenv.mkDerivation {
     url = "http://yaml-cpp.googlecode.com/files/yaml-cpp-0.2.5.tar.gz";
     sha256 = "1vyd25180xbam4na7zxg6sdpw3akf6k2jgr7j35sc2l1amlba01j";
   };
-  buildInputs = [ cmake boostHeaders ];
+  buildInputs = [ cmake boost ];
 
   meta = {
     homepage = http://code.google.com/p/yaml-cpp/;

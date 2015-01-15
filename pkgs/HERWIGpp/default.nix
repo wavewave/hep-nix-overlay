@@ -2,10 +2,11 @@
  
 stdenv.mkDerivation rec { 
   name = "Herwig++-${version}"; 
-  version = "2.7.0";
+  version = "2.7.1";
   src = fetchurl { 
-    url = "http://www.hepforge.org/archive/herwig/Herwig++-2.7.0.tar.bz2";
-    sha256 = "0cyarvdi2j99n4l330vvdw4fpy2p779dagk3j45npmz3wx43fh0p";
+    url = "http://www.hepforge.org/archive/herwig/Herwig++-2.7.1.tar.bz2";
+    sha256 = "1mkak9hixhag88x5c4204bc054ga01nffhjgwv25wpxndcvqk8c0" ; 
+             # "0cyarvdi2j99n4l330vvdw4fpy2p779dagk3j45npmz3wx43fh0p";
   };
   enableParallelBuilding = true; 
   buildInputs = [ gfortran gsl ThePEG boost FastJet ];

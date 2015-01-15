@@ -6,12 +6,12 @@ in pkgs.myEnvFun rec {
   name = "jobqueue-client-${version}";
  
   buildInputs = with pkgs; [
+    pkgs.curl
     pythonFull
     pkgs.gfortran
     pkgs.ghostscript
     jobqueue-client
     stdenv
-
   ];
 
   #  substituteAll
