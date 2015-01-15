@@ -66,6 +66,6 @@ echo "  };" >> "$HOME/.nixpkgs/"config.nix
 echo "}" >> "$HOME/.nixpkgs/"config.nix
 fi
 
-echo "Please don't forget to include \". /home/mo/.nix-profile/etc/profile.d/nix.sh\" in your e.g. .bashrc"
+echo "Please don't forget to include \". $HOME/.nix-profile/etc/profile.d/nix.sh\" in your e.g. .bashrc"
 
 } # End of wrapping
