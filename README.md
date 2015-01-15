@@ -11,3 +11,4 @@ Nixpkgs is a common package repository based on Nix. hep-nix-overlay is
 an overlayed package repository for HEP software on top of Nix and Nixpkgs. 
 
 
+hep-nix-overlay is being continuously built with hydra system.
