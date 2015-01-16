@@ -2,7 +2,7 @@
  
 stdenv.mkDerivation rec { 
   name = "Rivet-${version}"; 
-  version = "1.8.1";
+  version = "2.2.0";
 
   src = fetchurl { 
     url="http://www.hepforge.org/archive/rivet/Rivet-2.2.0.tar.bz2";
@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
     #url = "http://www.hepforge.org/archive/rivet/Rivet-1.8.1.tar.gz";
     #sha256 = "1gn0dlhvxfnv5wm2r5f311j757x4l8lr51jhhpgv74xlks020vwc";
   };
-  patches = [ ./yamlcpp.patch ];
+  # patches = [ ./yamlcpp.patch ];
 
   buildInputs = [ libtool m4 automake autoconf gsl boost HepMC FastJet 
                   libyamlcppPIC python swig];
