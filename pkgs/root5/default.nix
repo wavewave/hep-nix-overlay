@@ -1,6 +1,6 @@
 { stdenv, fetchurl, cmake, zlib, libX11, libXext, libXpm, libXft
 , libtiff, libjpeg, giflib, libpng, pcre, freetype
-, python, libxml2, gsl, krb5, openssl, pkgconfig, fftw, sqlite, cfitsio
+, python, libxml2, gsl, kerberos, openssl, pkgconfig, fftw, sqlite, cfitsio
 }:
  
 # , gfortran,
@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ cmake zlib libX11 libXext libXpm libXft pcre freetype 
                   giflib libtiff libjpeg libpng 
                   python 
-                  gsl krb5 libxml2 openssl
+                  gsl kerberos libxml2 openssl
                   pkgconfig fftw sqlite cfitsio
                 ];
   # gfortran 
