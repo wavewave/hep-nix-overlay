@@ -1,0 +1,12 @@
+diff -rupN a/cmake/modules/RootNewMacros.cmake b/cmake/modules/RootNewMacros.cmake
+--- a/cmake/modules/RootNewMacros.cmake	2015-01-12 15:26:28.000000000 +0100
++++ b/cmake/modules/RootNewMacros.cmake	2015-01-30 15:16:49.000000000 +0100
+@@ -53,7 +53,7 @@ if(APPLE)
+          BUILD_WITH_INSTALL_RPATH ON)
+   else()
+     set(ROOT_LIBRARY_PROPERTIES ${ROOT_LIBRARY_PROPERTIES}
+-         INSTALL_NAME_DIR "@rpath"
++         INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
+          BUILD_WITH_INSTALL_RPATH ON)
+   endif()
+ endif()
