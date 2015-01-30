@@ -55,8 +55,8 @@ rec {
       FeynHiggs     = callPackage ./pkgs/FeynHiggs { };
 
       HERWIGpp      = callPackage ./pkgs/HERWIGpp {
-                        stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
-                                 in if stdenv.isDarwin then clang33Stdenv else stdenv;
+#                        stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
+#                                 in if stdenv.isDarwin then clang33Stdenv else stdenv;
                         inherit ThePEG;
                         inherit FastJet;
                       };
@@ -121,8 +121,8 @@ rec {
       SUSY-HITEnv   = callPackage ./pkgs/SUSY-HIT/env.nix { inherit SUSY-HIT; };
 
       ThePEG        = callPackage ./pkgs/ThePEG {
-                        stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
-                                 in if stdenv.isDarwin then clang33Stdenv else stdenv;
+#                        stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
+#                                 in if stdenv.isDarwin then clang33Stdenv else stdenv;
                         inherit HepMC LHAPDF FastJet libyamlcppPIC;
                       };
 
