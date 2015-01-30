@@ -2,36 +2,22 @@
  
 stdenv.mkDerivation rec { 
   name = "Rivet-${version}"; 
-  version = "1.8.1";
+  version = "2.2.0";
 
   src = fetchurl { 
-    url = "http://www.hepforge.org/archive/rivet/Rivet-1.8.1.tar.gz";
-    sha256 = "1gn0dlhvxfnv5wm2r5f311j757x4l8lr51jhhpgv74xlks020vwc";
+    url="http://www.hepforge.org/archive/rivet/Rivet-2.2.0.tar.bz2";
+    sha256 ="06mfz2d8cajqp40q4lqxqka2hw69knxcd2qc9rrw8m7z0whgxniv";
+    #url = "http://www.hepforge.org/archive/rivet/Rivet-1.8.1.tar.gz";
+    #sha256 = "1gn0dlhvxfnv5wm2r5f311j757x4l8lr51jhhpgv74xlks020vwc";
   };
-  patches = [ ./yamlcpp.patch ];
+  # patches = [ ./yamlcpp.patch ];
 
   buildInputs = [ libtool m4 automake autoconf gsl boost HepMC FastJet 
                   libyamlcppPIC python swig];
   
   preConfigure = ''
-#OS=`uname`
-#if [ $OS = "Darwin" ]; then
-#  glibtoolize --copy
-#  OSname=`uname -s`
-#else
-#  libtoolize --copy
-#  OSname=`uname -o`
-#fi
-#aclocal
-#m4dir=`aclocal --print-ac-dir`
-#if [ -f $m4dir/libtool.m4 ]; then
-#   cat $m4dir/libtool.m4 >> aclocal.m4
-#fi
-#autoheader
-#automake --add-missing --copy
-#autoconf
-autoreconf
-'';
+    autoreconf
+  '';
 
 
 
