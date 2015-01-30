@@ -22,8 +22,8 @@ stdenv.mkDerivation rec {
                   # binutils
                 ];
   # gfortran 
-  patches = [ ./rpath_to_cmake_install_prefix_lib.patch ];
-            #  ./macosx_over_10_5.patch ];
+  patches = [ ./rpath_to_cmake_install_prefix_lib.patch
+              ./macosx_over_10_5.patch ];
   # [ ./no-sys-dirs.patch ]; 
 
   #    export sw_vers_wrapper="${binutils}/bin/sw_vers"
