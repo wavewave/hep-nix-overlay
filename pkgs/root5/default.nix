@@ -22,17 +22,25 @@ stdenv.mkDerivation rec {
                   # binutils
                 ];
   # gfortran 
-  patches = [ # ./rpath_to_cmake_install_prefix_lib.patch
-              ./no_build_with_install_rpath.patch
+  patches = [ ./no_build_with_install_rpath.patch
+              ./configure64.patch
               ./macosx_over_10_5.patch ];
-  # [ ./no-sys-dirs.patch ]; 
-
-  #    export sw_vers_wrapper="${binutils}/bin/sw_vers"
 
   preConfigure = if (stdenv.isDarwin) then 
    '' 
       NIX_ENFORCE_PURITY=0
+      #sed s#sw_vers#${binutils}/bin/sw_vers#g -i bak configure 
+      #sed s#sw_vers#${binutils}/bin/sw_vers#g -i bak config/Makefile.macosx
+      #sed s#sw_vers#${binutils}/bin/sw_vers#g -i bak config/Makefile.macosx64
+      #sed s#sw_vers#${binutils}/bin/sw_vers#g -i bak config/Makefile.macosxicc
+      #sed s#sw_vers#${binutils}/bin/sw_vers#g -i bak config/root-config.in
+
+
       substituteInPlace cmake/modules/FindGSL.cmake --replace "/usr/bin/" "" --replace "/usr/bin" "" --replace "/usr/local/bin" "" 
+      substituteInPlace build/unix/compiledata.sh --replace "sw_vers" "${binutils}/bin/sw_vers"
+      substituteInPlace build/unix/makecintdll.sh --replace "sw_vers" "${binutils}/bin/sw_vers"
+      substituteInPlace build/unix/makedist.sh    --replace "sw_vers" "${binutils}/bin/sw_vers"
+      substituteInPlace build/unix/makelib.sh     --replace "sw_vers" "${binutils}/bin/sw_vers"     
    ''
                  else
    '' 
@@ -40,10 +48,15 @@ stdenv.mkDerivation rec {
    '';
 
   cmakeFlags = if (stdenv.isDarwin) 
-               then "-DCMAKE_SW_VERS:String='${binutils}/bin/sw_vers'  -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dkrb5:BOOL=OFF -Drpath:BOOL=OFF  -DPYTHON_INCLUDE_DIR=${python}/include/python2.7 -DPYTHON_LIBRARY=${python}/lib/libpython2.7.dylib " 
+               then "-DCMAKE_SW_VERS:String='${binutils}/bin/sw_vers' -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dkrb5:BOOL=OFF -Drpath:BOOL=OFF  -Dcxx11=OFF -Dlibcxx=OFF"
+
 
                else "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dkrb5:BOOL=OFF -Drpath:BOOL=ON -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=FALSE";   
 
+  
 }
 
+# -Dbuiltin_cfitsio=ON -Dbuiltin_davix=ON -Dbuiltin_freetype=ON -Dbuiltin_ftgl=ON -Dbuiltin_glew=ON -Dbuiltin_gsl=ON -Dbuiltin_lzma=ON -Dbuiltin_pcre=ON
+
+#-Dlibcxx:BOOL=FALSE -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dkrb5:BOOL=OFF -Drpath:BOOL=OFF  -DPYTHON_INCLUDE_DIR=${python}/include/python2.7 -DPYTHON_LIBRARY=${python}/lib/libpython2.7.dylib 
 
