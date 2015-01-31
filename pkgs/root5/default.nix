@@ -22,7 +22,8 @@ stdenv.mkDerivation rec {
                   # binutils
                 ];
   # gfortran 
-  patches = [ ./rpath_to_cmake_install_prefix_lib.patch
+  patches = [ # ./rpath_to_cmake_install_prefix_lib.patch
+              ./no_build_with_install_rpath.patch
               ./macosx_over_10_5.patch ];
   # [ ./no-sys-dirs.patch ]; 
 
@@ -39,9 +40,9 @@ stdenv.mkDerivation rec {
    '';
 
   cmakeFlags = if (stdenv.isDarwin) 
-               then "-DCMAKE_SW_VERS:String='${binutils}/bin/sw_vers'  -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Drpath:String=ON  -DPYTHON_INCLUDE_DIR=${python}/include/python2.7 -DPYTHON_LIBRARY=${python}/lib/libpython2.7.dylib " 
+               then "-DCMAKE_SW_VERS:String='${binutils}/bin/sw_vers'  -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dkrb5:BOOL=OFF -Drpath:BOOL=OFF  -DPYTHON_INCLUDE_DIR=${python}/include/python2.7 -DPYTHON_LIBRARY=${python}/lib/libpython2.7.dylib " 
 
-               else "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Drpath:String=ON ";   
+               else "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dkrb5:BOOL=OFF -Drpath:BOOL=ON -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=FALSE";   
 
 }
 

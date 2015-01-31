@@ -1,0 +1,13 @@
+diff -rupN a/cmake/modules/RootBuildOptions.cmake b/cmake/modules/RootBuildOptions.cmake
+--- a/cmake/modules/RootBuildOptions.cmake	2015-01-12 15:26:28.000000000 +0100
++++ b/cmake/modules/RootBuildOptions.cmake	2015-01-31 10:36:12.282336361 +0100
+@@ -208,7 +208,8 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TR
+ # the RPATH to be used when installing---------------------------------------------------------
+ if(rpath)
+   set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+-  set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE) 
++  #set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE) 
++  set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+ endif()
+ 
+ #---Avoid creating dependencies to 'non-statndard' header files -------------------------------
