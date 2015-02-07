@@ -8,10 +8,10 @@
 
 stdenv.mkDerivation rec { 
   name = "ROOT6-${version}";
-  version = "00.02";
+  version = "02.04";
   src = fetchurl { 
-    url = "ftp://root.cern.ch/root/root_v6.00.02.source.tar.gz";
-    sha256 = "0vx00q00rgfbhvwkv57jypdwwl9bw2diygsqicxw6hpqh63q34nv";
+    url = "http://root.cern.ch/download/root_v6.02.04.source.tar.gz";
+    sha256 = "1rkrhx850d6fpzl57p9hszbvcn6d6j0ahr2bvcggx52rm1wx177x";
   };
   enableParallelBuilding = true;
   buildInputs = [ cmake zlib libX11 libXext libXpm libXft pcre freetype 
