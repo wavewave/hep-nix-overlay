@@ -4,12 +4,13 @@ with pkgs;
 
 stdenv.mkDerivation rec {
   name = "LanHEP-${version}";
-  version = "3.1.9";
+  version = "3.2.0";
   src = fetchurl {
-    url = "http://theory.sinp.msu.ru/~semenov/lhep319.tgz";
-    sha256 = "0k2finn3slgacb6jb51n92gs0xj1acqhy2bkpg14aaszhwhcnaqw";
+    url = "http://theory.sinp.msu.ru/~semenov/lhep320.tgz";
+    sha256 = "17bqgva75zi7wjkhw1lzakr5m89p60lrq7x78v7kbgni2yyqa2jb";
   };
   buildInputs = [ ];
+  patches = [ ./compiler.patch ];
 
   buildPhase = ''
     make
