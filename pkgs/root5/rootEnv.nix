@@ -1,16 +1,12 @@
 { pkgs, root5 }:
 
 let version = "34.12";
-    pythonWithReadline = pkgs.pythonFull.override { 
-                           extraLibs = [ pkgs.pythonPackages.readline ]; 
-                         }; 
-
 in pkgs.myEnvFun rec { 
   name = "root5-${version}";
 
   buildInputs = with pkgs; [
-    # pythonFull 
-    pythonWithReadline
+    pythonFull 
+    pkgs.pythonPackages.readline
     root5
     stdenv
   ];
