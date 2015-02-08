@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
                   pkgconfig fftw sqlite cfitsio
                   # gfortran
                 ];
-  patches = [ ./force_darwin_64.patch ];
+  #patches = [ ./force_darwin_64.patch ];
 
   preConfigure = if (stdenv.isDarwin) then 
    '' 
