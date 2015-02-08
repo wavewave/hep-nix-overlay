@@ -43,7 +43,9 @@ stdenv.mkDerivation rec {
    else "";
 
 
-   cmakeFlags = "-DCMAKE_SW_VERS:String='${binutils}/bin/sw_vers' -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Drpath:String=ON ";   
+   cmakeFlags = if (stdenv.isDarwin)
+                then "-DCMAKE_SW_VERS:String='${binutils}/bin/sw_vers' -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Drpath:String=ON "
+                else "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dkrb5:BOOL=OFF -Dmysql:BOOL=OFF -Drpath:BOOL=ON -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=FALSE";   
 
 }
 
