@@ -103,11 +103,11 @@ rec {
       #                       };
 
       PYTHIA8       = callPackage ./pkgs/PYTHIA8 {
-                        inherit PYTHIA8-src HepMC LHAPDF;
+                        inherit PYTHIA8-src HepMC LHAPDF6;
                       };
 
       PYTHIA8Env    = callPackage ./pkgs/PYTHIA8/env.nix {
-                        inherit PYTHIA8 FastJet LHAPDF;
+                        inherit PYTHIA8 FastJet LHAPDF6;
                       };
 
       ROOT6         = callPackage ./pkgs/ROOT6 { };
