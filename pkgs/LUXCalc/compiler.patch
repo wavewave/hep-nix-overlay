@@ -1,0 +1,14 @@
+diff -rupN a/Makefile b/Makefile
+--- a/Makefile	2015-01-27 19:41:48.000000000 +0900
++++ b/Makefile	2015-02-12 00:47:21.961162409 +0900
+@@ -43,8 +43,8 @@ LUXCALC_VERSION=$(shell grep "VERSION_ST
+ #FFLAGS := -fast
+ 
+ # GNU fortran compiler
+-#FC := gfortran
+-#FFLAGS := -O3 -fno-range-check
++FC := gfortran
++FFLAGS := -O3 -fno-range-check
+ 
+ # Command used to search for ifort or gfortran compiler.
+ # Gives an error if neither is found.
