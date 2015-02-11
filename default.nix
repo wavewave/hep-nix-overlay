@@ -77,6 +77,10 @@ rec {
 
       LHAPDF6       = callPackage ./pkgs/LHAPDF6 { };
 
+      LUXCalc       = callPackage ./pkgs/LUXCalc { };
+
+      LUXCalcEnv    = callPackage ./pkgs/LUXCalc/env.nix { inherit LUXCalc; };
+
       MadAnalysis5  = callPackage ./pkgs/MadAnalysis5 { };
 
       MadAnalysis5Env  = callPackage ./pkgs/MadAnalysis5/env.nix {
