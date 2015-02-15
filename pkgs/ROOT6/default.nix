@@ -2,8 +2,14 @@
 , libtiff, libjpeg, giflib, libpng, pcre, freetype
 , python, libxml2, gsl, openssl, pkgconfig, fftw, sqlite, cfitsio
 , binutils
+, bash
+#, llvm
+, darwin ? null
+#, configd ? null 
 }:
- 
+
+assert stdenv.isDarwin -> darwin != null; 
+#assert stdenv.isDarwin -> configd != null;
 
 stdenv.mkDerivation rec { 
   name = "ROOT6-${version}";
@@ -19,33 +25,42 @@ stdenv.mkDerivation rec {
                   gsl libxml2 openssl
                   pkgconfig fftw sqlite cfitsio
                   # gfortran
-                ];
-  patches = [ ./force_darwin_64.patch ];
+                ] ++ (if stdenv.isDarwin then [ darwin.sw_vers ] else null);
+  patches = [ ./force_darwin_64.patch 
+              ./add_libc_dir_for_dict.patch
+            ];
 
   preConfigure = if (stdenv.isDarwin) then 
    '' 
-      NIX_ENFORCE_PURITY=0
-      #sed s#sw_vers#${binutils}/bin/sw_vers#g -i bak configure 
-      #sed s#sw_vers#${binutils}/bin/sw_vers#g -i bak config/Makefile.macosx
-      #sed s#sw_vers#${binutils}/bin/sw_vers#g -i bak config/Makefile.macosx64
-      #sed s#sw_vers#${binutils}/bin/sw_vers#g -i bak config/Makefile.macosxicc
-      #sed s#sw_vers#${binutils}/bin/sw_vers#g -i bak config/root-config.in
-
-      substituteInPlace cmake/modules/SetUpMacOS.cmake --replace "sw_vers" "${binutils}/bin/sw_vers"
-
+      #NIX_ENFORCE_PURITY=0
+      export CMAKE_INCLUDE_PATH=${stdenv.cc.libc}/include
+      # export MACOSX_DEPLOYMENT_TARGET=10.8
       substituteInPlace cmake/modules/FindGSL.cmake --replace "/usr/bin/" "" --replace "/usr/bin" "" --replace "/usr/local/bin" "" 
-      substituteInPlace build/unix/compiledata.sh --replace "sw_vers" "${binutils}/bin/sw_vers"
-      substituteInPlace build/unix/makecintdll.sh --replace "sw_vers" "${binutils}/bin/sw_vers"
-      substituteInPlace build/unix/makedist.sh    --replace "sw_vers" "${binutils}/bin/sw_vers"
-      substituteInPlace build/unix/makelib.sh     --replace "sw_vers" "${binutils}/bin/sw_vers"     
+      substituteInPlace build/unix/compiledata.sh --replace "/usr/bin/env bash" "${bash}/bin/bash" 
+      substituteInPlace build/unix/gitinfo.sh --replace "/usr/bin/env bash" "${bash}/bin/bash" 
+      substituteInPlace build/unix/githeader.sh --replace "/usr/bin/env bash" "${bash}/bin/bash" 
+      substituteInPlace build/unix/gitinfollvm.sh --replace "/usr/bin/env bash" "${bash}/bin/bash" 
+      #substituteInPlace build/unix/*.sh --replace "/bin/sh" "${bash}/bin/bash" 
+
+
    '' 
    else "";
 
 
    cmakeFlags = if (stdenv.isDarwin)
-                then "-DCMAKE_SW_VERS:String='${binutils}/bin/sw_vers' -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Drpath:String=ON "
-                else "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dkrb5:BOOL=OFF -Dmysql:BOOL=OFF -Drpath:BOOL=ON -DCMAKE_SKIP_BUILD_RPATH:BOOL=OFF -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=FALSE";   
+                then "-DCMAKE_LIBC_DIR=${stdenv.cc.libc} -DCMAKE_VERBOSE_MAKEFILE=ON  -DCMAKE_C_FLAGS='-I${stdenv.cc.libc}/include' -DCMAKE_CXX_FLAGS='-I${stdenv.cc.libc}/include'  -DCMAKE_OSX_DEPLOYMENT_TARGET= -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dcocoa:String=OFF -Drpath:String=ON  "
+                else "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dkrb5:BOOL=OFF -Dmysql:BOOL=OFF -Drpath:BOOL=ON -DCMAKE_SKIP_BUILD_RPATH:BOOL=OFF -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=FALSE  ";   
 
 }
 
 
+# -Ddict_opts='-I${stdenv.cc.libc}/include'
+      #substituteInPlace cmake/modules/SetUpMacOS.cmake --replace "sw_vers" "${darwin.sw_vers}/bin/sw_vers"
+
+# -DCMAKE_SW_VERS:String='${darwin.sw_vers}/bin/sw_vers'
+
+      #-Dbuiltin_llvm=OFF
+      #substituteInPlace build/unix/compiledata.sh --replace "sw_vers" "${darwin.sw_vers}/bin/sw_vers"
+      #substituteInPlace build/unix/makecintdll.sh --replace "sw_vers" "${darwin.sw_vers}/bin/sw_vers"
+      #substituteInPlace build/unix/makedist.sh    --replace "sw_vers" "${darwin.sw_vers}/bin/sw_vers"
+      #substituteInPlace build/unix/makelib.sh     --replace "sw_vers" "${darwin.sw_vers}/bin/sw_vers"     

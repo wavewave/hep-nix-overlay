@@ -1,0 +1,11 @@
+diff -rupN a/cmake/modules/RootNewMacros.cmake b/cmake/modules/RootNewMacros.cmake
+--- a/cmake/modules/RootNewMacros.cmake	2015-01-17 09:47:04.000000000 +0100
++++ b/cmake/modules/RootNewMacros.cmake	2015-02-15 05:56:50.000000000 +0100
+@@ -248,6 +248,7 @@ function(ROOT_GENERATE_DICTIONARY dictio
+   else()
+     set(includedirs -I${CMAKE_CURRENT_SOURCE_DIR}/inc)
+   endif()
++  set(includedirs ${includedirs} -I${CMAKE_LIBC_DIR}/include)
+   foreach( d ${incdirs})
+    set(includedirs ${includedirs} -I${d})
+   endforeach()
