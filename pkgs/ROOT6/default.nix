@@ -48,7 +48,7 @@ stdenv.mkDerivation rec {
 
 
    cmakeFlags = if (stdenv.isDarwin)
-                then "-DCMAKE_LIBC_DIR=${stdenv.cc.libc} -DCMAKE_VERBOSE_MAKEFILE=ON  -DCMAKE_C_FLAGS='-I${stdenv.cc.libc}/include' -DCMAKE_CXX_FLAGS='-I${stdenv.cc.libc}/include'  -DCMAKE_OSX_DEPLOYMENT_TARGET= -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dcocoa:String=OFF -Drpath:String=ON  "
+                then "-DCMAKE_LIBC_DIR=${stdenv.cc.libc} -DCMAKE_VERBOSE_MAKEFILE=ON  -DCMAKE_C_FLAGS='-I${stdenv.cc.libc}/include' -DCMAKE_CXX_FLAGS='-I${stdenv.cc.libc}/include'  -DCMAKE_OSX_DEPLOYMENT_TARGET= -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dcocoa:String=OFF -Dx11=ON -Drpath:String=ON  "
                 else "-Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dkrb5:BOOL=OFF -Dmysql:BOOL=OFF -Drpath:BOOL=ON -DCMAKE_SKIP_BUILD_RPATH:BOOL=OFF -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=FALSE  ";   
 
 }
