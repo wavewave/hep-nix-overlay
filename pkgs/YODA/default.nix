@@ -12,6 +12,11 @@ stdenv.mkDerivation rec {
   buildInputs = [ boost python ];
   enableParallelBuilding = true;
 
+  preConfigure = if (stdenv.isDarwin) then ''
+    substituteInPlace pyext/setup.py.in --replace "stdc++" "c++" 
+  ''
+  else null;
+
   configureFlags = "--with-boost=${boost.dev}";
 
   meta = {
