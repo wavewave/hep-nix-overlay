@@ -86,7 +86,7 @@ rec {
                            };
 
       MadGraph5_aMCatNLOEnv = callPackage ./pkgs/MadGraph5_aMCatNLO/env.nix {
-                                inherit MadGraph5_aMCatNLO ; # PYTHIA8-src;
+                                inherit pythia-pgs MadGraph5_aMCatNLO ; # PYTHIA8-src;
                               };
 
       Rivet         = callPackage ./pkgs/Rivet {
