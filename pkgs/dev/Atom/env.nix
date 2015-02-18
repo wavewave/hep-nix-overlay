@@ -1,24 +1,27 @@
 { pkgs
 , AtomDev
 , root5
-, YODA }:
+, YODA 
+, libyamlcppPIC
+}:
 
-
-let pythonFullWithYODA = pkgs.pythonFull.override { 
-                           extraLibs = [ YODA ]; 
-                         };
-in  
 pkgs.myEnvFun { 
   name = "Atom-dev";
   buildInputs = with pkgs; [
-    pythonFullWithYODA
+    pythonFull
+    ncurses
+    YODA
+    libyamlcppPIC
     AtomDev
     root5
     boost
-    stdenv
-    #pythonPackages.ipython
+    #stdenv
     pythonPackages.recursivePthLoader
-    #pythonPackages.virtualenv
+    cmake
+    eigen
+    pkgconfig
+    gfortran
+    binutils
   ]; 
   
   extraCmds = with pkgs; if(stdenv.isDarwin) then ''
@@ -36,3 +39,5 @@ pkgs.myEnvFun {
 
 }
 
+
+# ${pythonFull.modules.curses}/lib/python2.7/site-packages:

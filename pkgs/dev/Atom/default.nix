@@ -1,33 +1,28 @@
-{ stdenv, cmake, git
+{ stdenv, cmake
+# , git
 , root5, HepMC, gsl, FastJet, pkgconfig
 , python, cython0192, libyamlcppPIC,  boost, YODA, gtest, pkgs
 }:
  
-let pythonWithCython = pkgs.pythonFull.override { 
-                         extraLibs = [ cython0192 ]; 
-                       }; 
-    
-in stdenv.mkDerivation rec { 
+stdenv.mkDerivation rec { 
   name = "Atom-dev"; 
   patches = [];
 
-  buildInputs = [ git cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
-                  boost YODA gtest  
-                  pythonWithCython pkgs.eigen
-                ] ++ (if (!stdenv.isDarwin) then [stdenv.gcc.libc] else []);
+  buildInputs = [ # git 
+                  cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
+                  boost YODA gtest cython0192 
+                  pkgs.pythonFull pkgs.eigen pkgs.ncurses
+                ] ++ (if (!stdenv.isDarwin) then [stdenv.cc.libc] else []);
 
   pkgconfigDepends = [ libyamlcppPIC ] ;
   enableParallelBuilding = true; 
   doCheck = true;
 
-  #builder = ./builder.sh; 
-
   preConfigure = '' 
-    # substituteInPlace bin/atomenv.sh --subst-var prefix
-    # substituteInPlace bin/atomenv.csh --subst-var prefix 
     substituteInPlace bin/atom --replace /usr/bin/env ${pkgs.coreutils}/bin/env
     substituteInPlace bin/atom-config.in --replace /usr/bin/env ${pkgs.coreutils}/bin/env
     substituteInPlace bin/aida2root --replace /usr/bin/env ${pkgs.coreutils}/bin/env
+    substituteInPlace bin/atom-mkanalysis --replace /usr/bin/env ${pkgs.coreutils}/bin/env
     ''; 
 
   cmakeFlags = if ( stdenv.isDarwin ) then

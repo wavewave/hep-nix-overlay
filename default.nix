@@ -396,6 +396,7 @@ rec {
                                   #root5=root5min;
                                   inherit root5;
                                   inherit YODA;
+                                  inherit libyamlcppPIC;
                                 };
 
               AtomDevEnvHaskell=callPackage ./pkgs/dev/Atom/envHaskell.nix {
