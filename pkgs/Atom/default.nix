@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   pkgs.pythonFull cython0192 boost YODA gtest
                   pkgs.eigen
-                ] ++ (if (!stdenv.isDarwin) then [stdenv.gcc.libc] else []);
+                ] ++ (if (!stdenv.isDarwin) then [stdenv.cc.libc] else []);
   pkgconfigDepends = [ libyamlcppPIC ] ;
   enableParallelBuilding = true; 
   doCheck = false;
