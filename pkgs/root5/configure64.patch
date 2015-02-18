@@ -1,0 +1,15 @@
+diff -rupN a/configure b/configure
+--- a/configure	2015-01-12 15:26:28.000000000 +0100
++++ b/configure	2015-01-31 12:48:27.000000000 +0100
+@@ -1394,9 +1394,9 @@ guess_architecture() {
+     esac
+     if [ "$arch" = "macosx" ]; then
+        if [ `sw_vers | sed -n 's/ProductVersion://p' | cut -d . -f 2` -ge 5 ]; then
+-          if `sysctl machdep.cpu.extfeatures | grep "64" > /dev/null  2>&1` ; then
++          #if `sysctl machdep.cpu.extfeatures | grep "64" > /dev/null  2>&1` ; then
+              arch=macosx64
+-          fi
++          #fi
+        fi
+     fi
+     if [ "$arch" = "solarisCC5" -a "$chip" = "i86pc" ]; then

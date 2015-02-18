@@ -1,13 +1,13 @@
 { pkgs, MadAnalysis5, root5, FastJet, Delphes }: 
 
 let version = MadAnalysis5.version;
-    pythonMA5 = pkgs.pythonFull.override {
-                  extraLibs = with pkgs.pythonPackages; [ numpy ];
-                };
 in pkgs.myEnvFun rec { 
   name = "MadAnalysis5-${version}";
 
-  buildInputs = with pkgs; [ root5 FastJet Delphes pythonMA5 stdenv pkgs.which 
+  buildInputs = with pkgs; [ root5 FastJet Delphes 
+                             pythonFull
+                             pythonPackages.numpy
+                             stdenv pkgs.which 
                              pkgs.zlib
                            ];
   

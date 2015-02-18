@@ -1,0 +1,13 @@
+diff -rupN a/Makefile b/Makefile
+--- a/Makefile	2013-06-24 08:23:05.000000000 +0900
++++ b/Makefile	2015-02-07 16:12:39.000000000 +0900
+@@ -1,7 +1,7 @@
+ LOPT = -O2
+ CFLAGS =  -O2
+-CC = gcc
+-LD = gcc
++CC = cc
++LD = cc
+ LIB =  -lm -ldl
+ Output = OutputNotSet
+ 

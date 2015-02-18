@@ -1,14 +1,11 @@
 { pkgs, Fastlim }:
 
 let version = Fastlim.version;
-    pythonFastlim = pkgs.pythonFull.override { 
-      extraLibs = with pkgs.pythonPackages; [ numpy scipy ];
-    };
 in pkgs.myEnvFun rec { 
   name = "Fastlim-${version}";
  
   buildInputs = with pkgs; [
-    pythonFastlim
+    pythonFull pythonPackages.numpy pythonPackages.scipy
     stdenv
   ];
   

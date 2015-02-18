@@ -3,7 +3,7 @@
 with pkgs;
 rec {
       Atom          = callPackage ./pkgs/Atom {
-                        inherit root5;
+                        root5=ROOT6;
                         inherit HepMC FastJet cython0192;
                         inherit (pkgs) gsl pkgconfig;
                         inherit libyamlcppPIC;
@@ -13,14 +13,14 @@ rec {
       AtomEnv       = callPackage ./pkgs/Atom/env.nix {
                         inherit pkgs;
                         inherit Atom;
-                        inherit root5;
+                        root5=ROOT6;
                         inherit HepMC YODA FastJet;
                       };
 
       AtomEnvMin    = callPackage ./pkgs/Atom/envMin.nix {
                         inherit pkgs;
                         inherit Atom;
-                        inherit root5;
+                        root5=ROOT6;
                         inherit HepMC YODA FastJet;
                       };
 
@@ -74,6 +74,12 @@ rec {
       LanHEPEnv     = callPackage ./pkgs/LanHEP/env.nix { inherit LanHEP; };
 
       LHAPDF        = callPackage ./pkgs/LHAPDF { };
+
+      LHAPDF6       = callPackage ./pkgs/LHAPDF6 { };
+
+      LUXCalc       = callPackage ./pkgs/LUXCalc { };
+
+      LUXCalcEnv    = callPackage ./pkgs/LUXCalc/env.nix { inherit LUXCalc; };
 
       MadAnalysis5  = callPackage ./pkgs/MadAnalysis5 { };
 

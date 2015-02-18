@@ -2,10 +2,7 @@
 , python, cython0192, libyamlcppPIC,  boost, YODA, gtest
 }:
  
-let pythonWithCython = pkgs.pythonFull.override { 
-                         extraLibs = [ cython0192 ]; 
-                       }; 
-in stdenv.mkDerivation rec { 
+stdenv.mkDerivation rec { 
   name = "Atom-${version}"; 
   version = "0.9";
 
@@ -16,7 +13,7 @@ in stdenv.mkDerivation rec {
   patches = []; 
 
   buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
-                  pythonWithCython boost YODA gtest
+                  pkgs.pythonFull cython0192 boost YODA gtest
                   pkgs.eigen
                 ] ++ (if (!stdenv.isDarwin) then [stdenv.gcc.libc] else []);
   pkgconfigDepends = [ libyamlcppPIC ] ;

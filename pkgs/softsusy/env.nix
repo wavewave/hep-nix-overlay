@@ -1,7 +1,6 @@
 { pkgs, softsusy }:
- 
-pkgs.myEnvFun { 
+
+pkgs.myEnvFun {
   name = "softsusy-${softsusy.version}";
   buildInputs = with pkgs; [ softsusy ];
-  
 }
