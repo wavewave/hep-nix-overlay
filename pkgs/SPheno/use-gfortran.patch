@@ -1,12 +1,16 @@
 diff -rupN a/Makefile b/Makefile
---- a/Makefile	2014-05-19 14:40:35.000000000 +0000
-+++ b/Makefile	2014-08-26 13:04:35.000000000 +0000
-@@ -6,7 +6,7 @@
- # F90 = gfortran
+--- a/Makefile	2015-02-20 17:49:33.000000000 +0900
++++ b/Makefile	2015-02-25 17:04:25.000000000 +0900
+@@ -3,10 +3,10 @@
+ # cases NAG's nagfor, gfortran, g95, Lahey's lf95 and Intels ifort
+ # Please uncomment the corresponding line
+ # F90 = nagfor
+-# F90 = gfortran
++F90 = gfortran
  # F90 = g95
  # F90 = lf95
 -F90 = ifort
-+F90 = gfortran
++# F90 = ifort
  Model = src
  version = 330.00
  bin/SPheno:
