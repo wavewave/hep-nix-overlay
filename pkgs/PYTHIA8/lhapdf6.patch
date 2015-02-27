@@ -1,0 +1,32 @@
+diff -rupN a/examples/Makefile b/examples/Makefile
+--- a/examples/Makefile	2014-07-09 05:51:14.000000000 +0900
++++ b/examples/Makefile	2015-02-09 22:43:34.000000000 +0900
+@@ -64,8 +64,7 @@ main51 main52 main53 main54: $(PYTHIA8LO
+ 	@mkdir -p $(BINDIR)
+ 	$(CXX) $(CXXFLAGS) -I$(PYTHIA8LOCATION)/$(INCDIR) $@.cc -o $(BINDIR)/$@.exe \
+ 	-L$(PYTHIA8LOCATION)/$(LIBDIRARCH) -lpythia8 $(LIBGZIP) \
+-	-L$(LHAPDFLOCATION) $(LHAPDFLIBNAME) \
+-	$(FLIBS)
++	-L$(LHAPDFLOCATION) $(LHAPDFLIBNAME)
+ 	@ln -fs $(BINDIR)/$@.exe $@.exe
+ 
+ # Create an executable that links to LHAPDF and HepMC
+@@ -76,8 +75,7 @@ main61 main62 main85 main86 main87 main8
+ 	$@.cc -o $(BINDIR)/$@.exe \
+ 	-L$(PYTHIA8LOCATION)/$(LIBDIRARCH) -lpythia8 -lpythia8tohepmc $(LIBGZIP) \
+ 	-L$(LHAPDFLOCATION) $(LHAPDFLIBNAME) \
+-	-L$(HEPMCLOCATION)/lib -lHepMC \
+-	$(FLIBS)
++	-L$(HEPMCLOCATION)/lib -lHepMC
+ 	@ln -fs $(BINDIR)/$@.exe $@.exe
+ 
+ # Create an executable that links to Fastjet
+@@ -121,7 +119,7 @@ ifneq (x$(FASTJETLOCATION),x)
+ 	-lpythia8tohepmc \
+ 	-L$(HEPMCLOCATION)/lib -lHepMC \
+ 	-L$(FASTJETLOCATION)/lib \
+-	-L$(LHAPDFLOCATION)/lib \
++	-L$(LHAPDFLOCATION) \
+ 	`$(FASTJETLOCATION)/bin/fastjet-config --libs --plugins`
+ 	@ln -fs $(BINDIR)/$@.exe $@.exe
+ 	@rm -f $@.o

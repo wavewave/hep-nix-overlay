@@ -3,7 +3,8 @@
 with pkgs;
 rec {
       Atom          = callPackage ./pkgs/Atom {
-                        root5=ROOT6;
+                        #root5=ROOT6;
+                        inherit root5;
                         inherit HepMC FastJet cython0192;
                         inherit (pkgs) gsl pkgconfig;
                         inherit libyamlcppPIC;
@@ -13,14 +14,16 @@ rec {
       AtomEnv       = callPackage ./pkgs/Atom/env.nix {
                         inherit pkgs;
                         inherit Atom;
-                        root5=ROOT6;
+                        # root5=ROOT6;
+                        inherit root5;
                         inherit HepMC YODA FastJet;
                       };
 
       AtomEnvMin    = callPackage ./pkgs/Atom/envMin.nix {
                         inherit pkgs;
                         inherit Atom;
-                        root5=ROOT6;
+                        # root5=ROOT6;
+                        inherit root5;
                         inherit HepMC YODA FastJet;
                       };
 
@@ -92,7 +95,7 @@ rec {
                            };
 
       MadGraph5_aMCatNLOEnv = callPackage ./pkgs/MadGraph5_aMCatNLO/env.nix {
-                                inherit MadGraph5_aMCatNLO ; # PYTHIA8-src;
+                                inherit pythia-pgs MadGraph5_aMCatNLO ; # PYTHIA8-src;
                               };
 
       Rivet         = callPackage ./pkgs/Rivet {
@@ -107,11 +110,11 @@ rec {
       #                       };
 
       PYTHIA8       = callPackage ./pkgs/PYTHIA8 {
-                        inherit PYTHIA8-src HepMC LHAPDF;
+                        inherit PYTHIA8-src HepMC LHAPDF6;
                       };
 
       PYTHIA8Env    = callPackage ./pkgs/PYTHIA8/env.nix {
-                        inherit PYTHIA8 FastJet LHAPDF;
+                        inherit PYTHIA8 FastJet LHAPDF6;
                       };
 
       ROOT6         = callPackage ./pkgs/ROOT6 { };
@@ -393,6 +396,7 @@ rec {
                                   #root5=root5min;
                                   inherit root5;
                                   inherit YODA;
+                                  inherit libyamlcppPIC;
                                 };
 
               AtomDevEnvHaskell=callPackage ./pkgs/dev/Atom/envHaskell.nix {

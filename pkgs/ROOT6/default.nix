@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
                   gsl libxml2 openssl
                   pkgconfig fftw sqlite cfitsio
                   # gfortran
-                ] ++ (if stdenv.isDarwin then [ darwin.sw_vers ] else null);
+                ] ++ (if stdenv.isDarwin then [ darwin.sw_vers ] else []);
   patches = [ ./force_darwin_64.patch 
               ./add_libc_dir_for_dict.patch
             ];

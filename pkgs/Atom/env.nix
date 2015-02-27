@@ -6,7 +6,7 @@ pkgs.myEnvFun {
     pythonFull
     Atom
     root5
-    boost
+    boost boost.dev boost.lib
     stdenv
     pythonPackages.ipython
   ]; 

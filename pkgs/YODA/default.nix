@@ -12,10 +12,13 @@ stdenv.mkDerivation rec {
   buildInputs = [ boost python ];
   enableParallelBuilding = true;
 
-  preConfigure = if (stdenv.isDarwin) then ''
+  preConfigure = '' 
+    substituteInPlace include/YODA/Utils/BinSearcher.h --replace "isinf" "std::isinf" --replace "isnan" "std::isnan"
+  '' 
+  + (if (stdenv.isDarwin) then ''
     substituteInPlace pyext/setup.py.in --replace "stdc++" "c++" 
   ''
-  else null;
+  else "");
 
   configureFlags = "--with-boost=${boost.dev}";
 
