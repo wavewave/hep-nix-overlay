@@ -73,9 +73,9 @@ rec {
 
       LanHEPEnv     = callPackage ./pkgs/LanHEP/env.nix { inherit LanHEP; };
 
-      LHAPDF        = callPackage ./pkgs/LHAPDF { };
+      LHAPDF5       = callPackage ./pkgs/LHAPDF/5.9.1 { };
 
-      LHAPDF6       = callPackage ./pkgs/LHAPDF6 { };
+      LHAPDF        = callPackage ./pkgs/LHAPDF { };
 
       LUXCalc       = callPackage ./pkgs/LUXCalc { };
 
