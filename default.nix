@@ -137,6 +137,8 @@ rec {
                         inherit HepMC LHAPDF FastJet libyamlcppPIC;
                       };
 
+      TSIL          = callPackage ./pkgs/TSIL { };
+
       YODA          = callPackage ./pkgs/YODA { };
 
       cernlib       = callPackage ./pkgs/cernlib { };
