@@ -28,13 +28,14 @@ stdenv.mkDerivation rec {
                 ] ++ (if stdenv.isDarwin then [ darwin.sw_vers ] else []);
   patches = [ ./force_darwin_64.patch 
               ./add_libc_dir_for_dict.patch
-            ];
+            ] ++ (if stdenv.isDarwin then [ ./force_llvm_host_arch_osx.patch ] else []);
 
   preConfigure = if (stdenv.isDarwin) then 
    '' 
       #NIX_ENFORCE_PURITY=0
       export CMAKE_INCLUDE_PATH=${stdenv.cc.libc}/include
-      # export MACOSX_DEPLOYMENT_TARGET=10.8
+      export NIX_CFLAGS_COMPILE="-target x86_64-apple-darwin11.4.2 $NIX_CFLAGS_COMPILE"
+      export NIX_CFLAGS_LINK="-target x86_64-apple-darwin11.4.2 $NIX_CFLAGS_LINK"
       substituteInPlace cmake/modules/FindGSL.cmake --replace "/usr/bin/" "" --replace "/usr/bin" "" --replace "/usr/local/bin" "" 
       substituteInPlace build/unix/compiledata.sh --replace "/usr/bin/env bash" "${bash}/bin/bash" 
       substituteInPlace build/unix/gitinfo.sh --replace "/usr/bin/env bash" "${bash}/bin/bash" 
