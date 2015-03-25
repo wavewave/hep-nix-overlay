@@ -125,6 +125,8 @@ rec {
 
       SHERPA        = callPackage ./pkgs/SHERPA { };
 
+      SMH           = callPackage ./pkgs/SMH { inherit TSIL; };
+
       SPheno        = callPackage ./pkgs/SPheno { };
 
       SUSY-HIT      = callPackage ./pkgs/SUSY-HIT { };
@@ -136,6 +138,8 @@ rec {
 #                                 in if stdenv.isDarwin then clang33Stdenv else stdenv;
                         inherit HepMC LHAPDF FastJet libyamlcppPIC;
                       };
+
+      TSIL          = callPackage ./pkgs/TSIL { };
 
       YODA          = callPackage ./pkgs/YODA { };
 
