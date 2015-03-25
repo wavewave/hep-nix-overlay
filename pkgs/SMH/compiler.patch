@@ -1,0 +1,20 @@
+Binary files a/._README.txt and b/._README.txt differ
+Binary files a/._effpot.c and b/._effpot.c differ
+Binary files a/._fig_Mh_vs_Q.c and b/._fig_Mh_vs_Q.c differ
+Binary files a/._fig_lambda_vs_Q.c and b/._fig_lambda_vs_Q.c differ
+Binary files a/._fig_m2_vs_Q.c and b/._fig_m2_vs_Q.c differ
+Binary files a/._fig_vev_vs_Q.c and b/._fig_vev_vs_Q.c differ
+Binary files a/._smhtest.c and b/._smhtest.c differ
+Binary files a/._tsil.h and b/._tsil.h differ
+diff -rupN a/Makefile b/Makefile
+--- a/Makefile	2014-07-15 17:02:13.000000000 +0200
++++ b/Makefile	2015-03-18 13:19:38.000000000 +0100
+@@ -22,7 +22,7 @@
+ #
+ # GNU C Compiler:
+ # ===============
+- CC		= gcc
++ CC		= cc
+  SMH_OPT 	= -O2
+ #
+ ####################################################################

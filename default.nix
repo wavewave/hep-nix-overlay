@@ -125,6 +125,8 @@ rec {
 
       SHERPA        = callPackage ./pkgs/SHERPA { };
 
+      SMH           = callPackage ./pkgs/SMH { inherit TSIL; };
+
       SPheno        = callPackage ./pkgs/SPheno { };
 
       SUSY-HIT      = callPackage ./pkgs/SUSY-HIT { };
