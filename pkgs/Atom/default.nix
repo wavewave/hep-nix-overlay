@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
   version = "0.9";
 
   src = fetchurl { 
-    url = "http://ianwookim.org/public/atom/Atom-0.9.1-20150130.tar.gz";
-    sha256 = "1431c6id60kqrzfn2gi97js5x5my85kf0apnhjjmf3i1mcpnr92i";
+    url = "http://ianwookim.org/public/atom/Atom-0.9.1-20150326.tar.gz";
+    sha256 = "1i2iy4h5hwbpadrqh71l171dg7rp5zzhfpx9vn6np4mcrwdn0ji3";
   };
   patches = []; 
 
