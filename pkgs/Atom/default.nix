@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgs, cmake, root5, HepMC, gsl, FastJet, pkgconfig
+{ stdenv, fetchurl, pkgs, cmake, ROOT, HepMC, gsl, FastJet, pkgconfig
 , python, cython0192, libyamlcppPIC,  boost, YODA, gtest
 }:
  
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   };
   patches = []; 
 
-  buildInputs = [ cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
+  buildInputs = [ cmake ROOT HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   pkgs.pythonFull cython0192 boost boost.dev boost.lib YODA gtest
                   pkgs.eigen
                 ] ++ (if (!stdenv.isDarwin) then [stdenv.cc.libc] else []);
