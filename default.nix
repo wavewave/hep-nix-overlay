@@ -58,8 +58,6 @@ rec {
       FeynHiggs     = callPackage ./pkgs/FeynHiggs { };
 
       HERWIGpp      = callPackage ./pkgs/HERWIGpp {
-#                        stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
-#                                 in if stdenv.isDarwin then clang33Stdenv else stdenv;
                         inherit ThePEG;
                         inherit FastJet;
                       };
@@ -205,14 +203,14 @@ rec {
       HROOT    = callPackage ./pkgs/HROOT {
                      cabal = haskellPackages.cabal;
                      inherit fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist HROOT-graf HROOT-math HROOT-io HROOT-tree;
-                     inherit root5;
+                     ROOT=ROOT6;
                    } ;
 
 
       HROOT-core = callPackage ./pkgs/HROOT-core {
                      cabal = haskellPackages.cabal;
                      inherit fficxx-runtime HROOT-src-tree;
-                     inherit root5;
+                     ROOT=ROOT6;
                    } ;
 
       HROOT-generate = callPackage ./pkgs/HROOT-generate {
@@ -226,30 +224,30 @@ rec {
       HROOT-hist = callPackage ./pkgs/HROOT-hist {
                      cabal = haskellPackages.cabal;
                      inherit fficxx-runtime HROOT-src-tree HROOT-core;
-                     inherit root5;
+                     ROOT=ROOT6;
                    };
       HROOT-graf = callPackage ./pkgs/HROOT-graf {
                      cabal = haskellPackages.cabal;
                      inherit fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist;
-                     inherit root5;
+                     ROOT=ROOT6;
                    } ;
 
       HROOT-io   = callPackage ./pkgs/HROOT-io   {
                      cabal = haskellPackages.cabal;
                      inherit fficxx-runtime HROOT-src-tree HROOT-core;
-                     inherit root5;
+                     ROOT=ROOT6;
                    } ;
 
       HROOT-math = callPackage ./pkgs/HROOT-math {
                      cabal = haskellPackages.cabal;
                      inherit fficxx-runtime HROOT-src-tree HROOT-core;
-                     inherit root5;
+                     ROOT=ROOT6;
                    } ;
 
       HROOT-tree = callPackage ./pkgs/HROOT-tree {
                      cabal = haskellPackages.cabal;
                      inherit fficxx-runtime HROOT-src-tree HROOT-core;
-                     inherit root5;
+                     ROOT=ROOT6;
                    } ;
 
 
@@ -396,7 +394,7 @@ rec {
                                   inherit pkgs;
                                   inherit AtomDev;
                                   #root5=root5min;
-                                  inherit root5;
+                                  ROOT=ROOT6;
                                   inherit YODA;
                                   inherit libyamlcppPIC;
                                 };
@@ -404,7 +402,7 @@ rec {
               AtomDevEnvHaskell=callPackage ./pkgs/dev/Atom/envHaskell.nix {
                                   inherit pkgs;
                                   inherit AtomDev;
-                                  inherit root5;
+                                  ROOT=ROOT6;
                                   inherit YODA;
                                 };
 

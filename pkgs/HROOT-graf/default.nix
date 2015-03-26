@@ -1,4 +1,4 @@
-{ cabal, root5, fficxx-runtime, HROOT-src-tree, HROOT-core, HROOT-hist }:
+{ cabal, ROOT, fficxx-runtime, HROOT-src-tree, HROOT-core, HROOT-hist }:
 
 cabal.mkDerivation (self: {
   pname = "HROOT-graf";
@@ -7,7 +7,7 @@ cabal.mkDerivation (self: {
   sourceRoot = "HROOT/HROOT-graf";
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ root5  
+  buildDepends = [ ROOT
                    fficxx-runtime
                    HROOT-src-tree
                    HROOT-core

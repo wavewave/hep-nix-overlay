@@ -1,4 +1,4 @@
-{ pkgs, AtomDev, root5, YODA }:
+{ pkgs, AtomDev, ROOT, YODA }:
 
 
 let hsenv = with (pkgs // pkgs.haskellPackages); ghcWithPackages 
@@ -14,7 +14,7 @@ pkgs.myEnvFun {
     hsenv
     pythonFullWithYODA
     AtomDev
-    root5
+    ROOT
     boost
     stdenv
     pythonPackages.recursivePthLoader
@@ -24,16 +24,16 @@ pkgs.myEnvFun {
     $(grep export ${hsenv.outPath}/bin/ghc)
     export NIX_STORE=$NIX_STORE
     source ${AtomDev}/bin/atomenv.sh
-    source ${root5}/bin/thisroot.sh
-    export PYTHONPATH=${YODA}/lib/python2.7/site-packages:${AtomDev}/lib/python2.7/site-packages:${root5}/lib:$PYTHONPATH
+    source ${ROOT}/bin/thisroot.sh
+    export PYTHONPATH=${YODA}/lib/python2.7/site-packages:${AtomDev}/lib/python2.7/site-packages:${ROOT}/lib:$PYTHONPATH
     export DYLD_LIBRARY_PATH=${stdenv.gcc.gcc}/lib:${AtomDev}/lib:${boost}/lib:$DYLD_LIBRARY_PATH
   ''
     else ''
     $(grep export ${hsenv.outPath}/bin/ghc)
     export NIX_STORE=$NIX_STORE
     source ${AtomDev}/bin/atomenv.sh
-    source ${root5}/bin/thisroot.sh
-    export PYTHONPATH=${YODA}/lib/python2.7/site-packages:${AtomDev}/lib/python2.7/site-packages:${root5}/lib:$PYTHONPATH
+    source ${ROOT}/bin/thisroot.sh
+    export PYTHONPATH=${YODA}/lib/python2.7/site-packages:${AtomDev}/lib/python2.7/site-packages:${ROOT}/lib:$PYTHONPATH
     export LD_LIBRARY_PATH=${AtomDev}/lib:$LD_LIBRARY_PATH
   '';
 

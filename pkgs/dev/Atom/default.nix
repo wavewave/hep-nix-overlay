@@ -1,6 +1,5 @@
 { stdenv, cmake
-# , git
-, root5, HepMC, gsl, FastJet, pkgconfig
+, ROOT, HepMC, gsl, FastJet, pkgconfig
 , python, cython0192, libyamlcppPIC,  boost, YODA, gtest, pkgs
 }:
  
@@ -8,8 +7,7 @@ stdenv.mkDerivation rec {
   name = "Atom-dev"; 
   patches = [];
 
-  buildInputs = [ # git 
-                  cmake root5 HepMC gsl FastJet pkgconfig libyamlcppPIC 
+  buildInputs = [ cmake ROOT HepMC gsl FastJet pkgconfig libyamlcppPIC 
                   boost YODA gtest cython0192 
                   pkgs.pythonFull pkgs.eigen pkgs.ncurses
                 ] ++ (if (!stdenv.isDarwin) then [stdenv.cc.libc] else []);
