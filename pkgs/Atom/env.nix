@@ -15,11 +15,13 @@ pkgs.myEnvFun {
     source ${Atom}/bin/atomenv.sh
     source ${ROOT}/bin/thisroot.sh
     export DYLD_LIBRARY_PATH=${Atom}/lib:${HepMC}/lib:$DYLD_LIBRARY_PATH
-
+    export PYTHONPATH=${YODA}/lib/python2.7/site-packages:${Atom}/lib/python2.7/site-packages:${ROOT}/lib:$PYTHONPATH
   ''
     else ''
     source ${Atom}/bin/atomenv.sh
     source ${ROOT}/bin/thisroot.sh
+    export LD_LIBRARY_PATH=${Atom}/lib:${HepMC}/lib:${YODA}/lib:${boost.lib}/lib:$LD_LIBRARY_PATH
+    export PYTHONPATH=${YODA}/lib/python2.7/site-packages:${Atom}/lib/python2.7/site-packages:${ROOT}/lib:$PYTHONPATH
   '';
 }
 

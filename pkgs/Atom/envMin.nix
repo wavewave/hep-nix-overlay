@@ -19,12 +19,9 @@ pkgs.myEnvFun {
     else ''
     source ${Atom}/bin/atomenv.sh
     source ${ROOT}/bin/thisroot.sh
+    export LD_LIBRARY_PATH=${Atom}/lib:${HepMC}/lib:${YODA}/lib:${boost.lib}/lib:$LD_LIBRARY_PATH
+    export PYTHONPATH=${YODA}/lib/python2.7/site-packages:${Atom}/lib/python2.7/site-packages:${ROOT}/lib:$PYTHONPATH
   '';
 }
 
 
-#    export DYLD_LIBRARY_PATH=${stdenv.gcc.gcc}/lib:${Atom}/lib:${boost.lib}/lib:${HepMC}/lib:${FastJet}/lib:${YODA}/lib:${ROOT}/lib:$DYLD_LIBRARY_PATH
-#    export PYTHONPATH=${YODA}/lib/python2.7/site-packages:$PYTHONPATH 
-
-#    export LD_LIBRARY_PATH=${Atom}/lib:${boost.lib}/lib:${HepMC}/lib:${FastJet}/lib:${YODA}/lib:${ROOT}/lib:$LD_LIBRARY_PATH
-#    export PYTHONPATH=${YODA}/lib/python2.7/site-packages:$PYTHONPATH
