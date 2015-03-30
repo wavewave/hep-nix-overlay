@@ -1,15 +1,15 @@
-{ pkgs, PYTHIA8, FastJet, LHAPDF6 }:
+{ pkgs, PYTHIA8, FastJet, LHAPDF }:
 
 let pythia8srcunpacked = import ./src-unpacked.nix { PYTHIA8-src = PYTHIA8.src; stdenv = pkgs.stdenv; };
     version = PYTHIA8.version;
 in pkgs.myEnvFun rec {
   name = "PYTHIA8-${version}";
-  buildInputs = with pkgs; [ PYTHIA8 FastJet LHAPDF6 ];
+  buildInputs = with pkgs; [ PYTHIA8 FastJet LHAPDF ];
 
   extraCmds = with pkgs; ''
     export PYTHIA8LOCATION=${PYTHIA8}
     export FASTJETLOCATION=${FastJet}
-    export LHAPDFLOCATION=${LHAPDF6}/lib
+    export LHAPDFLOCATION=${LHAPDF}/lib
     export LHAPDFLIBNAME="-lLHAPDF"
     export PYTHIA8=${PYTHIA8}
     export PYTHIA8DATA=${PYTHIA8}/xmldoc

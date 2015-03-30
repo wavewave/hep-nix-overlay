@@ -1,10 +1,10 @@
-{ pkgs, PYTHIA8-src, HepMC, LHAPDF6 }:
+{ pkgs, PYTHIA8-src, HepMC, LHAPDF }:
 
 pkgs.stdenv.mkDerivation rec {
   name = "PYTHIA8-${version}";
   version = "186";
   src = PYTHIA8-src;
-  buildInputs = [ HepMC LHAPDF6 ];
+  buildInputs = [ HepMC LHAPDF ];
   enableParallelBuilding = true;
 
   preConfigure = ''
