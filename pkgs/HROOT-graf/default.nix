@@ -9,7 +9,6 @@ cabal.mkDerivation (self: {
   isExecutable = false;
   buildDepends = [ ROOT
                    fficxx-runtime
-                   HROOT-src-tree
                    HROOT-core
                    HROOT-hist
                  ];

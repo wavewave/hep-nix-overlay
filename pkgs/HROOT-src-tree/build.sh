@@ -1,7 +1,8 @@
-source $stdenv/setup 
+source $stdenv/setup || exit 1 
 
-PATH="$buildDepends"/bin:$PATH
+PATH=${buildDepends}/bin:$PATH
 
+echo $PATH
 
 tar xvf $src || exit -1
 

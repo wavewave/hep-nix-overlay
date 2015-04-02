@@ -36,7 +36,7 @@ cabal.mkDerivation (self: {
                   
   #NIX_DEBUG=1;
   preBuild = ''
-    export NIX_LDFLAGS="-L${gfortran.gcc}/lib -L${gfortran.gcc}/lib64 $NIX_LDFLAGS";
+    export NIX_LDFLAGS="-L${self.stdenv.cc}/lib -L${self.stdenv.cc}/lib64 $NIX_LDFLAGS";
   '';
   doCheck = false;
   meta = {
