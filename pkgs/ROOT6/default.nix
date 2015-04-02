@@ -24,6 +24,7 @@ stdenv.mkDerivation rec {
                 ] ++ (if stdenv.isDarwin then [ darwin.sw_vers ] else []);
   patches = [ ./force_darwin_64.patch 
               ./add_libc_dir_for_dict.patch
+              ./dont-build-tutorial.patch
             ] ++ (if stdenv.isDarwin then [ ./force_llvm_host_arch_osx.patch ] else []);
 
   preConfigure = if (stdenv.isDarwin) then 
@@ -43,7 +44,7 @@ stdenv.mkDerivation rec {
 
    cmakeFlags = if (stdenv.isDarwin)
                 then "-DCMAKE_LIBC_DIR=${stdenv.cc.libc} -DCMAKE_VERBOSE_MAKEFILE=ON  -DCMAKE_C_FLAGS='-I${stdenv.cc.libc}/include' -DCMAKE_CXX_FLAGS='-I${stdenv.cc.libc}/include'  -DCMAKE_OSX_DEPLOYMENT_TARGET= -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dcocoa:String=OFF -Dx11=ON -Drpath:String=ON  "
-                else "-DCMAKE_VERBOSE_MAKEFILE=ON -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dkrb5:BOOL=OFF -Dmysql:BOOL=OFF"; 
+                else "-DCMAKE_VERBOSE_MAKEFILE=ON -Dopengl:String=OFF -Dpythia8:String=OFF -Dpythia6:String=OFF -Dpgsql:String=OFF -Dpython:String=ON -Dgviz:String=OFF -Droofit:BOOL=ON -Dminuit2:BOOL=ON -Dldap=OFF -Dkrb5:BOOL=OFF -Dmysql:BOOL=OFF -Drpath:BOOL=ON -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=FALSE -DCMAKE_SKIP_BUILD_RPATH=TRUE"; 
 
 }
 
