@@ -2,14 +2,13 @@
 
 cabal.mkDerivation (self: {
   pname = "HROOT";
-  version = "0.8";
+  version = HROOT-src-tree.version;
   src = HROOT-src-tree;
   sourceRoot = "HROOT/HROOT";
   isLibrary = true;
   isExecutable = false;
   buildDepends = [ ROOT
                    fficxx-runtime
-                   HROOT-src-tree
                    HROOT-core
                    HROOT-hist
                    HROOT-graf

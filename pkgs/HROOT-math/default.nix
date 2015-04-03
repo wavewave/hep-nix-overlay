@@ -2,7 +2,7 @@
 
 cabal.mkDerivation (self: {
   pname = "HROOT-math";
-  version = "0.8";
+  version = HROOT-src-tree.version;
   src = HROOT-src-tree;
   sourceRoot = "HROOT/HROOT-math";
   isLibrary = true;

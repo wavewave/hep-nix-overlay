@@ -4,8 +4,8 @@ cabal.mkDerivation (self: {
   pname = "fficxx";
   version = "0.2";
   src = fetchgit { url = "https://github.com/wavewave/fficxx.git"; 
-                   rev = "64e4ea1dc3d95a44eed02e8d1cb371bc0350ecef";
-                   sha256 = "0fca8ab21c3123d18fdbfa8d55f2319d7b6ff9d218509e6fbf2ea74896eec327";
+                   rev = "f2fe80f71a7c9a8f52becb2e50c52fdec685a579";
+                   sha256 = "9cb4a4e554281246d29630b1fa3a0173e0d1c7de0b1f1c517f4ad3200d4a4c39";
                  };  
   isLibrary = true;
   isExecutable = false;
