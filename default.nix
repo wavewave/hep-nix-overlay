@@ -57,6 +57,8 @@ rec {
 
       FeynHiggs     = callPackage ./pkgs/FeynHiggs { };
 
+      Geant4        = callPackage ./pkgs/Geant4 { };
+
       HERWIGpp      = callPackage ./pkgs/HERWIGpp {
                         inherit ThePEG;
                         inherit FastJet;
