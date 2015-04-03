@@ -52,10 +52,16 @@ rec {
       Fastlim       = callPackage ./pkgs/Fastlim { };
 
       FastlimEnv    = callPackage ./pkgs/Fastlim/FastlimEnv.nix {
-                      inherit Fastlim;
-                    };
+                        inherit Fastlim;
+                      };
 
       FeynHiggs     = callPackage ./pkgs/FeynHiggs { };
+
+      FeynRules     = callPackage ./pkgs/FeynRules { };
+
+      FeynRulesEnv  = callPackage ./pkgs/FeynRules/env.nix { 
+                        inherit FeynRules;
+                      };
 
       Geant4        = callPackage ./pkgs/Geant4 { };
 
