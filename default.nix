@@ -59,7 +59,7 @@ rec {
 
       FeynRules     = callPackage ./pkgs/FeynRules { };
 
-      FeynRulesEnv  = callPackage ./pkgs/FeynRules/env.nix { 
+      FeynRulesEnv  = callPackage ./pkgs/FeynRules/env.nix {
                         inherit FeynRules;
                       };
 
@@ -125,6 +125,12 @@ rec {
 
       ROOT6Env      = callPackage ./pkgs/ROOT6/env.nix {
                         inherit ROOT6;
+                      };
+
+      SARAH         = callPackage ./pkgs/SARAH { };
+
+      SARAHEnv      = callPackage ./pkgs/SARAH/env.nix {
+                        inherit SARAH;
                       };
 
       SHERPA        = callPackage ./pkgs/SHERPA { };
