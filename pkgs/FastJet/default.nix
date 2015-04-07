@@ -1,11 +1,13 @@
-{ stdenv, fetchurl }:
+{ pkgs }:
+
+with pkgs;
 
 stdenv.mkDerivation rec {
   name = "FastJet-${version}";
-  version = "3.1.0";
+  version = "3.1.2";
   src = fetchurl {
-    url = "http://fastjet.fr/repo/fastjet-3.1.0.tar.gz";
-    sha256 = "0qr20sm6r2k0yakndaf2alk5bk7826wi0h31nw4z095izlfp1p7q";
+    url = "http://fastjet.fr/repo/fastjet-3.1.2.tar.gz";
+    sha256 = "02qp7h6njq0cd8fmadvghsnfdbhqbnfj804w8nncn8d87pjk9j6w";
   };
   enableParallelBuilding = true;
   configureFlags = "--enable-allcxxplugins";
