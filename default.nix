@@ -133,7 +133,9 @@ rec {
                         inherit SARAH;
                       };
 
-      SHERPA        = callPackage ./pkgs/SHERPA { };
+      SHERPA        = callPackage ./pkgs/SHERPA {
+                        inherit HepMC FastJet;
+                      };
 
       SMH           = callPackage ./pkgs/SMH { inherit TSIL; };
 
