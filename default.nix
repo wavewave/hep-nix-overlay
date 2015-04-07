@@ -103,8 +103,8 @@ rec {
                               };
 
       Rivet         = callPackage ./pkgs/Rivet {
-                        inherit HepMC FastJet;
-                        inherit libyamlcppPIC ;
+                        inherit HepMC FastJet YODA;
+                        inherit libyamlcppPIC;
                       };
 
       PYTHIA8-src   = callPackage ./pkgs/PYTHIA8/src.nix { };

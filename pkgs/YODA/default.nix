@@ -1,24 +1,24 @@
-{ stdenv, fetchurl, boost, python }:
+{ pkgs }:
+
+with pkgs;
 
 stdenv.mkDerivation rec {
   name = "YODA-${version}";
-  version = "1.3.0";
+  version = "1.3.1";
 
   src = fetchurl {
-    url = "http://www.hepforge.org/archive/yoda/YODA-1.3.0.tar.bz2";
-    sha256 = "05fj5cqq06qdb2pcqqdd5krqi4xlq3ch6iyg0v5iwj0bjkarfcfn";
+    url = "http://www.hepforge.org/archive/yoda/YODA-1.3.1.tar.bz2";
+    sha256 = "0iwppj9m8bv6qd5kdhqyqais2g31x5nqgnzjs5nsqfly01nijki7";
   };
 
   buildInputs = [ boost python ];
   enableParallelBuilding = true;
 
-  preConfigure = '' 
-    substituteInPlace include/YODA/Utils/BinSearcher.h --replace "isinf" "std::isinf" --replace "isnan" "std::isnan"
-  '' 
-  + (if (stdenv.isDarwin) then ''
-    substituteInPlace pyext/setup.py.in --replace "stdc++" "c++" 
+  preConfigure = if stdenv.isDarwin then ''
+    substituteInPlace pyext/setup.py.in --replace "stdc++" "c++"
   ''
-  else "");
+    else ''
+  '';
 
   configureFlags = "--with-boost=${boost.dev}";
 
