@@ -1,29 +1,26 @@
-{ stdenv, fetchurl, libtool, m4, automake, autoconf, gsl, boost, HepMC, FastJet, libyamlcppPIC, python, swig}:
- 
-stdenv.mkDerivation rec { 
-  name = "Rivet-${version}"; 
-  version = "2.2.0";
+{ pkgs, HepMC, FastJet, libyamlcppPIC, YODA }:
 
-  src = fetchurl { 
-    url="http://www.hepforge.org/archive/rivet/Rivet-2.2.0.tar.bz2";
-    sha256 ="06mfz2d8cajqp40q4lqxqka2hw69knxcd2qc9rrw8m7z0whgxniv";
-    #url = "http://www.hepforge.org/archive/rivet/Rivet-1.8.1.tar.gz";
-    #sha256 = "1gn0dlhvxfnv5wm2r5f311j757x4l8lr51jhhpgv74xlks020vwc";
+with pkgs;
+
+stdenv.mkDerivation rec {
+  name = "Rivet-${version}";
+  version = "2.2.1";
+  src = fetchurl {
+    url="http://www.hepforge.org/archive/rivet/Rivet-2.2.1.tar.bz2";
+    sha256 ="14dnabks36as8hsd0w01r7zbaqs33i4kbd22rk8g9gb7slcvlr4y";
   };
-  # patches = [ ./yamlcpp.patch ];
 
-  buildInputs = [ libtool m4 automake autoconf gsl boost HepMC FastJet 
-                  libyamlcppPIC python swig];
-  
+  buildInputs = [ libtool m4 automake autoconf gsl boost python swig
+                  HepMC FastJet libyamlcppPIC YODA ];
+  enableParallelBuilding = true;
+
   preConfigure = ''
     autoreconf
   '';
 
+  configureFlags = "CFLAGS=-fPIC CXXFLAGS=-fPIC --with-boost=${boost.dev} --with-hepmc=${HepMC} --with-fastjet=${FastJet} --with-yaml_cpp=${libyamlcppPIC} --with-yoda=${YODA} --disable-pyext";
 
-
-  configureFlags = "CFLAGS=-fPIC CXXFLAGS=-fPIC --with-boost=${boost} --with-hepmc=${HepMC} --with-fastjet=${FastJet} --with-yaml_cpp=${libyamlcppPIC}  --disable-pyext";
-
-  meta = { 
+  meta = {
     priority  = "10";
   };
 }
