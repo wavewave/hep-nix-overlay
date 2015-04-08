@@ -102,6 +102,8 @@ rec {
                                 inherit pythia-pgs MadGraph5_aMCatNLO ; # PYTHIA8-src;
                               };
 
+      Minuit2       = callPackage ./pkgs/Minuit2 { };
+
       Rivet         = callPackage ./pkgs/Rivet {
                         inherit HepMC FastJet YODA;
                         inherit libyamlcppPIC;
