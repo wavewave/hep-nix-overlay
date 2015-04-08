@@ -11,14 +11,7 @@ rec {
                         inherit YODA;
                       };
 
-      AtomEnv       = callPackage ./pkgs/Atom/env.nix {
-                        inherit pkgs;
-                        inherit Atom;
-                        ROOT=ROOT6;
-                        inherit HepMC YODA FastJet;
-                      };
-
-      AtomEnvMin    = callPackage ./pkgs/Atom/envMin.nix {
+      AtomEnv       = callPackage ./pkgs/Atom/envMin.nix {
                         inherit pkgs;
                         inherit Atom;
                         ROOT=ROOT6;
@@ -403,7 +396,8 @@ rec {
       # development
       dev = rec {
               AtomDev         = callPackage ./pkgs/dev/Atom {
-                                  inherit root5 HepMC FastJet cython0192;
+                                  ROOT=ROOT6;
+                                  inherit HepMC FastJet cython0192;
                                   inherit (pkgs) gsl pkgconfig;
                                   inherit libyamlcppPIC;
                                   inherit  YODA;
@@ -413,8 +407,8 @@ rec {
                                   inherit AtomDev;
                                   #root5=root5min;
                                   ROOT=ROOT6;
-                                  inherit YODA;
-                                  inherit libyamlcppPIC;
+                                  inherit YODA HepMC FastJet;
+                                  #inherit libyamlcppPIC;
                                 };
 
               AtomDevEnvHaskell=callPackage ./pkgs/dev/Atom/envHaskell.nix {

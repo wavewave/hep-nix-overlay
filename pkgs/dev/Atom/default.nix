@@ -1,16 +1,26 @@
-{ stdenv, cmake
-, ROOT, HepMC, gsl, FastJet, pkgconfig
-, python, cython0192, libyamlcppPIC,  boost, YODA, gtest, pkgs
+{ stdenv, fetchurl, pkgs, cmake, ROOT, HepMC, gsl, FastJet, pkgconfig
+, python, cython0192, libyamlcppPIC,  boost, YODA, gtest
 }:
+
+
+#{ stdenv, cmake
+#, ROOT, HepMC, gsl, FastJet, pkgconfig
+#, python, cython0192, libyamlcppPIC,  boost, YODA, gtest, pkgs
+#}:
  
 stdenv.mkDerivation rec { 
   name = "Atom-dev"; 
   patches = [];
 
   buildInputs = [ cmake ROOT HepMC gsl FastJet pkgconfig libyamlcppPIC 
-                  boost YODA gtest cython0192 
-                  pkgs.pythonFull pkgs.eigen pkgs.ncurses
+                  pkgs.pythonFull cython0192 boost boost.dev boost.lib YODA gtest
+                  pkgs.eigen
                 ] ++ (if (!stdenv.isDarwin) then [stdenv.cc.libc] else []);
+
+  # buildInputs = [ cmake ROOT HepMC gsl FastJet pkgconfig libyamlcppPIC 
+  #                 boost YODA gtest cython0192 
+  #                 pkgs.pythonFull pkgs.eigen pkgs.ncurses
+  #               ] ++ (if (!stdenv.isDarwin) then [stdenv.cc.libc] else []);
 
   pkgconfigDepends = [ libyamlcppPIC ] ;
   enableParallelBuilding = true; 

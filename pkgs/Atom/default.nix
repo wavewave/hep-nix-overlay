@@ -25,6 +25,7 @@ stdenv.mkDerivation rec {
     substituteInPlace bin/atom --replace /usr/bin/env ${pkgs.coreutils}/bin/env
     substituteInPlace bin/atom-config.in --replace /usr/bin/env ${pkgs.coreutils}/bin/env
     substituteInPlace bin/aida2root --replace /usr/bin/env ${pkgs.coreutils}/bin/env
+    substituteInPlace bin/atom-mkanalysis --replace /usr/bin/env ${pkgs.coreutils}/bin/env
   ''; 
 
   cmakeFlags = if ( stdenv.isDarwin ) then

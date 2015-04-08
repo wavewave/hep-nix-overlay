@@ -1,27 +1,39 @@
-{ pkgs
-, AtomDev
-, ROOT
-, YODA 
-, libyamlcppPIC
-}:
+{ pkgs, AtomDev, ROOT, HepMC, YODA, FastJet }:
+
+#{ pkgs
+#, AtomDev
+#, ROOT
+#, YODA 
+#, libyamlcppPIC
+#}:
 
 pkgs.myEnvFun { 
   name = "Atom-dev";
   buildInputs = with pkgs; [
     pythonFull
-    ncurses
-    YODA
-    libyamlcppPIC
     AtomDev
     ROOT
-    boost
-    pythonPackages.recursivePthLoader
-    cmake
-    eigen
-    pkgconfig
-    gfortran
-    binutils
-  ]; 
+    boost boost.dev boost.lib
+    YODA
+    stdenv
+    pythonPackages.numpy
+    pythonPackages.matplotlib
+#    pythonPackages.recursivePthLoader
+
+#    pythonFull
+#    ncurses
+#    YODA
+#    libyamlcppPIC
+#    AtomDev
+#    ROOT
+#    boost
+#    cmake
+#    eigen
+#    pkgconfig
+#    gfortran
+#    binutils
+  ] ++ (if stdenv.isDarwin then [darwin.sw_vers] else []);
+
   
   extraCmds = with pkgs; if(stdenv.isDarwin) then ''
     source ${AtomDev}/bin/atomenv.sh
