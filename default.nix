@@ -171,8 +171,7 @@ rec {
                       };
 
       pyminuit2     = callPackage ./pkgs/pyminuit2 {
-                        inherit pythonPackages;
-                        inherit root5;
+                        inherit Minuit2;
                       };
 
       pythia-pgs    = callPackage ./pkgs/pythia-pgs {
