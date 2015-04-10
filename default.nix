@@ -140,6 +140,8 @@ rec {
 
       SUSY-HITEnv   = callPackage ./pkgs/SUSY-HIT/env.nix { inherit SUSY-HIT; };
 
+      THDMC         = callPackage ./pkgs/THDMC { };
+
       ThePEG        = callPackage ./pkgs/ThePEG {
 #                        stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
 #                                 in if stdenv.isDarwin then clang33Stdenv else stdenv;
