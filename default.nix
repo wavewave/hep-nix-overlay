@@ -79,6 +79,8 @@ rec {
 
       LHPC          = callPackage ./pkgs/LHPC { };
 
+      LoopTools     = callPackage ./pkgs/LoopTools { };
+
       LUXCalc       = callPackage ./pkgs/LUXCalc { };
 
       LUXCalcEnv    = callPackage ./pkgs/LUXCalc/env.nix { inherit LUXCalc; };
