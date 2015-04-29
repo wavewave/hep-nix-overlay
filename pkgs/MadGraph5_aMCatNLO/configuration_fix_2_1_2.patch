@@ -1,6 +1,6 @@
 diff -rupN a/input/mg5_configuration.txt b/input/mg5_configuration.txt
---- a/input/mg5_configuration.txt	2015-02-10 03:55:09.000000000 +0100
-+++ b/input/mg5_configuration.txt	2015-04-29 17:40:27.201672125 +0200
+--- a/input/mg5_configuration.txt	2014-07-03 15:38:00.000000000 +0200
++++ b/input/mg5_configuration.txt	2014-08-14 21:22:45.465047033 +0200
 @@ -28,7 +28,7 @@
  #! Prefered Fortran Compiler
  #! If None: try to find g77 or gfortran on the system
@@ -10,7 +10,7 @@ diff -rupN a/input/mg5_configuration.txt b/input/mg5_configuration.txt
  
  #! Prefered C++ Compiler
  #! If None: try to find g++ or clang on the system
-@@ -51,13 +51,13 @@
+@@ -51,7 +51,7 @@
  
  #! Time allowed to answer question (if no answer takes default value)
  #!  0: No time limit
@@ -18,15 +18,17 @@ diff -rupN a/input/mg5_configuration.txt b/input/mg5_configuration.txt
 +timeout = 0
  
  #! Pythia8 path.
- #!  Defines the path to the main pythia8 directory (i.e. that containing
- #!  the pythia8 configure script) .
+ #!  Defines the path to the pythia8 directory.
+@@ -59,7 +59,7 @@
+ #!  in particular, it is crucial that the file
+ #   pythia8_path/examples/config.sh be present.
  #!  If using a relative path, that starts from the mg5 directory
--# pythia8_path =
+-# pythia8_path = ./pythia8
 +pythia8_path = @pythia8@
  
  #! Herwig++ paths
  #!  specify here the paths also to HepMC ant ThePEG
-@@ -70,7 +70,7 @@
+@@ -72,7 +72,7 @@
  #! Control when MG5 checks if he is up-to-date.
  #! Enter the number of day between two check (0 means never)
  #! A question is always asked before any update
@@ -35,7 +37,7 @@ diff -rupN a/input/mg5_configuration.txt b/input/mg5_configuration.txt
  
  ################################################################################
  #  INFO FOR MADEVENT / aMC@NLO 
-@@ -115,7 +115,7 @@
+@@ -117,7 +117,7 @@
  
  #! Pythia-PGS Package
  #!  relative path start from main directory

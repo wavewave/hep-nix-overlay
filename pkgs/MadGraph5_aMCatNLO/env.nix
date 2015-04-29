@@ -1,4 +1,4 @@
-{ pkgs, MadGraph5_aMCatNLO, pythia-pgs }: # , PYTHIA8-src }:
+{ pkgs, MadGraph5_aMCatNLO, pythia-pgs }: 
 
 let version = MadGraph5_aMCatNLO.version;
     pythonMG5aMC = pkgs.pythonFull; 
@@ -24,4 +24,3 @@ in pkgs.myEnvFun rec {
   '';
 }
 
-# tar xvzf ${PYTHIA8-src}
