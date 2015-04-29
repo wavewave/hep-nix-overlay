@@ -150,6 +150,13 @@ rec {
 
       YODA          = callPackage ./pkgs/YODA { };
 
+      aMCSusHi      = callPackage ./pkgs/aMCSusHi { };
+
+      aMCSusHiEnv   = callPackage ./pkgs/aMCSusHi/env.nix { 
+                        inherit LHAPDF;
+                        inherit FeynHiggs;
+                      };
+
       cernlib       = callPackage ./pkgs/cernlib { };
 
       convertStdHep = callPackage ./pkgs/convertStdHep {
@@ -405,10 +412,9 @@ rec {
               AtomDevEnv      = callPackage ./pkgs/dev/Atom/env.nix {
                                   inherit pkgs;
                                   inherit AtomDev;
-                                  #root5=root5min;
                                   ROOT=ROOT6;
                                   inherit YODA HepMC FastJet;
-                                  #inherit libyamlcppPIC;
+                                  inherit libyamlcppPIC;
                                 };
 
               AtomDevEnvHaskell=callPackage ./pkgs/dev/Atom/envHaskell.nix {
