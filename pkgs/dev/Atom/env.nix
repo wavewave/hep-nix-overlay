@@ -1,4 +1,4 @@
-{ pkgs, AtomDev, ROOT, HepMC, YODA, FastJet }:
+{ pkgs, AtomDev, ROOT, HepMC, YODA, FastJet, libyamlcppPIC }:
 
 #{ pkgs
 #, AtomDev
@@ -12,26 +12,19 @@ pkgs.myEnvFun {
   buildInputs = with pkgs; [
     pythonFull
     AtomDev
+    cmake
     ROOT
     boost boost.dev boost.lib
     YODA
     stdenv
     pythonPackages.numpy
     pythonPackages.matplotlib
-#    pythonPackages.recursivePthLoader
-
-#    pythonFull
-#    ncurses
-#    YODA
-#    libyamlcppPIC
-#    AtomDev
-#    ROOT
-#    boost
-#    cmake
-#    eigen
-#    pkgconfig
-#    gfortran
-#    binutils
+    ncurses
+    libyamlcppPIC
+    eigen
+    pkgconfig
+    gfortran
+    binutils
   ] ++ (if stdenv.isDarwin then [darwin.sw_vers] else []);
 
   
