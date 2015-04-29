@@ -12,4 +12,6 @@ stdenv.mkDerivation rec {
   buildInputs = [ ];
   patches = [ ];
   enableParallelBuilding = true;
+
+  configureFlags = "--disable-openmp";
 }

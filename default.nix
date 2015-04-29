@@ -77,6 +77,10 @@ rec {
 
       LHAPDF        = callPackage ./pkgs/LHAPDF { };
 
+      LHPC          = callPackage ./pkgs/LHPC { };
+
+      LoopTools     = callPackage ./pkgs/LoopTools { };
+
       LUXCalc       = callPackage ./pkgs/LUXCalc { };
 
       LUXCalcEnv    = callPackage ./pkgs/LUXCalc/env.nix { inherit LUXCalc; };
@@ -140,6 +144,8 @@ rec {
 
       SUSY-HITEnv   = callPackage ./pkgs/SUSY-HIT/env.nix { inherit SUSY-HIT; };
 
+      THDMC         = callPackage ./pkgs/THDMC { };
+
       ThePEG        = callPackage ./pkgs/ThePEG {
 #                        stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
 #                                 in if stdenv.isDarwin then clang33Stdenv else stdenv;
@@ -178,8 +184,7 @@ rec {
                       };
 
       pyminuit2     = callPackage ./pkgs/pyminuit2 {
-                        inherit pythonPackages;
-                        inherit root5;
+                        inherit Minuit2;
                       };
 
       pythia-pgs    = callPackage ./pkgs/pythia-pgs {
