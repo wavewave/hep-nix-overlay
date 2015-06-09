@@ -316,6 +316,7 @@ rec {
                  lens = haskellPackages.lens;
                  pureMD5 = haskellPackages.pureMD5;
                  split = haskellPackages.split;
+                 dataDefault = haskellPackages.dataDefault;
                } ;
 
       fficxx-runtime = callPackage ./pkgs/fficxx-runtime {

@@ -2,10 +2,10 @@
 
 cabal.mkDerivation (self: {
   pname = "HROOT-generate";
-  version = "0.8.0";
+  version = "0.8.1";
   src = fetchgit { url = "https://github.com/wavewave/HROOT-generate.git"; 
-                   rev = "2bb3db4c16ac3474e8f8ad945c2a9fe7586a54aa";
-                   sha256 = "0752d4c2af2d1003a081de5687df7315a9a8f337afcc8e53414dfbe78372a25b";
+                   rev = "416b56c866283e8b6d6406a4545fc471b038647a";
+                   sha256 = "02585156c7c71c0a56a0251c3b79b651599b4cf2a87c518ca96eb5d1d26ea9e0";
                  };  
   isLibrary = true;
   isExecutable = true;
