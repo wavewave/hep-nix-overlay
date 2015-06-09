@@ -1,13 +1,11 @@
 diff -rupN a/cmake/modules/SetUpMacOS.cmake b/cmake/modules/SetUpMacOS.cmake
---- a/cmake/modules/SetUpMacOS.cmake	2015-06-02 17:02:58.000000000 +0900
-+++ b/cmake/modules/SetUpMacOS.cmake	2015-06-09 18:32:47.000000000 +0900
-@@ -28,8 +28,8 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
-     #TODO: check haveconfig and rpath -> set rpath true
+--- a/cmake/modules/SetUpMacOS.cmake	2015-04-24 01:30:25.000000000 +0900
++++ b/cmake/modules/SetUpMacOS.cmake	2015-06-01 11:44:23.000000000 +0900
+@@ -29,7 +29,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
      #TODO: check Thread, define link command
      #TODO: more stuff check configure script
--    execute_process(COMMAND /usr/sbin/sysctl machdep.cpu.extfeatures OUTPUT_VARIABLE SYSCTL_OUTPUT)
+     execute_process(COMMAND /usr/sbin/sysctl machdep.cpu.extfeatures OUTPUT_VARIABLE SYSCTL_OUTPUT)
 -    if(${SYSCTL_OUTPUT} MATCHES 64)
-+    # execute_process(COMMAND /usr/sbin/sysctl machdep.cpu.extfeatures OUTPUT_VARIABLE SYSCTL_OUTPUT)
 +    # if(${SYSCTL_OUTPUT} MATCHES 64)
         MESSAGE(STATUS "Found a 64bit system")
         set(ROOT_ARCHITECTURE macosx64)
@@ -26,7 +24,7 @@ diff -rupN a/cmake/modules/SetUpMacOS.cmake b/cmake/modules/SetUpMacOS.cmake
 +    #    MESSAGE(STATUS "Found a 32bit system")
 +    #    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
 +    #    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
-+    #    SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m32")
++    #   SET(CMAKE_FORTRAN_FLAGS "${CMAKE_FORTRAN_FLAGS} -m32")
 +    # endif(${SYSCTL_OUTPUT} MATCHES 64)
    endif()
  

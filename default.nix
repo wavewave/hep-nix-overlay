@@ -101,6 +101,10 @@ rec {
 
       Minuit2       = callPackage ./pkgs/Minuit2 { };
 
+      mt2Cwrapper   = callPackage ./pkgs/mt2_cwrapper {
+                        ROOT=ROOT6;
+                      };
+
       Rivet         = callPackage ./pkgs/Rivet {
                         inherit HepMC FastJet YODA;
                         inherit libyamlcppPIC;
@@ -158,7 +162,7 @@ rec {
 
       # aMCSusHi      = callPackage ./pkgs/aMCSusHi { };
 
-      aMCSusHiEnv   = callPackage ./pkgs/aMCSusHi/env.nix { 
+      aMCSusHiEnv   = callPackage ./pkgs/aMCSusHi/env.nix {
                         inherit LHAPDF;
                         inherit FeynHiggs;
                       };
