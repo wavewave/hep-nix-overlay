@@ -6,8 +6,8 @@ cabal.mkDerivation (self: {
   pname = "madgraph-auto-model";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/madgraph-auto-model.git"; 
-                   rev = "c303faa4e8feb935f7d5eec51505f5214b0fcd75";
-                   sha256 = "a08d10ad861015d76c4dddfaace992674099879f26d93b9b01c1370b0fbddf05";
+                   rev = "3a80bff6a9f6b328e76a6eb05b978c101b938c9e";
+                   sha256 = "34c18f712aac3e6067a8d51e0a0d557796082262be128a5062b8f5a402571019";
                  };  
   isLibrary = true;
   isExecutable = false;

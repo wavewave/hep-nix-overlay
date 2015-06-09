@@ -156,7 +156,7 @@ rec {
 
       YODA          = callPackage ./pkgs/YODA { };
 
-      aMCSusHi      = callPackage ./pkgs/aMCSusHi { };
+      # aMCSusHi      = callPackage ./pkgs/aMCSusHi { };
 
       aMCSusHiEnv   = callPackage ./pkgs/aMCSusHi/env.nix { 
                         inherit LHAPDF;
