@@ -11,10 +11,10 @@ assert stdenv.isDarwin -> darwin != null;
 
 stdenv.mkDerivation rec {
   name = "ROOT6-${version}";
-  version = "02.04";
+  version = "04.00";
   src = fetchurl {
-    url = "http://root.cern.ch/download/root_v6.02.04.source.tar.gz";
-    sha256 = "1rkrhx850d6fpzl57p9hszbvcn6d6j0ahr2bvcggx52rm1wx177x";
+    url = "http://root.cern.ch/download/root_v6.04.00.source.tar.gz";
+    sha256 = "1smyxslnh5lic8bw8f9xzwx59zpwkknjd2f76khz9xgj0rbixyn5";
   };
   enableParallelBuilding = true;
   buildInputs = [ cmake zlib libX11 libXext libXpm libXft pcre freetype
@@ -23,10 +23,10 @@ stdenv.mkDerivation rec {
                   gsl libxml2 openssl
                   pkgconfig fftw sqlite cfitsio subversion
                 ] ++ (if stdenv.isDarwin then [ darwin.sw_vers ] else []);
-  patches = [ ./force_darwin_64.patch
-              ./add_libc_dir_for_dict.patch
+  patches = [ ./add_libc_dir_for_dict.patch
               ./dont-build-tutorial.patch
-            ] ++ (if stdenv.isDarwin then [ ./force_llvm_host_arch_osx.patch ] else []);
+            ] ++ (if stdenv.isDarwin then [ ./force_darwin_64.patch
+                                            ./force_llvm_host_arch_osx.patch ] else []);
 
   preConfigure = if (stdenv.isDarwin) then
   ''
