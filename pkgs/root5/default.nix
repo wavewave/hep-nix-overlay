@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
       substituteInPlace cmake/modules/FindGSL.cmake --replace "/usr/bin/" "" --replace "/usr/bin" "" --replace "/usr/local/bin" ""
   '';
 
-  cmakeFlags = [ "-Dcastor=OFF -Dfortran=OFF -Dgviz=OFF -Dkrb5=OFF -Dldap=OFF -Dminuit2=ON -Dmysql=OFF -Dopengl=OFF -Doracle=OFF -Dpgsql=OFF -Dpythia6=OFF -Dpythia8=OFF -Dpython=ON -Droofit=ON"
+  cmakeFlags = [ "-Dcastor=OFF -Dcocoa=OFF -Dfortran=OFF -Dgviz=OFF -Dkrb5=OFF -Dldap=OFF -Dminuit2=ON -Dmysql=OFF -Dodbc=OFF -Dopengl=OFF -Doracle=OFF -Dpgsql=OFF -Dpythia6=OFF -Dpythia8=OFF -Dpython=ON -Droofit=ON"
                  "-Dcxx11=OFF -Dlibcxx=OFF"
                  "-Drpath=OFF"
                ] ++ (if stdenv.isDarwin
