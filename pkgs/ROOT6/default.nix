@@ -42,8 +42,8 @@ stdenv.mkDerivation rec {
    ''
    else "";
 
-  cmakeFlags = [ "-Dcastor=OFF -Dcocoa=OFF -Dfortran=OFF -Dgviz=OFF -Dkrb5=OFF -Dldap=OFF -Dminuit2=ON -Dmysql=OFF -Dopengl=OFF -Doracle=OFF -Dpgsql=OFF -Dpythia6=OFF -Dpythia8=OFF -Dpython=ON -Droofit=ON -Drpath=ON"
-                  "-DCMAKE_VERBOSE_MAKEFILE=ON"
+  cmakeFlags = [ "-Dcastor=OFF -Dcocoa=OFF -Dfortran=OFF -Dgviz=OFF -Dkrb5=OFF -Dldap=OFF -Dminuit2=ON -Dmysql=OFF -Dopengl=OFF -Dodbc=OFF -Doracle=OFF -Dpgsql=OFF -Dpythia6=OFF -Dpythia8=OFF -Dpython=ON -Droofit=ON -Drpath=ON"
+                  "-DCMAKE_VERBOSE_MAKEFILE=OFF"
                 ] ++ (if stdenv.isDarwin
                       then [ "-Dx11=ON"
                              "-DCMAKE_LIBC_DIR=${stdenv.cc.libc}"
