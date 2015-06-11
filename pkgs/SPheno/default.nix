@@ -4,10 +4,10 @@ with pkgs;
 
 stdenv.mkDerivation rec {
   name = "SPheno-${version}";
-  version = "3.3.6";
+  version = "3.3.7";
   src = fetchurl {
-    url = "http://www.hepforge.org/archive/spheno/SPheno-3.3.6.tar.gz";
-    sha256 = "17vs51h0ndzlr2j8kksaali5ggslq9n5bp61bwa5sd4mrssn3vj7";
+    url = "http://www.hepforge.org/archive/spheno/SPheno-3.3.7.tar.gz";
+    sha256 = "0s7rrr09spvfcs6j6mfvivgf9in50v8pj1ydbfvs8j257an8zpiv";
   };
   patches = [ ];
   buildInputs = [ gfortran ];
