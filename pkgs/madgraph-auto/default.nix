@@ -1,8 +1,7 @@
-{ cabal, stdenv, fetchgit, haskellPackages, LHE-sanitizer, webdav-manager, devadmin }:
+{ mkDerivation, stdenv, fetchgit, haskellPackages, LHE-sanitizer, webdav-manager, devadmin 
+, filepath, mtl, aeson, text, unordered-containers, transformers, HStringTemplate, hslogger, hashable }:
 
-with { hs = haskellPackages; };
-
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "madgraph-auto";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/madgraph-auto.git"; 
@@ -14,22 +13,17 @@ cabal.mkDerivation (self: {
   buildDepends = [ LHE-sanitizer
                    webdav-manager
                    devadmin
-                   hs.filepath
-                   hs.mtl
-                   hs.aeson
-                   hs.text
-                   hs.unorderedContainers
-                   hs.transformers
-                   hs.HStringTemplate
-                   hs.hslogger
-                   hs.hashable 
+                   filepath
+                   mtl
+                   aeson
+                   text
+                   unordered-containers
+                   transformers
+                   HStringTemplate
+                   hslogger
+                   hashable 
                  ];
   doCheck = false;
   jailbreak = true; 
-  meta = {
-    homepage = "http://github.com/hep-platform";
-    description = "automated program library for madgraph run";
-    license = self.stdenv.lib.licenses.gpl3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.gpl3;
+}

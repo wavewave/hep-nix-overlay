@@ -1,8 +1,6 @@
-{ cabal, fetchgit, haskellPackages }:
+{ mkDerivation, stdenv, fetchgit, mtl, filepath, attoparsec }:
 
-with { hs = haskellPackages; };
-
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "webdav-manager";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/webdav-manager.git"; 
@@ -11,15 +9,7 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ hs.mtl
-                   hs.filepath
-                   hs.attoparsec
-                 ];
+  buildDepends = [ mtl filepath attoparsec ];
   doCheck = false;
-  meta = {
-    homepage = "http://github.com/hep-platform";
-    description = "webdav-manager: common routine for webdav server";
-    license = self.stdenv.lib.licenses.bsd3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.bsd3;
+}

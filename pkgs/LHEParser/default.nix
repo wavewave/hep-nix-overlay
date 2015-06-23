@@ -1,8 +1,7 @@
-{ cabal, fetchgit, haskellPackages, gfortran, HEPUtil, conduit-util, }:
+{ mkDerivation, stdenv, fetchgit, gfortran, HEPUtil, conduit-util
+, mtl, attoparsec, bytestring-lexing, text, xml-types, conduit, xml-conduit, transformers }:
 
-with { hs = haskellPackages; };
-
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "LHEParser";
   version = "0.999.0";
   src = fetchgit { url = "https://github.com/wavewave/LHEParser.git"; 
@@ -16,20 +15,15 @@ cabal.mkDerivation (self: {
   buildDepends = [ HEPUtil
                    conduit-util
                    gfortran
-                   hs.mtl
-                   hs.attoparsec
-                   hs.bytestringLexing
-                   hs.text
-                   hs.xmlTypes
-                   hs.conduit
-                   hs.xmlConduit
-                   hs.transformers
+                   mtl
+                   attoparsec
+                   bytestring-lexing
+                   text
+                   xml-types
+                   conduit
+                   xml-conduit
+                   transformers
                  ];
   doCheck = false;
-  meta = {
-    homepage = "http://github.com/hep-platform";
-    description = "Les Houches Event file format parser";
-    license = self.stdenv.lib.licenses.bsd3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.bsd3;
+}

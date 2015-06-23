@@ -1,8 +1,8 @@
-{ cabal, fetchgit, haskellPackages }:
+{ mkDerivation, stdenv, fetchgit, mtl, filepath, fgl, time, filemanip, safe, MissingH
+, HStringTemplate, parsec, configurator
+, cmdargs, split, strict, text }:
 
-with { hs = haskellPackages; };
-
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "devadmin";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/devadmin.git"; 
@@ -11,27 +11,22 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ hs.mtl
-                   hs.filepath
-                   hs.fgl
-                   hs.time
-                   hs.filemanip
-                   hs.safe
-                   hs.MissingH
-                   hs.HStringTemplate
-                   hs.parsec
-                   hs.configurator
-                   hs.cmdargs
-                   hs.split
-                   hs.strict
-                   hs.text
+  buildDepends = [ mtl
+                   filepath
+                   fgl
+                   time
+                   filemanip
+                   safe
+                   MissingH
+                   HStringTemplate
+                   parsec
+                   configurator
+                   cmdargs
+                   split
+                   strict
+                   text
                  ];
   doCheck = false;
   jailbreak = true;
-  meta = {
-    homepage = "";
-    description = "Full Orchestration of development environment";
-    license = self.stdenv.lib.licenses.bsd3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.bsd3;
+}

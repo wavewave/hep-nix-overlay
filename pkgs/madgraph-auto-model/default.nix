@@ -1,8 +1,7 @@
-{ cabal, stdenv, fetchgit, haskellPackages, madgraph-auto, HEPUtil, devadmin }:
+{ mkDerivation, stdenv, fetchgit, madgraph-auto, HEPUtil, devadmin 
+, mtl, HStringTemplate, pureMD5, parsec }:
 
-with { hs = haskellPackages; };
-
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "madgraph-auto-model";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/madgraph-auto-model.git"; 
@@ -14,16 +13,11 @@ cabal.mkDerivation (self: {
   buildDepends = [ madgraph-auto
                    HEPUtil
                    devadmin
-                   hs.mtl
-                   hs.HStringTemplate
-                   hs.pureMD5
-                   hs.parsec
+                   mtl
+                   HStringTemplate
+                   pureMD5
+                   parsec
                  ];
   doCheck = false;
-  meta = {
-    homepage = "http://github.com/hep-platform";
-    description = "automated program library for madgraph run";
-    license = self.stdenv.lib.licenses.bsd3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.bsd3;
+}

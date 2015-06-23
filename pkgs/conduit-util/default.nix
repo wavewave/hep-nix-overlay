@@ -1,8 +1,6 @@
-{ cabal, fetchgit, haskellPackages, HEPUtil }:
+{ mkDerivation, stdenv, fetchgit, conduit, mtl, MaybeT, xml-conduit, xml-types, transformers, void, HEPUtil }:
 
-with { hs = haskellPackages; };
-
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "conduit-util";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/conduit-util.git"; 
@@ -11,20 +9,7 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ HEPUtil
-                   hs.conduit
-                   hs.mtl
-                   hs.MaybeT
-                   hs.xmlConduit
-                   hs.xmlTypes
-                   hs.transformers
-                   hs.void
-                 ];
+  buildDepends = [ HEPUtil conduit mtl MaybeT xml-conduit xml-types transformers void ];
   doCheck = false;
-  meta = {
-    homepage = "";
-    description = "utility functions for conduit and related packages";
-    license = self.stdenv.lib.licenses.bsd3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.bsd3;
+}

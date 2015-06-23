@@ -1,6 +1,6 @@
-{ cabal, fetchgit }:
+{ mkDerivation, stdenv, fetchgit }:
 
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "fficxx-runtime";
   version = "0.1.999";
   src = fetchgit { url = "https://github.com/wavewave/fficxx-runtime.git"; 
@@ -9,14 +9,7 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ 
-                
-                 ];
+  buildDepends = [ ];
   doCheck = false;
-  meta = {
-    homepage = "http://ianwookim.org/fficxx";
-    description = "Runtime for fficxx-generated library";
-    license = self.stdenv.lib.licenses.bsd3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.bsd3;
+}

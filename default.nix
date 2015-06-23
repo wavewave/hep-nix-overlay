@@ -203,11 +203,7 @@ rec {
                 #         in if stdenv.isDarwin then clang33Stdenv else stdenv;
                } ;
 
-      root5min = callPackage ./pkgs/root5/minimal.nix {
-  #                 stdenv = clangStdenv;
- #                   stdenv = let clang33Stdenv = overrideGCC stdenv clang_33;
- #                            in if stdenv.isDarwin then clang33Stdenv else stdenv;
-                 };
+      root5min = callPackage ./pkgs/root5/minimal.nix { };
 
       rootEnv = callPackage ./pkgs/root5/rootEnv.nix {
                   inherit root5;
@@ -221,120 +217,77 @@ rec {
 
       # haskell packages
 
-      HEPUtil = callPackage ./pkgs/HEPUtil {
-                     cabal = haskellPackages.cabal;
-                     inherit haskellPackages;
+      HEPUtil = haskellngPackages.callPackage ./pkgs/HEPUtil {
                      inherit LHCOAnalysis-type;
                    } ;
 
-      HROOT    = callPackage ./pkgs/HROOT {
-                     cabal = haskellPackages.cabal;
+      HROOT   = haskellngPackages.callPackage ./pkgs/HROOT {
                      inherit fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist HROOT-graf HROOT-math HROOT-io HROOT-tree;
                      ROOT=ROOT6;
                    } ;
 
 
-      HROOT-core = callPackage ./pkgs/HROOT-core {
-                     cabal = haskellPackages.cabal;
+      HROOT-core = haskellngPackages.callPackage ./pkgs/HROOT-core {
                      inherit fficxx-runtime HROOT-src-tree;
                      ROOT=ROOT6;
                    } ;
 
-      HROOT-generate = callPackage ./pkgs/HROOT-generate {
-                         cabal = haskellPackages.cabal;
-                         HStringTemplate = haskellPackages.HStringTemplate;
-                         configurator = haskellPackages.configurator;
-                         cmdargs = haskellPackages.cmdargs;
+      HROOT-generate = haskellngPackages.callPackage ./pkgs/HROOT-generate {
                          inherit fficxx;
                        } ;
 
-      HROOT-hist = callPackage ./pkgs/HROOT-hist {
-                     cabal = haskellPackages.cabal;
+      HROOT-hist = haskellngPackages.callPackage ./pkgs/HROOT-hist {
                      inherit fficxx-runtime HROOT-src-tree HROOT-core;
                      ROOT=ROOT6;
                    };
-      HROOT-graf = callPackage ./pkgs/HROOT-graf {
-                     cabal = haskellPackages.cabal;
+      HROOT-graf = haskellngPackages.callPackage ./pkgs/HROOT-graf {
                      inherit fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist;
                      ROOT=ROOT6;
                    } ;
 
-      HROOT-io   = callPackage ./pkgs/HROOT-io   {
-                     cabal = haskellPackages.cabal;
+      HROOT-io   = haskellngPackages.callPackage ./pkgs/HROOT-io   {
                      inherit fficxx-runtime HROOT-src-tree HROOT-core;
                      ROOT=ROOT6;
                    } ;
 
-      HROOT-math = callPackage ./pkgs/HROOT-math {
-                     cabal = haskellPackages.cabal;
+      HROOT-math = haskellngPackages.callPackage ./pkgs/HROOT-math {
                      inherit fficxx-runtime HROOT-src-tree HROOT-core;
                      ROOT=ROOT6;
                    } ;
 
-      HROOT-tree = callPackage ./pkgs/HROOT-tree {
-                     cabal = haskellPackages.cabal;
+      HROOT-tree = haskellngPackages.callPackage ./pkgs/HROOT-tree {
                      inherit fficxx-runtime HROOT-src-tree HROOT-core;
                      ROOT=ROOT6;
                    } ;
-
 
       HROOT-src-tree = callPackage ./pkgs/HROOT-src-tree {
                          inherit HROOT-generate;
                        } ;
 
-      LHCOAnalysis = callPackage ./pkgs/LHCOAnalysis {
-                     cabal = haskellPackages.cabal;
-                     inherit haskellPackages;
-                     inherit LHCOAnalysis-type;
-                   } ;
+      LHCOAnalysis = haskellngPackages.callPackage ./pkgs/LHCOAnalysis {
+                       inherit LHCOAnalysis-type;
+                     } ;
 
 
-      LHCOAnalysis-type = callPackage ./pkgs/LHCOAnalysis-type {
-                     cabal = haskellPackages.cabal;
-                     inherit haskellPackages;
-                   } ;
+      LHCOAnalysis-type = haskellngPackages.callPackage ./pkgs/LHCOAnalysis-type { } ;
 
-      LHE-sanitizer = callPackage ./pkgs/LHE-sanitizer {
-                       cabal = haskellPackages.cabal;
-                       inherit haskellPackages;
+      LHE-sanitizer = haskellngPackages.callPackage ./pkgs/LHE-sanitizer {
                        inherit HEPUtil conduit-util LHEParser;
                      } ;
 
-      LHEParser = callPackage ./pkgs/LHEParser {
-                       cabal = haskellPackages.cabal;
-                       inherit haskellPackages;
-                       inherit HEPUtil conduit-util;
-                     } ;
+      LHEParser = haskellngPackages.callPackage ./pkgs/LHEParser {
+                    inherit HEPUtil conduit-util;
+                  } ;
 
-      conduit-util = callPackage ./pkgs/conduit-util {
-                       cabal = haskellPackages.cabal;
-                       inherit haskellPackages;
-                       inherit HEPUtil;
-                     } ;
+      conduit-util = haskellngPackages.callPackage ./pkgs/conduit-util { inherit HEPUtil; } ;
 
-      fficxx = callPackage ./pkgs/fficxx {
-                 cabal = haskellPackages.cabal;
-                 HStringTemplate = haskellPackages.HStringTemplate;
-                 either = haskellPackages.either;
-                 errors = haskellPackages.errors;
-                 lens = haskellPackages.lens;
-                 pureMD5 = haskellPackages.pureMD5;
-                 split = haskellPackages.split;
-                 dataDefault = haskellPackages.dataDefault;
-               } ;
+      fficxx = haskellngPackages.callPackage ./pkgs/fficxx { } ;
 
-      fficxx-runtime = callPackage ./pkgs/fficxx-runtime {
-                         cabal = haskellPackages.cabal;
-                       } ;
+      fficxx-runtime = haskellngPackages.callPackage ./pkgs/fficxx-runtime { } ;
 
-      devadmin = callPackage ./pkgs/devadmin {
-                       cabal = haskellPackages.cabal;
-                       inherit haskellPackages;
-                     } ;
+      devadmin = haskellngPackages.callPackage ./pkgs/devadmin { } ;
 
-      evchain = callPackage ./pkgs/evchain {
-                              cabal = haskellPackages.cabal;
-                              inherit haskellPackages;
+      evchain = haskellngPackages.callPackage ./pkgs/evchain {
                               inherit webdav-manager HEPUtil LHEParser;
                               inherit LHE-sanitizer conduit-util;
                               inherit madgraph-auto pipeline-eventgen;
@@ -373,21 +326,15 @@ rec {
       jobqueue-server-src = callPackage ./pkgs/jobqueue-server/src.nix { };
 
 
-      madgraph-auto = callPackage ./pkgs/madgraph-auto {
-                        cabal = haskellPackages.cabal;
-                        inherit haskellPackages;
+      madgraph-auto = haskellngPackages.callPackage ./pkgs/madgraph-auto {
                         inherit LHE-sanitizer webdav-manager devadmin;
                       } ;
 
-      madgraph-auto-model = callPackage ./pkgs/madgraph-auto-model {
-                              cabal = haskellPackages.cabal;
-                              inherit haskellPackages;
+      madgraph-auto-model = haskellngPackages.callPackage ./pkgs/madgraph-auto-model {
                               inherit madgraph-auto HEPUtil devadmin;
                             } ;
 
-      pipeline-eventgen = callPackage ./pkgs/pipeline-eventgen {
-                             cabal = haskellPackages.cabal;
-                             inherit haskellPackages;
+      pipeline-eventgen = haskellngPackages.callPackage ./pkgs/pipeline-eventgen {
                              inherit webdav-manager HEPUtil LHEParser;
                              inherit madgraph-auto madgraph-auto-model;
                           } ;
@@ -396,10 +343,7 @@ rec {
                                inherit pipeline-eventgen;
                              } ;
 
-      webdav-manager = callPackage ./pkgs/webdav-manager {
-                       cabal = haskellPackages.cabal;
-                       inherit haskellPackages;
-                     } ;
+      webdav-manager = haskellngPackages.callPackage ./pkgs/webdav-manager { } ;
 
       #tools
       hep-nix-overlay-tools = callPackage ./pkgs/tools/hep-nix-overlay-tools {

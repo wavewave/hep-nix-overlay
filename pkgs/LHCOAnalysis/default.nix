@@ -1,8 +1,7 @@
-{ cabal, fetchgit, haskellPackages, LHCOAnalysis-type }:
+{ mkDerivation, stdenv, fetchgit, LHCOAnalysis-type 
+, mtl, bytestring-lexing, split, text, attoparsec }:
 
-with haskellPackages;  
-
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "LHCOAnalysis";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/LHCOAnalysis.git"; 
@@ -11,14 +10,9 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ mtl bytestringLexing split 
+  buildDepends = [ mtl bytestring-lexing split 
                    LHCOAnalysis-type text attoparsec
                  ];
   doCheck = false;
-  meta = {
-    homepage = "";
-    description = "LHCOAnalysis: LHC Olympics File parser and utilities";
-    license = self.stdenv.lib.licenses.bsd3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.bsd3;
+}

@@ -1,10 +1,9 @@
-{ cabal, ROOT, fficxx-runtime, HROOT-src-tree, HROOT-core }:
+{ mkDerivation, stdenv,  ROOT, fficxx-runtime, HROOT-src-tree, HROOT-core }:
 
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "HROOT-hist";
-  version = "0.8";
-  src = HROOT-src-tree;
-  sourceRoot = "HROOT/HROOT-hist";
+  version = HROOT-src-tree.version;
+  src = HROOT-src-tree + "/HROOT/HROOT-hist";
   isLibrary = true;
   isExecutable = false;
   buildDepends = [ ROOT  
@@ -12,10 +11,5 @@ cabal.mkDerivation (self: {
                    HROOT-core
                  ];
   doCheck = false;
-  meta = {
-    homepage = "http://ianwookim.org/HROOT";
-    description = "automatic HROOT binding generation";
-    license = self.stdenv.lib.licenses.gpl3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.gpl3;
+}

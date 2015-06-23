@@ -1,8 +1,8 @@
-{ cabal, lib, gfortran, fetchgit, haskellPackages, webdav-manager, HEPUtil, LHEParser, madgraph-auto, madgraph-auto-model }:
+{ mkDerivation, stdenv, gfortran, fetchgit, haskellPackages, webdav-manager, HEPUtil, LHEParser, madgraph-auto, madgraph-auto-model 
+, cmdargs, mtl, filepath, aeson, unordered-containers, text, vector, attoparsec
+, configurator, hslogger, random, aeson-pretty, base64-bytestring, RSA, crypto-api }:
 
-with { hs = haskellPackages; };
-
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "pipeline-eventgen";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/pipeline-eventgen.git"; 
@@ -17,32 +17,26 @@ cabal.mkDerivation (self: {
                    madgraph-auto
                    madgraph-auto-model
                    gfortran
-                   hs.cmdargs
-                   hs.mtl
-                   hs.filepath
-                   hs.aeson
-                   hs.unorderedContainers
-                   hs.text
-                   hs.vector
-                   hs.attoparsec
-                   hs.configurator
-                   hs.hslogger
-                   hs.random
-                   hs.aesonPretty
-                   hs.base64Bytestring
-                   hs.RSA
-                   hs.cryptoApi
+                   cmdargs
+                   mtl
+                   filepath
+                   aeson
+                   unordered-containers
+                   text
+                   vector
+                   attoparsec
+                   configurator
+                   hslogger
+                   random
+                   aeson-pretty
+                   base64-bytestring
+                   RSA
+                   crypto-api
                  ];
                   
-  #NIX_DEBUG=1;
   preBuild = ''
-    export NIX_LDFLAGS="-L${self.stdenv.cc}/lib -L${self.stdenv.cc}/lib64 $NIX_LDFLAGS";
+    export NIX_LDFLAGS="-L${stdenv.cc}/lib -L${stdenv.cc}/lib64 $NIX_LDFLAGS";
   '';
   doCheck = false;
-  meta = {
-    homepage = "http://github.com/hep-platform";
-    description = "event generation executable in pipeline";
-    license = self.stdenv.lib.licenses.gpl3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.gpl3;
+}

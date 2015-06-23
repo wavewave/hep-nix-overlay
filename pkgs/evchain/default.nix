@@ -1,10 +1,13 @@
-{ cabal, gfortran, fetchgit, haskellPackages
+{ mkDerivation, stdenv, gfortran, fetchgit, haskellPackages
 , webdav-manager, HEPUtil, LHEParser, LHE-sanitizer
-, conduit-util, madgraph-auto, pipeline-eventgen }:
+, conduit-util, madgraph-auto, pipeline-eventgen 
+, mtl, filepath, transformers, cmdargs, xml-types
+, conduit, vector, hmatrix, random, unordered-containers
+, hashable, pureMD5, zlib, zlib-conduit
+}:
 
-with { hs = haskellPackages; };
 
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "evchain";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/evchain.git"; 
@@ -20,31 +23,22 @@ cabal.mkDerivation (self: {
                    conduit-util
                    madgraph-auto
                    pipeline-eventgen
-                   hs.mtl
-                   hs.filepath
-                   hs.transformers
-                   hs.cmdargs
-                   hs.xmlTypes
-                   hs.conduit
-                   hs.vector
-                   hs.hmatrix
-                   hs.random
-                   hs.unorderedContainers
-                   hs.hashable
-                   hs.pureMD5
-                   hs.zlib
-                   hs.zlibConduit
+                   mtl
+                   filepath
+                   transformers
+                   cmdargs
+                   xml-types
+                   conduit
+                   vector
+                   hmatrix
+                   random
+                   unordered-containers
+                   hashable
+                   pureMD5
+                   zlib
+                   zlib-conduit
                  ];
                   
-  #NIX_DEBUG=1;
- #  preBuild = ''
- #   export NIX_LDFLAGS="-L${gfortran.gcc}/lib -L${gfortran.gcc}/lib64 $NIX_LDFLAGS";
- # '';
   doCheck = false;
-  meta = {
-    homepage = "http://github.com/hep-platform";
-    description = "event chaining utility";
-    license = self.stdenv.lib.licenses.gpl3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.gpl3;
+}

@@ -1,8 +1,7 @@
-{ cabal, fetchgit, haskellPackages, LHCOAnalysis-type }:
+{ mkDerivation, stdenv, fetchgit, LHCOAnalysis-type 
+, mtl, filepath, split, parsec, either, transformers, hmatrix, ghc-paths }:
 
-with { hs = haskellPackages; };
-
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "HEPUtil";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/HEPUtil.git"; 
@@ -12,21 +11,16 @@ cabal.mkDerivation (self: {
   isLibrary = true;
   isExecutable = false;
   buildDepends = [ LHCOAnalysis-type
-                   hs.mtl
-                   hs.filepath
-                   hs.split
-                   hs.parsec
-                   hs.either
-                   hs.transformers
-                   hs.hmatrix 
-                   hs.ghcPaths
+                   mtl
+                   filepath
+                   split
+                   parsec
+                   either
+                   transformers
+                   hmatrix 
+                   ghc-paths
                  ];
   doCheck = false;
   jailbreak = true;
-  meta = {
-    homepage = "";
-    description = "Collection of useful functions for High Energy Physics project";
-    license = self.stdenv.lib.licenses.bsd3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.bsd3;
+}

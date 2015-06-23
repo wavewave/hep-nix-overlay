@@ -1,6 +1,6 @@
-{ cabal, fetchgit, HStringTemplate, fficxx, configurator, cmdargs }:
+{ mkDerivation, stdenv, fetchgit, HStringTemplate, fficxx, configurator, cmdargs }:
 
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "HROOT-generate";
   version = "0.8.1";
   src = fetchgit { url = "https://github.com/wavewave/HROOT-generate.git"; 
@@ -15,10 +15,6 @@ cabal.mkDerivation (self: {
                    cmdargs
                  ];
   doCheck = false;
-  meta = {
-    homepage = "http://ianwookim.org/HROOT";
-    description = "automatic HROOT binding generation";
-    license = self.stdenv.lib.licenses.gpl3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.gpl3;
+
+}

@@ -1,8 +1,6 @@
-{ cabal, fetchgit, haskellPackages }:
+{ mkDerivation, stdenv, fetchgit, binary }:
 
-with { hs = haskellPackages; }; 
-
-cabal.mkDerivation (self: {
+mkDerivation {
   pname = "LHCOAnalysis-type";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/LHCOAnalysis-type.git"; 
@@ -11,12 +9,7 @@ cabal.mkDerivation (self: {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ hs.binary ];
+  buildDepends = [ binary ];
   doCheck = false;
-  meta = {
-    homepage = "";
-    description = "LHCOAnalysis-type: LHC Olympics Type";
-    license = self.stdenv.lib.licenses.bsd3;
-    platforms = self.ghc.meta.platforms;
-  };
-})
+  license = stdenv.lib.licenses.bsd3;
+}
