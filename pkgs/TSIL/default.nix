@@ -1,13 +1,13 @@
-{ pkgs, fetchurl }:
+{ pkgs }:
 
 with pkgs;
 
 stdenv.mkDerivation rec {
   name = "TSIL-${version}";
-  version = "1.21";
+  version = "1.3";
   src = fetchurl {
-    url = "http://www.niu.edu/spmartin/TSIL/tsil-1.21.tar.gz";
-    sha256 = "0pr6gvfs3wv53h682wzjs1zl8h5gmydqa5v7h7ii79byas43lfyj";
+    url = "http://www.niu.edu/spmartin/TSIL/tsil-1.3.tar.gz";
+    sha256 = "11202f8f7cabg3p6pb3ws0iai222l73w5wgbswk99f08md6fzwb8";
   };
   buildInputs = [ ];
   patches = [ ./compiler.patch ];

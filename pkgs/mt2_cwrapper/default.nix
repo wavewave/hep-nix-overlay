@@ -6,10 +6,11 @@ with pkgs;
 
 stdenv.mkDerivation rec {
   name = "mt2_cwrapper-${version}";
-  version = "0.1.0.0";
-  src = fetchurl {
-    url = "https://github.com/cbpark/mt2_cwrapper/archive/v0.1.0.0.tar.gz";
-    sha256 = "0fy2qmp2ydva5hjzj67z5j7i58aaqja7ci9brwszsipcfb9m6fw2";
+  version = "0.2.0.0";
+  src = fetchgit {
+    url = "https://github.com/cbpark/mt2_cwrapper.git";
+    rev = "e437098835640724e3bbf08e4b31f1ec7abad455";
+    sha256 = "1k4c1bj1nisas1akb3pwwx5wijhivgl0nbhcnbihgnhh8lc4sx3v";
   };
   buildInputs = [ cmake ROOT ] ++ (if stdenv.isDarwin then [ darwin.sw_vers ] else []);
   patches = [ ];
