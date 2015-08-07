@@ -1,6 +1,7 @@
 { stdenv, fetchurl, cmake, zlib, libX11, libXext, libXpm, libXft
 , libtiff, libjpeg, giflib, libpng, pcre, freetype
 , python, libxml2, gsl, openssl, pkgconfig, fftw, sqlite, cfitsio
+, bash
 , darwin ? null
 }:
 
@@ -15,12 +16,15 @@ stdenv.mkDerivation rec {
   buildInputs = [ cmake zlib libX11 libXext libXpm libXft pcre freetype
                   giflib libtiff libjpeg libpng
                   python gsl libxml2 openssl
-                  pkgconfig fftw sqlite cfitsio
-                ] ++ (if stdenv.isDarwin then [ darwin.sw_vers ] else []);
-  patches = if stdenv.isDarwin then [./force_darwin_64.patch] else [];
+                  pkgconfig fftw sqlite cfitsio ];
+  patches = if stdenv.isDarwin
+            then [ ./force_darwin_64.patch
+                   ./not_use_sw_vers.patch ]
+            else [];
 
   preConfigure = ''
       substituteInPlace cmake/modules/FindGSL.cmake --replace "/usr/bin/" "" --replace "/usr/bin" "" --replace "/usr/local/bin" ""
+      substituteInPlace build/unix/compiledata.sh --replace "/usr/bin/env bash" "${bash}/bin/bash"
   '';
 
   cmakeFlags = [ "-Dcastor=OFF -Dcocoa=OFF -Dfortran=OFF -Dgviz=OFF -Dkrb5=OFF -Dldap=OFF -Dminuit2=ON -Dmysql=OFF -Dodbc=OFF -Dopengl=OFF -Doracle=OFF -Dpgsql=OFF -Dpythia6=OFF -Dpythia8=OFF -Dpython=ON -Droofit=ON"
