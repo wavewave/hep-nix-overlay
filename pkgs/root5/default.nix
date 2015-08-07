@@ -27,9 +27,9 @@ stdenv.mkDerivation rec {
       substituteInPlace build/unix/compiledata.sh --replace "/usr/bin/env bash" "${bash}/bin/bash"
   '';
 
-  cmakeFlags = [ "-Dcastor=OFF -Dcocoa=OFF -Dfortran=OFF -Dgviz=OFF -Dkrb5=OFF -Dldap=OFF -Dminuit2=ON -Dmysql=OFF -Dodbc=OFF -Dopengl=OFF -Doracle=OFF -Dpgsql=OFF -Dpythia6=OFF -Dpythia8=OFF -Dpython=ON -Droofit=ON"
+  cmakeFlags = [ "-Dalien=OFF -Dcastor=OFF -Dchirp=OFF -Dclarens=OFF -Dcocoa=OFF -Ddcache=OFF -Dfortran=OFF -Dgfal=OFF -Dglite=OFF -Dgviz=OFF -Dhdfs=OFF -Dkrb5=OFF -Dldap=OFF -Dminuit2=ON -Dmonalisa=OFF -Dmysql=OFF -Dodbc=OFF -Dopengl=OFF -Doracle=OFF -Dpch=OFF -Dpeac=OFF -Dpgsql=OFF -Dpythia6=OFF -Dpythia8=OFF -Dpython=ON -Droofit=ON -Dsapdb=OFF -Dsrp=OFF -Dxrootd=OFF"
                  "-Dcxx11=OFF -Dlibcxx=OFF"
-                 "-Drpath=OFF"
+                 "-Drpath=ON"
                ] ++ (if stdenv.isDarwin
                      then [ "-DCMAKE_OSX_DEPLOYMENT_TARGET="
                             "-DPYTHON_INCLUDE_DIR=${python}/include/python2.7"
