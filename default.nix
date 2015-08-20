@@ -2,39 +2,48 @@
 
 with pkgs;
 rec {
-      Atom          = callPackage ./pkgs/Atom {
-                        #root5=ROOT6;
-                        ROOT=ROOT6;
-                        inherit HepMC FastJet cython0192;
-                        inherit (pkgs) gsl pkgconfig;
-                        inherit libyamlcppPIC;
-                        inherit YODA;
-                      };
+      Atom              = callPackage ./pkgs/Atom {
+                            #root5=ROOT6;
+                            ROOT=ROOT6;
+                            inherit HepMC FastJet cython0192;
+                            inherit (pkgs) gsl pkgconfig;
+                            inherit libyamlcppPIC;
+                            inherit YODA;
+                          };
 
-      AtomEnv       = callPackage ./pkgs/Atom/env.nix {
-                        inherit pkgs;
-                        inherit Atom;
-                        ROOT=ROOT6;
-                        inherit HepMC YODA FastJet;
-                      };
+      AtomEnv           = callPackage ./pkgs/Atom/env.nix {
+                            inherit pkgs;
+                            inherit Atom;
+                            ROOT=ROOT6;
+                            inherit HepMC YODA FastJet;
+                          };
 
-      CalcHEP       = callPackage ./pkgs/CalcHEP { };
+      CalcHEP           = callPackage ./pkgs/CalcHEP { };
 
-      CHAPLIN       = callPackage ./pkgs/CHAPLIN { };
+      CHAPLIN           = callPackage ./pkgs/CHAPLIN { };
 
-      CheckMATE     = callPackage ./pkgs/CheckMATE {
-                        inherit root5;
-                      };
+      CheckMATE         = callPackage ./pkgs/CheckMATE {
+                            inherit root5;
+                          };
 
-      CheckMATEEnv  = callPackage ./pkgs/CheckMATE/env.nix {
-                        inherit CheckMATE;
-                      };
+      CheckMATEEnv      = callPackage ./pkgs/CheckMATE/env.nix {
+                            inherit CheckMATE;
+                          };
 
-      ColorFull     = callPackage ./pkgs/ColorFull { };
+      ColorFull         = callPackage ./pkgs/ColorFull { };
 
-      Delphes       = callPackage ./pkgs/Delphes {
-                        inherit root5;
-                      };
+      Delphes           = callPackage ./pkgs/Delphes {
+                            inherit root5;
+                          };
+
+      ExRootAnalysis    = callPackage ./pkgs/ExRootAnalysis {
+                            inherit root5;
+                          };
+
+      ExRootAnalysisEnv = callPackage ./pkgs/ExRootAnalysis/env.nix {
+                            inherit root5;
+                            inherit ExRootAnalysis;
+                          };
 
       FastJet       = callPackage ./pkgs/FastJet { };
 
