@@ -11,10 +11,10 @@ assert stdenv.isDarwin -> darwin != null;
 
 stdenv.mkDerivation rec {
   name = "ROOT6-${version}";
-  version = "04.00";
+  version = "04.02";
   src = fetchurl {
-    url = "http://root.cern.ch/download/root_v6.04.00.source.tar.gz";
-    sha256 = "1smyxslnh5lic8bw8f9xzwx59zpwkknjd2f76khz9xgj0rbixyn5";
+    url = "http://root.cern.ch/download/root_v6.04.02.source.tar.gz";
+    sha256 = "16irxlpl5xirz4v5mnnfs672j6v1j21lmf4xjrjzabjrllvmwhc1";
   };
   enableParallelBuilding = true;
   buildInputs = [ cmake zlib libX11 libXext libXpm libXft pcre freetype

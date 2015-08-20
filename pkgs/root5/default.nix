@@ -7,10 +7,10 @@
 
 stdenv.mkDerivation rec {
   name = "root5-${version}";
-  version = "34.30";
+  version = "34.32";
   src = fetchurl {
-    url = "http://root.cern.ch/download/root_v5.34.30.source.tar.gz";
-    sha256 = "1iahmri0vi1a44qkp2p0myrjb6izal97kf27ljfvpq0vb6c6vhw4";
+    url = "http://root.cern.ch/download/root_v5.34.32.source.tar.gz";
+    sha256 = "0pzwh22a1al6yhh6nvdg5glm5gwr2vjvdvwkqp5vcm1ah297b74k";
   };
   enableParallelBuilding = true;
   buildInputs = [ cmake zlib libX11 libXext libXpm libXft pcre freetype
