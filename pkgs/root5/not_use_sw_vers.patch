@@ -1,6 +1,6 @@
 diff -rupN a/build/unix/compiledata.sh b/build/unix/compiledata.sh
---- a/build/unix/compiledata.sh	2015-04-24 01:30:25.000000000 +0900
-+++ b/build/unix/compiledata.sh	2015-08-07 19:29:30.000000000 +0900
+--- a/build/unix/compiledata.sh	2015-06-24 00:56:20.000000000 +0900
++++ b/build/unix/compiledata.sh	2015-08-31 17:37:29.000000000 +0900
 @@ -49,7 +49,7 @@ fi
  
  if [ "$ARCH" = "macosx" ] || [ "$ARCH" = "macosx64" ] || \
@@ -11,27 +11,51 @@ diff -rupN a/build/unix/compiledata.sh b/build/unix/compiledata.sh
     if [ $macosx_minor -ge 5 ]; then
        if [ "x`echo $SOFLAGS | grep -- '-install_name'`" != "x" ]; then
 diff -rupN a/cmake/modules/SetUpMacOS.cmake b/cmake/modules/SetUpMacOS.cmake
---- a/cmake/modules/SetUpMacOS.cmake	2015-04-24 01:30:25.000000000 +0900
-+++ b/cmake/modules/SetUpMacOS.cmake	2015-08-07 19:21:47.000000000 +0900
-@@ -12,13 +12,15 @@ set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PAT
+--- a/cmake/modules/SetUpMacOS.cmake	2015-06-24 00:56:20.000000000 +0900
++++ b/cmake/modules/SetUpMacOS.cmake	2015-08-31 17:38:21.000000000 +0900
+@@ -12,13 +12,9 @@ set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PAT
  #---------------------------------------------------------------------------------------------------------
  
  if (CMAKE_SYSTEM_NAME MATCHES Darwin)
 -  EXECUTE_PROCESS(COMMAND sw_vers "-productVersion"
 -                  COMMAND cut -d . -f 1-2
 -                  OUTPUT_VARIABLE MACOSX_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
-+  # EXECUTE_PROCESS(COMMAND sw_vers "-productVersion"
-+  #                 COMMAND cut -d . -f 1-2
-+  #                 OUTPUT_VARIABLE MACOSX_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
 +  SET(MACOSX_VERSION 10.7)
    MESSAGE(STATUS "Found a Mac OS X System ${MACOSX_VERSION}")
 -  EXECUTE_PROCESS(COMMAND sw_vers "-productVersion"
 -                  COMMAND cut -d . -f 2
 -                  OUTPUT_VARIABLE MACOSX_MINOR OUTPUT_STRIP_TRAILING_WHITESPACE)
-+  # EXECUTE_PROCESS(COMMAND sw_vers "-productVersion"
-+  #                 COMMAND cut -d . -f 2
-+  #                 OUTPUT_VARIABLE MACOSX_MINOR OUTPUT_STRIP_TRAILING_WHITESPACE)
 +  SET(MACOSX_MINOR 7)
  
    if(MACOSX_VERSION VERSION_GREATER 10.7 AND ${CMAKE_CXX_COMPILER_ID} STREQUAL Clang)
      set(libcxx ON CACHE BOOL "Build using libc++" FORCE)
+diff -rupN a/config/root-config.in b/config/root-config.in
+--- a/config/root-config.in	2015-06-24 00:56:20.000000000 +0900
++++ b/config/root-config.in	2015-08-31 17:38:51.000000000 +0900
+@@ -360,7 +360,7 @@ openbsd)
+    ;;
+ macosx)
+    # MacOS X with gcc (GNU cc v3.1) and possible fink (fink.sf.net)
+-   macosx_minor=`sw_vers | sed -n 's/ProductVersion://p' | cut -d . -f 2`
++   macosx_minor=7
+    # cannot find the one linked to libGraf if relocated after built
+    if [ $macosx_minor -le 4 ]; then
+       rootlibs="$rootlibs -lfreetype"
+@@ -381,7 +381,7 @@ macosx)
+    ;;
+ macosxicc)
+    # MacOS X with Intel icc compiler
+-   macosx_minor=`sw_vers | sed -n 's/ProductVersion://p' | cut -d . -f 2`
++   macosx_minor=7
+    # cannot find the one linked to libGraf if relocated after built
+    if [ $macosx_minor -le 4 ]; then
+       rootlibs="$rootlibs -lfreetype"
+@@ -391,7 +391,7 @@ macosxicc)
+    ;;
+ macosx64)
+    # MacOS X with gcc (GNU cc v4.x) in 64 bit mode
+-   macosx_minor=`sw_vers | sed -n 's/ProductVersion://p' | cut -d . -f 2`
++   macosx_minor=7
+    # cannot find the one linked to libGraf if relocated after built
+    if [ $macosx_minor -le 4 ]; then
+       rootlibs="$rootlibs -lfreetype"

@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
     rev = "e437098835640724e3bbf08e4b31f1ec7abad455";
     sha256 = "1k4c1bj1nisas1akb3pwwx5wijhivgl0nbhcnbihgnhh8lc4sx3v";
   };
-  buildInputs = [ cmake ROOT ] ++ (if stdenv.isDarwin then [ darwin.sw_vers ] else []);
+  buildInputs = [ cmake ROOT ];
   patches = [ ];
   enableParallelBuilding = true;
   preConfigure = ''
