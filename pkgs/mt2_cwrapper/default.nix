@@ -9,8 +9,8 @@ stdenv.mkDerivation rec {
   version = "0.2.0.0";
   src = fetchgit {
     url = "https://github.com/cbpark/mt2_cwrapper.git";
-    rev = "e437098835640724e3bbf08e4b31f1ec7abad455";
-    sha256 = "1k4c1bj1nisas1akb3pwwx5wijhivgl0nbhcnbihgnhh8lc4sx3v";
+    rev = "c6600fc12d31287f38cb52c903dc2f1116db0fbe";
+    sha256 = "0mzwqsmh9v408gc12z7xa5qv5lnisgyazivqy8ggrlsw9a3nlwc9";
   };
   buildInputs = [ cmake ROOT ];
   patches = [ ];
