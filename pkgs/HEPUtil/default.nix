@@ -5,8 +5,8 @@ mkDerivation {
   pname = "HEPUtil";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/HEPUtil.git"; 
-                   rev = "bc16e245bf6e7d74ec18d59eff24db1d188234b0";
-                   sha256 = "0a3fe7fcbdfbb789cade4d9ea62828e6ad8883388911a405b7a69e39569abc7b";
+                   rev = "1e1d6d56cfbf7f3ea7db02e3bf220cbf34136087";
+                   sha256 = "f3a82b844fa6295476e58c3e98c89f45f18beb676891a4a45d4ce426501137bc";
                  };  
   isLibrary = true;
   isExecutable = false;
