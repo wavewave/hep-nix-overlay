@@ -1,4 +1,4 @@
-{ mkDerivation, stdenv, fetchgit, conduit, mtl, MaybeT, xml-conduit, xml-types, transformers, void, HEPUtil }:
+{ mkDerivation, stdenv, fetchgit, conduit, mtl, xml-conduit, xml-types, transformers, void, HEPUtil }:
 
 mkDerivation {
   pname = "conduit-util";
@@ -9,7 +9,7 @@ mkDerivation {
                  };  
   isLibrary = true;
   isExecutable = false;
-  buildDepends = [ HEPUtil conduit mtl MaybeT xml-conduit xml-types transformers void ];
+  buildDepends = [ HEPUtil conduit mtl xml-conduit xml-types transformers void ];
   doCheck = false;
   license = stdenv.lib.licenses.bsd3;
 }

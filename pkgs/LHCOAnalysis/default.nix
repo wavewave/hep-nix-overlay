@@ -5,8 +5,8 @@ mkDerivation {
   pname = "LHCOAnalysis";
   version = "0.999";
   src = fetchgit { url = "https://github.com/wavewave/LHCOAnalysis.git"; 
-                   rev = "358935cc82def17ce3769c566fd9207be769bd1e";
-                   sha256 = "f217929f0c9a257741c345fd99aebf2cd8df5e4b126bbbea77da14259d018317";
+                   rev = "4c9eedbe00fa11d63df24ae2b0472416e8e77252";
+                   sha256 = "e1c071f561afc8c8f22ecd46dba92ca02979396184effdf0d9b7dd3460c9db05";
                  };  
   isLibrary = true;
   isExecutable = false;
