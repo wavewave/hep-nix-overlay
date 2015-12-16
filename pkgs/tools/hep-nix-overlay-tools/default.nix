@@ -1,6 +1,6 @@
-{ fetchgit, haskellPackages }:
+{ fetchgit, haskell-ng }:
 
-with { hs = haskellPackages; };
+with { hs = haskell-ng; };
 
 hs.cabal.mkDerivation (self: {
   pname = "hep-nix-overlay-tools";

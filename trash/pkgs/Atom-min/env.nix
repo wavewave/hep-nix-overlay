@@ -1,16 +1,14 @@
 { pkgs, Atom, ROOT, HepMC, YODA, FastJet }:
-
+ 
 pkgs.myEnvFun { 
-  name = "Atom-${Atom.version}-min";
+  name = "Atom-${Atom.version}";
   buildInputs = with pkgs; [
     pythonFull
     Atom
     ROOT
     boost boost.dev boost.lib
-    YODA
     stdenv
-    pythonPackages.numpy
-    pythonPackages.matplotlib
+    pythonPackages.ipython
   ] ++ (if stdenv.isDarwin then [darwin.sw_vers] else []);
   
   extraCmds = with pkgs; if(stdenv.isDarwin) then ''

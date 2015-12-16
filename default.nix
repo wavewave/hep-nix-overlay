@@ -2,21 +2,21 @@
 
 with pkgs;
 rec {
-      Atom              = callPackage ./pkgs/Atom {
-                            #root5=ROOT6;
-                            ROOT=ROOT6;
-                            inherit HepMC FastJet cython0192;
-                            inherit (pkgs) gsl pkgconfig;
-                            inherit libyamlcppPIC;
-                            inherit YODA;
-                          };
+      #Atom              = callPackage ./pkgs/Atom {
+      #                      #root5=ROOT6;
+      #                      ROOT=ROOT6;
+      #                      inherit HepMC FastJet cython0192;
+      #                      inherit (pkgs) gsl pkgconfig;
+      #                      inherit libyamlcppPIC;
+      #                      inherit YODA;
+      #                    };
 
-      AtomEnv           = callPackage ./pkgs/Atom/env.nix {
-                            inherit pkgs;
-                            inherit Atom;
-                            ROOT=ROOT6;
-                            inherit HepMC YODA FastJet;
-                          };
+      #AtomEnv           = callPackage ./pkgs/Atom/env.nix {
+      #                      inherit pkgs;
+      #                      inherit Atom;
+      #                      ROOT=ROOT6;
+      #                      inherit HepMC YODA FastJet;
+      #                    };
 
       CalcHEP           = callPackage ./pkgs/CalcHEP { };
 
@@ -226,137 +226,137 @@ rec {
 
       # haskell packages
 
-      HEPUtil = haskellngPackages.callPackage ./pkgs/HEPUtil {
-                     inherit LHCOAnalysis-type;
-                   } ;
+      #HEPUtil = haskellngPackages.callPackage ./pkgs/HEPUtil {
+      #               inherit LHCOAnalysis-type;
+      #             } ;
 
-      HROOT   = haskellngPackages.callPackage ./pkgs/HROOT {
-                     inherit fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist HROOT-graf HROOT-math HROOT-io HROOT-tree;
-                     ROOT=ROOT6;
-                   } ;
-
-
-      HROOT-core = haskellngPackages.callPackage ./pkgs/HROOT-core {
-                     inherit fficxx-runtime HROOT-src-tree;
-                     ROOT=ROOT6;
-                   } ;
-
-      HROOT-generate = haskellngPackages.callPackage ./pkgs/HROOT-generate {
-                         inherit fficxx;
-                       } ;
-
-      HROOT-hist = haskellngPackages.callPackage ./pkgs/HROOT-hist {
-                     inherit fficxx-runtime HROOT-src-tree HROOT-core;
-                     ROOT=ROOT6;
-                   };
-      HROOT-graf = haskellngPackages.callPackage ./pkgs/HROOT-graf {
-                     inherit fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist;
-                     ROOT=ROOT6;
-                   } ;
-
-      HROOT-io   = haskellngPackages.callPackage ./pkgs/HROOT-io   {
-                     inherit fficxx-runtime HROOT-src-tree HROOT-core;
-                     ROOT=ROOT6;
-                   } ;
-
-      HROOT-math = haskellngPackages.callPackage ./pkgs/HROOT-math {
-                     inherit fficxx-runtime HROOT-src-tree HROOT-core;
-                     ROOT=ROOT6;
-                   } ;
-
-      HROOT-tree = haskellngPackages.callPackage ./pkgs/HROOT-tree {
-                     inherit fficxx-runtime HROOT-src-tree HROOT-core;
-                     ROOT=ROOT6;
-                   } ;
-
-      HROOT-src-tree = callPackage ./pkgs/HROOT-src-tree {
-                         inherit HROOT-generate;
-                       } ;
-
-      LHCOAnalysis = haskellngPackages.callPackage ./pkgs/LHCOAnalysis {
-                       inherit LHCOAnalysis-type;
-                     } ;
+      #HROOT   = haskellngPackages.callPackage ./pkgs/HROOT {
+      #               inherit fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist HROOT-graf HROOT-math HROOT-io HROOT-tree;
+      #               ROOT=ROOT6;
+      #             } ;
 
 
-      LHCOAnalysis-type = haskellngPackages.callPackage ./pkgs/LHCOAnalysis-type { } ;
+      #HROOT-core = haskellngPackages.callPackage ./pkgs/HROOT-core {
+      #               inherit fficxx-runtime HROOT-src-tree;
+      #               ROOT=ROOT6;
+      #             } ;
 
-      LHE-sanitizer = haskellngPackages.callPackage ./pkgs/LHE-sanitizer {
-                       inherit HEPUtil conduit-util LHEParser;
-                     } ;
+      #HROOT-generate = haskellngPackages.callPackage ./pkgs/HROOT-generate {
+      #                   inherit fficxx;
+      #                 } ;
 
-      LHEParser = haskellngPackages.callPackage ./pkgs/LHEParser {
-                    inherit HEPUtil conduit-util;
-                  } ;
+      #HROOT-hist = haskellngPackages.callPackage ./pkgs/HROOT-hist {
+      #               inherit fficxx-runtime HROOT-src-tree HROOT-core;
+      #               ROOT=ROOT6;
+      #             };
+      #HROOT-graf = haskellngPackages.callPackage ./pkgs/HROOT-graf {
+      #               inherit fficxx-runtime HROOT-src-tree HROOT-core HROOT-hist;
+      #               ROOT=ROOT6;
+      #             } ;
 
-      conduit-util = haskellngPackages.callPackage ./pkgs/conduit-util { inherit HEPUtil; } ;
+      #HROOT-io   = haskellngPackages.callPackage ./pkgs/HROOT-io   {
+      #               inherit fficxx-runtime HROOT-src-tree HROOT-core;
+      #               ROOT=ROOT6;
+      #             } ;
 
-      fficxx = haskellngPackages.callPackage ./pkgs/fficxx { } ;
+      #HROOT-math = haskellngPackages.callPackage ./pkgs/HROOT-math {
+      #               inherit fficxx-runtime HROOT-src-tree HROOT-core;
+      #               ROOT=ROOT6;
+      #             } ;
 
-      fficxx-runtime = haskellngPackages.callPackage ./pkgs/fficxx-runtime { } ;
+      #HROOT-tree = haskellngPackages.callPackage ./pkgs/HROOT-tree {
+      #               inherit fficxx-runtime HROOT-src-tree HROOT-core;
+      #               ROOT=ROOT6;
+      #             } ;
 
-      devadmin = haskellngPackages.callPackage ./pkgs/devadmin { } ;
+      #HROOT-src-tree = callPackage ./pkgs/HROOT-src-tree {
+      #                   inherit HROOT-generate;
+      #                 } ;
 
-      evchain = haskellngPackages.callPackage ./pkgs/evchain {
-                              inherit webdav-manager HEPUtil LHEParser;
-                              inherit LHE-sanitizer conduit-util;
-                              inherit madgraph-auto pipeline-eventgen;
-                            } ;
-
-      evchainEnv = callPackage ./pkgs/evchain/env.nix {
-                     inherit evchain MadGraph5_aMCatNLO;
-                   };
-
-      jobqueue-client = callPackage ./pkgs/jobqueue-client {
-                          cabal = haskellPackages.cabal;
-                          inherit haskellPackages;
-                          inherit jobqueue-server-src;
-                          inherit jobqueue-common madgraph-auto madgraph-auto-model pipeline-eventgen webdav-manager;
-                        };
-
-      jobqueue-clientEnv = callPackage ./pkgs/jobqueue-client/env.nix {
-                             inherit jobqueue-client pythia-pgs MadGraph5_aMCatNLO;
-                           };
-
-
-      jobqueue-common = callPackage ./pkgs/jobqueue-common {
-                          cabal = haskellPackages.cabal;
-                          inherit haskellPackages;
-                          inherit jobqueue-server-src;
-                          inherit madgraph-auto madgraph-auto-model pipeline-eventgen webdav-manager;
-                        };
-
-      jobqueue-server = callPackage ./pkgs/jobqueue-server {
-                          cabal = haskellPackages.cabal;
-                          inherit haskellPackages;
-                          inherit jobqueue-server-src;
-                          inherit jobqueue-common madgraph-auto madgraph-auto-model pipeline-eventgen webdav-manager;
-                        };
-
-      jobqueue-server-src = callPackage ./pkgs/jobqueue-server/src.nix { };
+      #LHCOAnalysis = haskellngPackages.callPackage ./pkgs/LHCOAnalysis {
+      #                 inherit LHCOAnalysis-type;
+      #               } ;
 
 
-      madgraph-auto = haskellngPackages.callPackage ./pkgs/madgraph-auto {
-                        inherit LHE-sanitizer webdav-manager devadmin;
-                      } ;
+      #LHCOAnalysis-type = haskellngPackages.callPackage ./pkgs/LHCOAnalysis-type { } ;
 
-      madgraph-auto-model = haskellngPackages.callPackage ./pkgs/madgraph-auto-model {
-                              inherit madgraph-auto HEPUtil devadmin;
-                            } ;
+      #LHE-sanitizer = haskellngPackages.callPackage ./pkgs/LHE-sanitizer {
+      #                 inherit HEPUtil conduit-util LHEParser;
+      #               } ;
 
-      pipeline-eventgen = haskellngPackages.callPackage ./pkgs/pipeline-eventgen {
-                             inherit webdav-manager HEPUtil LHEParser;
-                             inherit madgraph-auto madgraph-auto-model;
-                          } ;
+      #LHEParser = haskellngPackages.callPackage ./pkgs/LHEParser {
+      #              inherit HEPUtil conduit-util;
+      #            } ;
 
-      pipeline-eventgenEnv = callPackage ./pkgs/pipeline-eventgen/env.nix {
-                               inherit pipeline-eventgen;
-                             } ;
+      #conduit-util = haskellngPackages.callPackage ./pkgs/conduit-util { inherit HEPUtil; } ;
 
-      webdav-manager = haskellngPackages.callPackage ./pkgs/webdav-manager { } ;
+      #fficxx = haskellngPackages.callPackage ./pkgs/fficxx { } ;
+
+      #fficxx-runtime = haskellngPackages.callPackage ./pkgs/fficxx-runtime { } ;
+
+      #devadmin = haskellngPackages.callPackage ./pkgs/devadmin { } ;
+
+      #evchain = haskellngPackages.callPackage ./pkgs/evchain {
+      #                        inherit webdav-manager HEPUtil LHEParser;
+      #                        inherit LHE-sanitizer conduit-util;
+      #                        inherit madgraph-auto pipeline-eventgen;
+      #                      } ;
+
+      #evchainEnv = callPackage ./pkgs/evchain/env.nix {
+      #               inherit evchain MadGraph5_aMCatNLO;
+      #             };
+
+      #jobqueue-client = callPackage ./pkgs/jobqueue-client {
+      #                    cabal = haskellPackages.cabal;
+      #                    inherit haskellPackages;
+      #                    inherit jobqueue-server-src;
+      #                    inherit jobqueue-common madgraph-auto madgraph-auto-model pipeline-eventgen webdav-manager;
+      #                  };
+
+      #jobqueue-clientEnv = callPackage ./pkgs/jobqueue-client/env.nix {
+      #                       inherit jobqueue-client pythia-pgs MadGraph5_aMCatNLO;
+      #                     };
+
+
+      #jobqueue-common = callPackage ./pkgs/jobqueue-common {
+      #                    cabal = haskellPackages.cabal;
+      #                    inherit haskellPackages;
+      #                    inherit jobqueue-server-src;
+      #                    inherit madgraph-auto madgraph-auto-model pipeline-eventgen webdav-manager;
+      #                  };
+
+      #jobqueue-server = callPackage ./pkgs/jobqueue-server {
+      #                    cabal = haskellPackages.cabal;
+      #                    inherit haskellPackages;
+      #                    inherit jobqueue-server-src;
+      #                    inherit jobqueue-common madgraph-auto madgraph-auto-model pipeline-eventgen webdav-manager;
+      #                  };
+
+      #jobqueue-server-src = callPackage ./pkgs/jobqueue-server/src.nix { };
+
+
+      #madgraph-auto = haskellngPackages.callPackage ./pkgs/madgraph-auto {
+      #                  inherit LHE-sanitizer webdav-manager devadmin;
+      #                } ;
+
+      #madgraph-auto-model = haskellngPackages.callPackage ./pkgs/madgraph-auto-model {
+      #                        inherit madgraph-auto HEPUtil devadmin;
+      #                      } ;
+
+      #pipeline-eventgen = haskellngPackages.callPackage ./pkgs/pipeline-eventgen {
+      #                       inherit webdav-manager HEPUtil LHEParser;
+      #                       inherit madgraph-auto madgraph-auto-model;
+      #                    } ;
+
+      #pipeline-eventgenEnv = callPackage ./pkgs/pipeline-eventgen/env.nix {
+      #                         inherit pipeline-eventgen;
+      #                       } ;
+
+      #webdav-manager = haskellngPackages.callPackage ./pkgs/webdav-manager { } ;
 
       #tools
-      hep-nix-overlay-tools = callPackage ./pkgs/tools/hep-nix-overlay-tools {
-                              };
+      #hep-nix-overlay-tools = callPackage ./pkgs/tools/hep-nix-overlay-tools {
+      #                        };
 
       #hep-nix-overlay-toolsEnv = callPackage ./pkgs/tools/hep-nix-overlay-tools/env.nix {
       #                             inherit hep-nix-overlay-tools;
